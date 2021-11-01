@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "Uq7AFGvk4dTelV2Rj1q1HJiCpqxU+k8tdBXTfKMzz5f62p9+7kedNlsucetTiRmV4iQSWPhtM75+Hg/qrsaJhw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\vasev\\Projekter\\ITU\\Semester3\\mai301\\tower\\MAI301_EVTD\\Simulator\\Simulator.csproj",
+  "expectedPackageFiles": [
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

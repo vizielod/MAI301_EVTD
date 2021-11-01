@@ -1,0 +1,13 @@
+C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary Tower Defense Agent\Assets\Scripts\netstandard2.0\Simulator.deps.json
+C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary Tower Defense Agent\Assets\Scripts\netstandard2.0\Simulator.dll
+C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary Tower Defense Agent\Assets\Scripts\netstandard2.0\Simulator.pdb
+C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Simulator\obj\Release\netstandard2.0\Simulator.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Simulator\obj\Release\netstandard2.0\Simulator.AssemblyInfoInputs.cache
+C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Simulator\obj\Release\netstandard2.0\Simulator.AssemblyInfo.cs
+C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Simulator\obj\Release\netstandard2.0\Simulator.csproj.CoreCompileInputs.cache
+C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Simulator\obj\Release\netstandard2.0\Simulator.dll
+C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Simulator\obj\Release\netstandard2.0\Simulator.pdb
+C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary Tower Defense Agent\Assets\libs\simulator\netstandard2.0\Simulator.deps.json
+C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary Tower Defense Agent\Assets\libs\simulator\netstandard2.0\Simulator.dll
+C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary Tower Defense Agent\Assets\libs\simulator\netstandard2.0\Simulator.pdb
+C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Simulator\obj\Release\netstandard2.0\Simulator.csproj.AssemblyReference.cache

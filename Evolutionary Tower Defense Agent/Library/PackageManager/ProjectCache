@@ -1,22 +1,22 @@
 m_ProjectFiles:
   m_ManifestFileStatus:
-    m_FilePath: D:/Elod/Uni/ModernAI/Group_Project/Evolutionary_Tower_Defense_Agent/MAI301_EVTD/Evolutionary
+    m_FilePath: C:/Users/vasev/Projekter/ITU/Semester3/mai301/tower/MAI301_EVTD/Evolutionary
       Tower Defense Agent/Packages/manifest.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637713671491722945
-    m_Hash: 1206723745
+      ticks: 637713696927562321
+    m_Hash: 1482879244
   m_LockFileStatus:
-    m_FilePath: D:/Elod/Uni/ModernAI/Group_Project/Evolutionary_Tower_Defense_Agent/MAI301_EVTD/Evolutionary
+    m_FilePath: C:/Users/vasev/Projekter/ITU/Semester3/mai301/tower/MAI301_EVTD/Evolutionary
       Tower Defense Agent/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637713671560462081
-    m_Hash: 3682739031
+      ticks: 637713696927562321
+    m_Hash: 3734136228
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_PackageAssets:
@@ -27,7 +27,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.13.5
       source: 1
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.collab-proxy@1.13.5
       assetPath: Packages/com.unity.collab-proxy
       name: com.unity.collab-proxy
@@ -151,7 +151,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 2.0.7
       source: 1
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.ide.rider@2.0.7
       assetPath: Packages/com.unity.ide.rider
       name: com.unity.ide.rider
@@ -259,7 +259,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 2.0.11
       source: 1
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.ide.visualstudio@2.0.11
       assetPath: Packages/com.unity.ide.visualstudio
       name: com.unity.ide.visualstudio
@@ -347,7 +347,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.2.4
       source: 1
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.ide.vscode@1.2.4
       assetPath: Packages/com.unity.ide.vscode
       name: com.unity.ide.vscode
@@ -419,7 +419,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.1.29
       source: 1
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.test-framework@1.1.29
       assetPath: Packages/com.unity.test-framework
       name: com.unity.test-framework
@@ -513,7 +513,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 3.0.6
       source: 1
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.textmeshpro@3.0.6
       assetPath: Packages/com.unity.textmeshpro
       name: com.unity.textmeshpro
@@ -673,7 +673,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.4.8
       source: 1
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.timeline@1.4.8
       assetPath: Packages/com.unity.timeline
       name: com.unity.timeline
@@ -830,7 +830,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.ugui@1.0.0
       assetPath: Packages/com.unity.ugui
       name: com.unity.ugui
@@ -894,7 +894,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.ai@1.0.0
       assetPath: Packages/com.unity.modules.ai
       name: com.unity.modules.ai
@@ -943,7 +943,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.androidjni@1.0.0
       assetPath: Packages/com.unity.modules.androidjni
       name: com.unity.modules.androidjni
@@ -992,7 +992,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.animation@1.0.0
       assetPath: Packages/com.unity.modules.animation
       name: com.unity.modules.animation
@@ -1041,7 +1041,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.assetbundle@1.0.0
       assetPath: Packages/com.unity.modules.assetbundle
       name: com.unity.modules.assetbundle
@@ -1090,7 +1090,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.audio@1.0.0
       assetPath: Packages/com.unity.modules.audio
       name: com.unity.modules.audio
@@ -1139,7 +1139,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.cloth@1.0.0
       assetPath: Packages/com.unity.modules.cloth
       name: com.unity.modules.cloth
@@ -1192,7 +1192,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.director@1.0.0
       assetPath: Packages/com.unity.modules.director
       name: com.unity.modules.director
@@ -1249,7 +1249,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.imageconversion@1.0.0
       assetPath: Packages/com.unity.modules.imageconversion
       name: com.unity.modules.imageconversion
@@ -1299,7 +1299,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.imgui@1.0.0
       assetPath: Packages/com.unity.modules.imgui
       name: com.unity.modules.imgui
@@ -1348,7 +1348,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.jsonserialize@1.0.0
       assetPath: Packages/com.unity.modules.jsonserialize
       name: com.unity.modules.jsonserialize
@@ -1397,7 +1397,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.particlesystem@1.0.0
       assetPath: Packages/com.unity.modules.particlesystem
       name: com.unity.modules.particlesystem
@@ -1446,7 +1446,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.physics@1.0.0
       assetPath: Packages/com.unity.modules.physics
       name: com.unity.modules.physics
@@ -1495,7 +1495,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.physics2d@1.0.0
       assetPath: Packages/com.unity.modules.physics2d
       name: com.unity.modules.physics2d
@@ -1544,7 +1544,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.screencapture@1.0.0
       assetPath: Packages/com.unity.modules.screencapture
       name: com.unity.modules.screencapture
@@ -1597,7 +1597,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.terrain@1.0.0
       assetPath: Packages/com.unity.modules.terrain
       name: com.unity.modules.terrain
@@ -1646,7 +1646,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.terrainphysics@1.0.0
       assetPath: Packages/com.unity.modules.terrainphysics
       name: com.unity.modules.terrainphysics
@@ -1703,7 +1703,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.tilemap@1.0.0
       assetPath: Packages/com.unity.modules.tilemap
       name: com.unity.modules.tilemap
@@ -1756,7 +1756,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.ui@1.0.0
       assetPath: Packages/com.unity.modules.ui
       name: com.unity.modules.ui
@@ -1805,7 +1805,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.uielements@1.0.0
       assetPath: Packages/com.unity.modules.uielements
       name: com.unity.modules.uielements
@@ -1870,7 +1870,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.umbra@1.0.0
       assetPath: Packages/com.unity.modules.umbra
       name: com.unity.modules.umbra
@@ -1919,7 +1919,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.unityanalytics@1.0.0
       assetPath: Packages/com.unity.modules.unityanalytics
       name: com.unity.modules.unityanalytics
@@ -1976,7 +1976,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.unitywebrequest@1.0.0
       assetPath: Packages/com.unity.modules.unitywebrequest
       name: com.unity.modules.unitywebrequest
@@ -2025,7 +2025,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle@1.0.0
       assetPath: Packages/com.unity.modules.unitywebrequestassetbundle
       name: com.unity.modules.unitywebrequestassetbundle
@@ -2082,7 +2082,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.unitywebrequestaudio@1.0.0
       assetPath: Packages/com.unity.modules.unitywebrequestaudio
       name: com.unity.modules.unitywebrequestaudio
@@ -2139,7 +2139,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.unitywebrequesttexture@1.0.0
       assetPath: Packages/com.unity.modules.unitywebrequesttexture
       name: com.unity.modules.unitywebrequesttexture
@@ -2196,7 +2196,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.unitywebrequestwww@1.0.0
       assetPath: Packages/com.unity.modules.unitywebrequestwww
       name: com.unity.modules.unitywebrequestwww
@@ -2269,7 +2269,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.vehicles@1.0.0
       assetPath: Packages/com.unity.modules.vehicles
       name: com.unity.modules.vehicles
@@ -2322,7 +2322,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.video@1.0.0
       assetPath: Packages/com.unity.modules.video
       name: com.unity.modules.video
@@ -2383,7 +2383,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.vr@1.0.0
       assetPath: Packages/com.unity.modules.vr
       name: com.unity.modules.vr
@@ -2446,7 +2446,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.wind@1.0.0
       assetPath: Packages/com.unity.modules.wind
       name: com.unity.modules.wind
@@ -2495,7 +2495,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.xr@1.0.0
       assetPath: Packages/com.unity.modules.xr
       name: com.unity.modules.xr
@@ -2556,7 +2556,7 @@ m_PackageAssets:
       isDirectDependency: 0
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.subsystems@1.0.0
       assetPath: Packages/com.unity.modules.subsystems
       name: com.unity.modules.subsystems
@@ -2609,7 +2609,7 @@ m_PackageAssets:
       isDirectDependency: 0
       version: 1.0.0
       source: 2
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.modules.uielementsnative@1.0.0
       assetPath: Packages/com.unity.modules.uielementsnative
       name: com.unity.modules.uielementsnative
@@ -2669,7 +2669,7 @@ m_PackageAssets:
       isDirectDependency: 0
       version: 1.0.6
       source: 1
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.ext.nunit@1.0.6
       assetPath: Packages/com.unity.ext.nunit
       name: com.unity.ext.nunit
@@ -2686,18 +2686,8 @@ m_PackageAssets:
       errors: []
       versions:
         all:
-        - 0.1.5-preview
-        - 0.1.6-preview
-        - 0.1.9-preview
-        - 1.0.0
-        - 1.0.5
         - 1.0.6
         compatible:
-        - 0.1.5-preview
-        - 0.1.6-preview
-        - 0.1.9-preview
-        - 1.0.0
-        - 1.0.5
         - 1.0.6
         verified: 1.0.6
       dependencies: []
@@ -2718,7 +2708,7 @@ m_PackageAssets:
       entitlements:
         isAllowed: 1
       isAssetStorePackage: 0
-      datePublishedTicks: 637429759280000000
+      datePublishedTicks: 0
       documentationUrl: 
       hasRepository: 1
       repository:
@@ -2731,7 +2721,7 @@ m_PackageAssets:
       isDirectDependency: 0
       version: 2.0.0
       source: 1
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.nuget.newtonsoft-json@2.0.0
       assetPath: Packages/com.unity.nuget.newtonsoft-json
       name: com.unity.nuget.newtonsoft-json
@@ -2741,7 +2731,7 @@ m_PackageAssets:
         email: 
         url: 
       category: 
-      type: 
+      type: library
       description: 'Newtonsoft Json for use in Unity projects and Unity packages.
         Currently synced to version 12.0.2.
 
@@ -2756,30 +2746,10 @@ m_PackageAssets:
       errors: []
       versions:
         all:
-        - 1.0.0-preview.2
-        - 1.0.0-preview.3
-        - 1.0.0-preview.4
-        - 1.0.1-preview.1
-        - 1.1.2
-        - 2.0.0-preview
-        - 2.0.0-preview.1
-        - 2.0.0-preview.2
         - 2.0.0
-        - 2.0.1-preview.1
-        - 2.0.2
         compatible:
-        - 1.0.0-preview.2
-        - 1.0.0-preview.3
-        - 1.0.0-preview.4
-        - 1.0.1-preview.1
-        - 1.1.2
-        - 2.0.0-preview
-        - 2.0.0-preview.1
-        - 2.0.0-preview.2
         - 2.0.0
-        - 2.0.1-preview.1
-        - 2.0.2
-        verified: 2.0.2
+        verified: 2.0.0
       dependencies: []
       resolvedDependencies: []
       keywords: []
@@ -2795,7 +2765,7 @@ m_PackageAssets:
       entitlements:
         isAllowed: 1
       isAssetStorePackage: 0
-      datePublishedTicks: 637237898320000000
+      datePublishedTicks: 0
       documentationUrl: 
       hasRepository: 1
       repository:
@@ -2808,7 +2778,7 @@ m_PackageAssets:
       isDirectDependency: 0
       version: 1.0.1
       source: 1
-      resolvedPath: D:\Elod\Uni\ModernAI\Group_Project\Evolutionary_Tower_Defense_Agent\MAI301_EVTD\Evolutionary
+      resolvedPath: C:\Users\vasev\Projekter\ITU\Semester3\mai301\tower\MAI301_EVTD\Evolutionary
         Tower Defense Agent\Library\PackageCache\com.unity.services.core@1.0.1
       assetPath: Packages/com.unity.services.core
       name: com.unity.services.core
@@ -2861,6 +2831,6 @@ m_PackageAssets:
         path: 
   m_LocalPackages:
     m_LocalFileStatus: []
-m_ProjectPath: D:/Elod/Uni/ModernAI/Group_Project/Evolutionary_Tower_Defense_Agent/MAI301_EVTD/Evolutionary
+m_ProjectPath: C:/Users/vasev/Projekter/ITU/Semester3/mai301/tower/MAI301_EVTD/Evolutionary
   Tower Defense Agent/Packages
 m_EditorVersion: 2020.3.21f1 (a38c86f6690f)
