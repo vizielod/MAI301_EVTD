@@ -1,4 +1,4 @@
-﻿namespace Simulator
+﻿namespace Simulator.state
 {
     internal class Event
     {
