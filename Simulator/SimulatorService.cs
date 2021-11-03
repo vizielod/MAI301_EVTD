@@ -1,28 +1,39 @@
 ﻿using System.Collections.Generic;
+using Simulator.state;
 
 namespace Simulator
 {
-    class SimulatorService
+    class SimulatorService : IStateSequence
     {
-        List<State> states;
+        private List<State> states;
         int iterator;
 
         public void StepForward()
         {
-
+            throw new System.NotImplementedException();
         }
 
         public void StepBackward()
         {
+            throw new System.NotImplementedException();
+        }
 
+        public IState GetCurrentStep()
+        {
+            throw new System.NotImplementedException();
         }
 
         public void AddAgent(IAgent agent)
         {
-            states[iterator].addAgent(agent);
-        } 
+            states[iterator].AddAgent(agent);
+        }
 
         public int CurrentStep()
+        {
+            return 0;
+        }
+
+        public int CountSteps()
         {
             return 0;
         }
@@ -31,6 +42,5 @@ namespace Simulator
         {
             return null;
         }
-
     }
 }
