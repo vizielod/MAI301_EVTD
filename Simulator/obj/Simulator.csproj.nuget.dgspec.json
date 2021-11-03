@@ -1,21 +1,18 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\vasev\\Projekter\\ITU\\Semester3\\mai301\\tower\\MAI301_EVTD\\Simulator\\Simulator.csproj": {}
+    "E:\\Projekter\\ITU\\Semester3\\MIA301\\tower\\MAI301_EVTD\\Simulator\\Simulator.csproj": {}
   },
   "projects": {
-    "C:\\Users\\vasev\\Projekter\\ITU\\Semester3\\mai301\\tower\\MAI301_EVTD\\Simulator\\Simulator.csproj": {
+    "E:\\Projekter\\ITU\\Semester3\\MIA301\\tower\\MAI301_EVTD\\Simulator\\Simulator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\vasev\\Projekter\\ITU\\Semester3\\mai301\\tower\\MAI301_EVTD\\Simulator\\Simulator.csproj",
+        "projectUniqueName": "E:\\Projekter\\ITU\\Semester3\\MIA301\\tower\\MAI301_EVTD\\Simulator\\Simulator.csproj",
         "projectName": "Simulator",
-        "projectPath": "C:\\Users\\vasev\\Projekter\\ITU\\Semester3\\mai301\\tower\\MAI301_EVTD\\Simulator\\Simulator.csproj",
+        "projectPath": "E:\\Projekter\\ITU\\Semester3\\MIA301\\tower\\MAI301_EVTD\\Simulator\\Simulator.csproj",
         "packagesPath": "C:\\Users\\vasev\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\vasev\\Projekter\\ITU\\Semester3\\mai301\\tower\\MAI301_EVTD\\Simulator\\obj\\",
+        "outputPath": "E:\\Projekter\\ITU\\Semester3\\MIA301\\tower\\MAI301_EVTD\\Simulator\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
           "C:\\Users\\vasev\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
