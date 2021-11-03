@@ -3,7 +3,7 @@ using Simulator.state;
 
 namespace Simulator
 {
-    class SimulatorService : IStateSequence
+    public class SimulatorService : IStateSequence
     {
         private List<State> states;
         int iterator;

@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>E:\Projekter\ITU\Semester3\MIA301\tower\MAI301_EVTD\Evolutionary Tower Defense Agent\Assets\libs\simulator\</OutputPath>
+    <OutputPath>..\Evolutionary Tower Defense Agent\Assets\libs\simulator\</OutputPath>
   </PropertyGroup>
 
 </Project>
