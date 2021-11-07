@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Controller\" />
+    <None Remove="NodeBase\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NodeControllers\" />
+    <Folder Include="NodeBase\" />
+  </ItemGroup>
+</Project>
