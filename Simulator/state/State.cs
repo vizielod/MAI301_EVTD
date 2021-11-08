@@ -1,16 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Simulator.state
 {
     class State : IState
     {
-        public TileType[,] MapLayout { get; }
+        public IMapLayout MapLayout { get; set; }
         public IEnumerable<IAgent> Agents => _agents.Select(p => p.Key);
 
-        private IDictionary<IAgent, IStateObject> _agents;
+        private IDictionary<IAgent, StateObject> _agents;
         private IEnumerable<Event> _events;
+
+        public void Apply()
+        {
+            foreach (var evnt in _events)
+            {
+                evnt.Action.Apply();
+            }
+        }
 
         public IEnumerable<IAgent> GetAgentsAt(int x, int y)
         {
@@ -19,12 +26,17 @@ namespace Simulator.state
 
         public (int x, int y) PositionOf(IAgent agent)
         {
-            throw new NotImplementedException();
+            return _agents[agent].GridLocation;
         }
 
-        internal void AddAgent(IAgent agent)
+        internal void AddAgent(IAgent agent, int x, int y)
         {
-            throw new NotImplementedException();
+            _agents.Add(agent, new StateObject { GridLocation = (x, y) });
+        }
+
+        public IActionGenerator GetLegalActionGenerator(IAgent agent)
+        {
+            return new LegalMoveGenerator(MapLayout, _agents[agent]); // TODO: Fix Control Freak anti pattern
         }
     }
 }

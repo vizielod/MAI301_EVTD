@@ -53,7 +53,8 @@
     <UnityVersion>2020.3.21f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Compile Include="Assets\Scripts\Test1.cs" />
+    <Compile Include="Assets\Scripts\Test2.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Test2.cs" />

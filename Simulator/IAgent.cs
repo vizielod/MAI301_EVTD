@@ -4,6 +4,6 @@ namespace Simulator
 {
     public interface IAgent
     {
-        IAction PickAction();
+        IAction PickAction(IState state);
     }
 }
