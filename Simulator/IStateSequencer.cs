@@ -1,6 +1,6 @@
 ﻿namespace Simulator
 {
-    interface IStateSequence
+    public interface IStateSequence
     {
         void StepForward();
         void StepBackward();
