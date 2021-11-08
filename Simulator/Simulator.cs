@@ -6,54 +6,60 @@ namespace Simulator
 {
     public class Simulator : IStateSequence
     {
-        private List<State> states;
-        int iterator;
-        private readonly State initialState;
+        private State _currentState;
+        private readonly List<Round> _rounds;
+        int _round;
+        private readonly State _initialState;
 
         internal Simulator(State initialState)
         {
-            this.initialState = initialState;
+            _initialState = initialState;
+            _currentState = initialState;
+            _rounds = new List<Round>();
+            _round = 0;
         }
 
         public void StepForward()
         {
-            iterator++;
-            if (iterator > states.Count)
+            _round++;
+            if (_round >= _rounds.Count)
             {
-                var state = states.Last();
-                
+                _rounds.Add(
+                    new Round(
+                        _currentState.Agents.Select(a => new Event(a, a.PickAction(_currentState)))
+                        )
+                    );
             }
+            _rounds[_round].ApplyAll();
         }
 
         public void StepBackward()
         {
+            if (_round < 0)
+                return;
 
+            _rounds[_round].UndoAll();
+            _round--;
         }
 
         public IState GetCurrentStep()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void AddAgent(IAgent agent)
-        {
-            throw new System.NotImplementedException();
-            //states[iterator].AddAgent(agent);
+            return _currentState;
         }
 
         public int CurrentStep()
         {
-            return iterator;
+            return _round;
         }
 
         public int CountSteps()
         {
-            return states.Count;
+            return _rounds.Count;
         }
 
         public IEnumerable<IAgent> GetAgents()
         {
-            return states[iterator].Agents;
+            return _currentState.Agents;
         }
     }
 }
