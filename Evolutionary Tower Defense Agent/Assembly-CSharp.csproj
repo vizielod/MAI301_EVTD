@@ -61,6 +61,7 @@
     <Compile Include="Assets\Scripts\EnemyMovementController.cs" />
     <Compile Include="Assets\Scripts\Test1.cs" />
     <Compile Include="Assets\Scripts\WaypointController.cs" />
+    <Compile Include="Assets\Scripts\Grid.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity 2020.3.21f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
