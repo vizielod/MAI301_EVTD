@@ -11,8 +11,7 @@ namespace Simulator
             if (initialMap.Count(t => t == TileType.Goal) != 1)
                 throw new ArgumentException("Initial map must have exactly one goal", nameof(initialMap));
 
-            var state = new State();
-            state.MapLayout = initialMap;
+            var state = new State(initialMap);
             (int x, int y) = initialMap.GetSpawnPoints().First();
             state.AddAgent(new DummyAgent(), x, y);
             return new Simulator(state);
