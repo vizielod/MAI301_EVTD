@@ -53,15 +53,14 @@
     <UnityVersion>2020.3.21f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Test1.cs" />
-    <Compile Include="Assets\Scripts\Test2.cs" />
+    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Test2.cs" />
+    <Compile Include="Assets\Scripts\EnemyMovementController.cs" />
     <Compile Include="Assets\Scripts\Test1.cs" />
     <Compile Include="Assets\Scripts\WaypointController.cs" />
-    <Compile Include="Assets\Scripts\EnemyMovementController.cs" />
-    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity 2020.3.21f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
