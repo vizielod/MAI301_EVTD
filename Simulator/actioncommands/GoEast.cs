@@ -2,7 +2,7 @@
 
 namespace Simulator.actioncommands
 {
-    class GoEast : IAction
+    public class GoEast : IAction
     {
         private readonly StateObject obj;
 
