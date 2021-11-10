@@ -11327,14 +11327,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 702459167}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b54c3e92e4c0544596c887d7f8e1831, type: 3}
+  m_Script: {fileID: 11500000, guid: d6ab4ce39a53d734aa3cb9dcee0c95aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Wall: {fileID: 5207213701149100563, guid: a1b101a6c00d86b4189e997249113cca, type: 3}
-  Ground: {fileID: 6551634818564892039, guid: c93adc56c34bd9844801ec141423725a, type: 3}
-  Spawn: {fileID: 590402562519189353, guid: 653295af4dc521d459b7eb99fab29d20, type: 3}
-  Goal: {fileID: 618028937734850643, guid: c563d481023a2774bbcb4a8fc68a8cb4, type: 3}
-  enemy: {fileID: 7482663565232602093, guid: 74bfd610cc313024bace148ebce77b45, type: 3}
+  Wall: {fileID: 0}
+  Ground: {fileID: 0}
+  Spawn: {fileID: 0}
+  Goal: {fileID: 0}
+  enemy: {fileID: 0}
 --- !u!4 &702459169
 Transform:
   m_ObjectHideFlags: 0
