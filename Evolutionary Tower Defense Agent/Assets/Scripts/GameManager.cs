@@ -1,14 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public enum TileType
-{
-    Ground = 0,
-    Wall = 1,
-    Spawn = 2,
-    Goal = 3
-}
+using Simulator;
 
 public class GameManager : MonoBehaviour
 {
@@ -135,29 +128,29 @@ public class GameManager : MonoBehaviour
         newTile.SetParent(parent);
     }
 
-    /*void OnDrawGizmos()
+    void OnDrawGizmos()
     {
         if(grid == null)
         {
             return;
         }
-        for (int i = 0; i < grid.gridArray.GetLength(0); i++)
+        for (int i = 0; i < grid.tileTypeArray.GetLength(0); i++)
         {
-            for (int j = 0; j < grid.gridArray.GetLength(1); j++)
+            for (int j = 0; j < grid.tileTypeArray.GetLength(1); j++)
             {
-                var debug_line_horizontal_start = new Vector3(GetWorldPosition(i, j).x - cellSize / 2, GetWorldPosition(i, j).y, GetWorldPosition(i, j).z - cellSize / 2);
-                var debug_line_horizontal_end = new Vector3(GetWorldPosition(i, j + 1).x - cellSize / 2, GetWorldPosition(i, j + 1).y, GetWorldPosition(i, j + 1).z - cellSize / 2);
-                var debug_line_vertical_start = new Vector3(GetWorldPosition(i, j).x - cellSize / 2, GetWorldPosition(i, j).y, GetWorldPosition(i, j).z - cellSize / 2);
-                var debug_line_vertical_end = new Vector3(GetWorldPosition(i + 1, j).x - cellSize / 2, GetWorldPosition(i + 1, j).y, GetWorldPosition(i + 1, j).z - cellSize / 2);
+                var debug_line_horizontal_start = new Vector3(grid.GetWorldPosition(i, j).x - grid.cellSize / 2, grid.GetWorldPosition(i, j).y, grid.GetWorldPosition(i, j).z - grid.cellSize / 2);
+                var debug_line_horizontal_end = new Vector3(grid.GetWorldPosition(i, j + 1).x - grid.cellSize / 2, grid.GetWorldPosition(i, j + 1).y, grid.GetWorldPosition(i, j + 1).z - grid.cellSize / 2);
+                var debug_line_vertical_start = new Vector3(grid.GetWorldPosition(i, j).x - grid.cellSize / 2, grid.GetWorldPosition(i, j).y, grid.GetWorldPosition(i, j).z - grid.cellSize / 2);
+                var debug_line_vertical_end = new Vector3(grid.GetWorldPosition(i + 1, j).x - grid.cellSize / 2, grid.GetWorldPosition(i + 1, j).y, grid.GetWorldPosition(i + 1, j).z - grid.cellSize / 2);
                 Debug.DrawLine(debug_line_horizontal_start, debug_line_horizontal_end, Color.white, 100f);
                 Debug.DrawLine(debug_line_vertical_start, debug_line_vertical_end, Color.white, 100f);
             }
         }
-        var debug_last_line_horizontal_start = new Vector3(GetWorldPosition(0, height).x - cellSize / 2, GetWorldPosition(0, height).y, GetWorldPosition(0, height).z - cellSize / 2);
-        var debug_last_line_horizontal_end = new Vector3(GetWorldPosition(width, height).x - cellSize / 2, GetWorldPosition(width, height).y, GetWorldPosition(width, height).z - cellSize / 2);
-        var debug_last_line_vertical_start = new Vector3(GetWorldPosition(width, 0).x - cellSize / 2, GetWorldPosition(width, 0).y, GetWorldPosition(width, 0).z - cellSize / 2);
-        var debug_last_line_vertical_end = new Vector3(GetWorldPosition(width, height).x - cellSize / 2, GetWorldPosition(width, height).y, GetWorldPosition(width, height).z - cellSize / 2);
+        var debug_last_line_horizontal_start = new Vector3(grid.GetWorldPosition(0, grid.Height).x - grid.cellSize / 2, grid.GetWorldPosition(0, grid.Height).y, grid.GetWorldPosition(0, grid.Height).z - grid.cellSize / 2);
+        var debug_last_line_horizontal_end = new Vector3(grid.GetWorldPosition(grid.Width, grid.Height).x - grid.cellSize / 2, grid.GetWorldPosition(grid.Width, grid.Height).y, grid.GetWorldPosition(grid.Width, grid.Height).z - grid.cellSize / 2);
+        var debug_last_line_vertical_start = new Vector3(grid.GetWorldPosition(grid.Width, 0).x - grid.cellSize / 2, grid.GetWorldPosition(grid.Width, 0).y, grid.GetWorldPosition(grid.Width, 0).z - grid.cellSize / 2);
+        var debug_last_line_vertical_end = new Vector3(grid.GetWorldPosition(grid.Width, grid.Height).x - grid.cellSize / 2, grid.GetWorldPosition(grid.Width, grid.Height).y, grid.GetWorldPosition(grid.Width, grid.Height).z - grid.cellSize / 2);
         Debug.DrawLine(debug_last_line_horizontal_start, debug_last_line_horizontal_end, Color.white, 100f);
         Debug.DrawLine(debug_last_line_vertical_start, debug_last_line_vertical_end, Color.white, 100f);
-    }*/
+    }
 }
