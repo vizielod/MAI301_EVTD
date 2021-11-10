@@ -23,7 +23,7 @@ namespace Simulator.actioncommands
 
         public void Undo()
         {
-            obj.GridLocation = (obj.GridLocation.x - 1, obj.GridLocation.y);
+            obj.GridLocation = (obj.GridLocation.x + 1, obj.GridLocation.y);
         }
     }
 }

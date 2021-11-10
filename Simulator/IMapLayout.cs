@@ -15,6 +15,6 @@ namespace Simulator
         TileType TypeAt(int x, int y);
         int Height { get; }
         int Width { get; }
-        IEnumerable<(int x, int y)> GetSpawnPoints();
+        (int x, int y) GetSpawnPoint();
     }
 }

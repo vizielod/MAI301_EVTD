@@ -16,7 +16,7 @@ namespace Simulator
             _initialState = initialState;
             _currentState = initialState;
             _rounds = new List<Round>();
-            _round = 0;
+            _round = -1;
         }
 
         public void StepForward()
