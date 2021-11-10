@@ -34,9 +34,9 @@ public class Grid : IMapLayout
         return tileTypeArray[x, y];
     }
 
-    public IEnumerable<(int x, int y)> GetSpawnPoints()
+    public (int x, int y) GetSpawnPoint()
     {
-        throw new System.NotImplementedException();
+        return (1, 1);
     }
 
     public IEnumerator<TileType> GetEnumerator()

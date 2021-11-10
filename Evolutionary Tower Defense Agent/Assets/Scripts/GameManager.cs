@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Simulator;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
         };
 
     public TileType[,] tileTypeArray;
+    IStateSequence sim;
 
     void SetTileTypeArray()
     {
@@ -54,6 +56,9 @@ public class GameManager : MonoBehaviour
         SetTileTypeArray();
         grid = new Grid(tileTypeArray.GetLength(0), tileTypeArray.GetLength(1), 5, tileTypeArray); // int rowsOrHeight = ary.GetLength(0); int colsOrWidth = ary.GetLength(1);
         InitializeGridTiles();
+        sim = new SimulatorFactory().CreateSimulator(grid);
+        enemy.transform.position = new Vector3(5, 1, 5);
+
     }
 
     // Update is called once per frame
@@ -71,12 +76,22 @@ public class GameManager : MonoBehaviour
 
     void StepForward()
     {
-        enemy.GetComponent<EnemyMovementController>().PerformStepForward();
+        //enemy.GetComponent<EnemyMovementController>().PerformStepForward();
+        sim.StepForward();
+        IState state = sim.GetCurrentStep();
+        IAgent agent = state.Agents.First();
+        (int x, int y) = state.PositionOf(agent);
+        enemy.transform.position = new Vector3(x * 5, 1, y * 5);
     }
 
     void StepBackward()
     {
-        enemy.GetComponent<EnemyMovementController>().PerformStepBackward();
+        //enemy.GetComponent<EnemyMovementController>().PerformStepBackward();
+        sim.StepBackward();
+        IState state = sim.GetCurrentStep();
+        IAgent agent = state.Agents.First();
+        (int x, int y) = state.PositionOf(agent);
+        enemy.transform.position = new Vector3(x * 5, 1, y * 5);
     }
 
     void InitializeGridTiles()
