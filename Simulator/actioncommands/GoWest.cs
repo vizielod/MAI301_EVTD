@@ -16,6 +16,11 @@ namespace Simulator.actioncommands
             obj.GridLocation = (obj.GridLocation.x - 1, obj.GridLocation.y);
         }
 
+        public Direction GetDirection()
+        {
+            return Direction.West;
+        }
+
         public void Undo()
         {
             obj.GridLocation = (obj.GridLocation.x - 1, obj.GridLocation.y);
