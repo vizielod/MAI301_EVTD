@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
         SetTileTypeArray();
         grid = new Grid(tileTypeArray.GetLength(0), tileTypeArray.GetLength(1), 5, tileTypeArray); // int rowsOrHeight = ary.GetLength(0); int colsOrWidth = ary.GetLength(1);
         InitializeGridTiles();
-        sim = new SimulatorFactory().CreateSimulator(grid);
+        sim = new SimulatorFactory().CreateSimulator(grid, null, null); // Parse enemies and tower agents
         enemy.transform.position = new Vector3(5, 1, 5);
 
     }
