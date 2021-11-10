@@ -2,7 +2,7 @@
 
 namespace Simulator.actioncommands
 {
-    public class GoSouth : IAction
+    class GoSouth : IAction
     {
         private readonly StateObject obj;
 
@@ -14,6 +14,11 @@ namespace Simulator.actioncommands
         public void Apply()
         {
             obj.GridLocation = (obj.GridLocation.x, obj.GridLocation.y - 1);
+        }
+
+        public Direction GetDirection()
+        {
+            return Direction.South;
         }
 
         public void Undo()
