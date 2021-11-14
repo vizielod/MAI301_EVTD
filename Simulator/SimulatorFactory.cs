@@ -7,13 +7,13 @@ namespace Simulator
 {
     public class SimulatorFactory
     {
-        public IStateSequence CreateSimulator(IMapLayout initialMap)
+        public IStateSequence CreateSimulator(IMapLayout initialMap, IEnumerable<IAgent> agents, IEnumerable<IAgent> towers)
         {
             if (initialMap.Count(t => t == TileType.Goal) != 1)
                 throw new ArgumentException("Initial map must have exactly one goal", nameof(initialMap));
 
             var state = new State(initialMap);
-            (int x, int y) = initialMap.GetSpawnPoints().First();
+            (int x, int y) = initialMap.GetSpawnPoint();
             state.AddAgent(new DummyAgent(), x, y);
             return new Simulator(state);
         }

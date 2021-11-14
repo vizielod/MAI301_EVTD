@@ -21,6 +21,7 @@ namespace Simulator.state
         {
             MapLayout = map;
             _events = new List<Event>();
+            _agents = new Dictionary<IAgent, StateObject>();
         }
 
         internal State Clone()
