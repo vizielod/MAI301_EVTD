@@ -59,6 +59,8 @@
     <Compile Include="Assets\Scripts\EnemyMovementController.cs" />
     <Compile Include="Assets\Scripts\Test1.cs" />
     <Compile Include="Assets\Scripts\WaypointController.cs" />
+    <Compile Include="Assets\Scripts\TurretController.cs" />
+    <Compile Include="Assets\Scripts\Turret.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\libs\simulator\netstandard2.0\netstandard2.0\Simulator.dll" />

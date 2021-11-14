@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1041190864994240908
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4575291903224664629}
+  m_Layer: 0
+  m_Name: Turrets
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4575291903224664629
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041190864994240908}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2139296940433387587}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2139296940094728900
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,6 +151,7 @@ Transform:
   - {fileID: 2139296941308243395}
   - {fileID: 2139296941959281554}
   - {fileID: 2139296940420508712}
+  - {fileID: 4575291903224664629}
   - {fileID: 2139296940919966769}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -141,6 +172,7 @@ MonoBehaviour:
   Ground: {fileID: 6551634818564892039, guid: f89bfa22f2c821546a285923e4123b70, type: 3}
   Spawn: {fileID: 590402562519189353, guid: 0f16c9e4ef3623e488cc73c639f3f0e1, type: 3}
   Goal: {fileID: 618028937734850643, guid: 74343da6fe0e0014ab42662f0a382600, type: 3}
+  Turret: {fileID: 4380238882070342461, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
   enemy: {fileID: 0}
 --- !u!1 &2139296940589970016
 GameObject:
@@ -427,7 +459,7 @@ Transform:
   - {fileID: 2139296940589970017}
   - {fileID: 2139296940147408691}
   m_Father: {fileID: 2139296940433387587}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2139296940919966774
 MonoBehaviour:
