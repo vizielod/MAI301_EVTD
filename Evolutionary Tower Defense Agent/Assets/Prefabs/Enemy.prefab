@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7482663565232602098}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7482663565232602093}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 2.25, z: 10}
+  m_LocalPosition: {x: 5, y: 1, z: 50}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 0}
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d433d3f91abea4c55bb7eaef8d391145, type: 2}
+  - {fileID: 2100000, guid: ec41e6091edd8404bae44a7f6cdd4532, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -105,7 +105,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7482663565232602093}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f9d38f7de4364feba996fc6bf4b8119, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c57b88176cbf3e4080fedba0369e2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10

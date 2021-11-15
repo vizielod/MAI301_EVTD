@@ -15,8 +15,8 @@ public class EnemyMovementController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        previousTarget = WaypointController.wayPoints[0];
-        nextTarget = WaypointController.wayPoints[1];
+        /*previousTarget = WaypointController.wayPoints[0];
+        nextTarget = WaypointController.wayPoints[1];*/
     }
 
     // Update is called once per frame
