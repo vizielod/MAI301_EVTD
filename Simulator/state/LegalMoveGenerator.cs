@@ -18,13 +18,13 @@ namespace Simulator.state
         {
             (int x, int y) = agent.GridLocation;
             if (map.TypeAt(x, y + 1) == TileType.Ground)
-                yield return new GoNorth(agent);
+                yield return new GoNorth();
             if (map.TypeAt(x, y - 1) == TileType.Ground)
-                yield return new GoSouth(agent);
+                yield return new GoSouth();
             if (map.TypeAt(x + 1, y) == TileType.Ground)
-                yield return new GoEast(agent);
+                yield return new GoEast();
             if (map.TypeAt(x - 1, y) == TileType.Ground)
-                yield return new GoWest(agent);
+                yield return new GoWest();
         }
     }
 }

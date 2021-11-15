@@ -6,60 +6,58 @@ namespace Simulator
 {
     public class Simulator : IStateSequence
     {
-        private State _currentState;
-        private readonly List<Round> _rounds;
-        int _round;
-        private readonly State _initialState;
+        private readonly List<Round> rounds;
+        private readonly IGame game;
+        int round;
 
-        internal Simulator(State initialState)
+        internal Simulator(IGame game)
         {
-            _initialState = initialState;
-            _currentState = initialState;
-            _rounds = new List<Round>();
-            _round = -1;
+            this.game = game;
+            rounds = new List<Round>();
+            round = -1;
         }
 
         public void StepForward()
         {
-            _round++;
-            if (_round >= _rounds.Count)
+            round++;
+            if (round >= rounds.Count)
             {
-                _rounds.Add(
+                rounds.Add(
                     new Round(
-                        _currentState.Agents.Select(a => new Event(a, a.PickAction(_currentState)))
+                        game.Agents.Select(a => new Event(a, a.PickAction(game.GenerateState())))
                         )
                     );
             }
-            _rounds[_round].ApplyAll();
+            rounds[round].ApplyAll(game);
         }
 
         public void StepBackward()
         {
-            if (_round < 0)
+            if (round < 0)
                 return;
 
-            _rounds[_round].UndoAll();
-            _round--;
+            rounds[round].UndoAll(game);
+            round--;
         }
 
         public IState GetCurrentStep()
         {
-            return _currentState;
+            return game.GenerateState();
         }
 
         public int CurrentStep()
         {
-            return _round;
+            return round;
         }
 
         public int CountSteps()
         {
-            return _rounds.Count;
+            return rounds.Count;
         }
 
         public IEnumerable<IAgent> GetAgents()
         {
-            return _currentState.Agents;
+            return game.Agents;
         }
     }
 }

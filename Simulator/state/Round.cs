@@ -5,22 +5,21 @@ namespace Simulator.state
 {
     class Round
     {
-        private IEnumerable<Event> _events;
+        private IEnumerable<Event> events;
 
         public Round(IEnumerable<Event> events)
         {
-            _events = events;
+            this.events = events;
         }
 
-        public void ApplyAll()
+        public void ApplyAll(IGame game)
         {
-            _events.AsParallel().ForAll((evnt) => { evnt.Action.Apply(); });
+            events.AsParallel().ForAll((evnt) => { evnt.Action.Apply(game.GetStateObject(evnt.Agent)); });
         }
 
-        public void UndoAll()
+        public void UndoAll(IGame game)
         {
-            _events.AsParallel().ForAll((evnt) => { evnt.Action.Undo(); });
+            events.AsParallel().ForAll((evnt) => { evnt.Action.Undo(game.GetStateObject(evnt.Agent)); });
         }
-
     }
 }
