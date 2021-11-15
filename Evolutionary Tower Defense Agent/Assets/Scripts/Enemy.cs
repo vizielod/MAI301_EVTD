@@ -2,17 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy
 {
-    // Start is called before the first frame update
-    void Start()
+
+    [SerializeField] float HitPoints { get; set; }
+
+    public Enemy(float hitPoints)
     {
-        
+        this.HitPoints = hitPoints;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void GetDamaged(float damage)
     {
-        
+        HitPoints -= damage;
+    }
+
+    public void GetHealed(float damage)
+    {
+        HitPoints += damage;
+    }
+
+    public float GetHitPoints()
+    {
+        return HitPoints;
     }
 }

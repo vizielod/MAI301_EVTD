@@ -5105,7 +5105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1768123426277841531, guid: 3caf5044c1811eb4cac31ddb29207b98, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1768123426277841531, guid: 3caf5044c1811eb4cac31ddb29207b98, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5141,11 +5141,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7482663565232602093, guid: 3caf5044c1811eb4cac31ddb29207b98, type: 3}
       propertyPath: m_Name
-      value: Enemy (1)
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 7482663565232602093, guid: 3caf5044c1811eb4cac31ddb29207b98, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3caf5044c1811eb4cac31ddb29207b98, type: 3}
@@ -16261,67 +16261,6 @@ Transform:
   m_Father: {fileID: 1930497865}
   m_RootOrder: 279
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1444859757
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4380238882070342434, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380238882070342434, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380238882070342434, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380238882070342434, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 20.21
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380238882070342434, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380238882070342434, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380238882070342434, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380238882070342434, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380238882070342434, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380238882070342434, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380238882070342434, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380238882070342461, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-      propertyPath: m_Name
-      value: Turret
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380238882070342461, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
 --- !u!1 &1447382231
 GameObject:
   m_ObjectHideFlags: 0
@@ -16976,7 +16915,10 @@ MonoBehaviour:
   Spawn: {fileID: 0}
   Goal: {fileID: 0}
   Turret: {fileID: 0}
-  enemy: {fileID: 0}
+  numberOfEnemies: 0
+  enemyPrefab: {fileID: 0}
+  enemyGameObjects: []
+  stepCount: 0
 --- !u!1 &1515467637
 GameObject:
   m_ObjectHideFlags: 0
@@ -25848,6 +25790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c57b88176cbf3e4080fedba0369e2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitPoints: 50
   speed: 10
   stepSize: 5
 --- !u!1001 &1583157919637418448

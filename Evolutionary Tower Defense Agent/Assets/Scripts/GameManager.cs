@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
     public TileType[,] tileTypeArray;
     IStateSequence sim;
 
+    public int stepCount = 0;
+
 
     void SetTileTypeArray()
     {
@@ -88,8 +90,6 @@ public class GameManager : MonoBehaviour
         {
             GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity) as GameObject;
 
-            //Transform newEnemy = (Instantiate(enemyPrefab, spawnPosition, Quaternion.identity) as GameObject).transform;
-
             newEnemy.transform.SetParent(transform.Find("Enemies"));
 
             enemyGameObjects.Add(newEnemy);
@@ -114,7 +114,8 @@ public class GameManager : MonoBehaviour
 
     void StepForward()
     {
-        //enemy.GetComponent<EnemyMovementController>().PerformStepForward();
+        stepCount++;
+
         sim.StepForward();
         StepEnemiesForward();
         /*IState state = sim.GetCurrentStep();
@@ -125,11 +126,21 @@ public class GameManager : MonoBehaviour
         foreach (var turret in turrets)
         {
             turret.GetComponent<TurretController>().DoScanForTargetRotation();
+            turret.GetComponent<TurretController>().DealDamageToTarget();
         }
+
+        //DealDamageToTarget();
     }
 
     void StepEnemiesForward()
     {
+        /*if(stepCount >= numberOfEnemies)
+        {
+            stepCount = numberOfEnemies;
+        }
+
+        var enemiesToMove = stepCount;*/
+
         for (int i = 0; i < numberOfEnemies; i++)
         {
             IState state = sim.GetCurrentStep();
@@ -141,7 +152,6 @@ public class GameManager : MonoBehaviour
 
     void StepBackward()
     {
-        //enemy.GetComponent<EnemyMovementController>().PerformStepBackward();
         sim.StepBackward();
         StepEnemiesBackward();
         /*IState state = sim.GetCurrentStep();
@@ -152,6 +162,7 @@ public class GameManager : MonoBehaviour
         foreach (var turret in turrets)
         {
             turret.GetComponent<TurretController>().UndoScanForTargetRotation();
+            turret.GetComponent<TurretController>().HealTarget();
         }
     }
 
@@ -175,7 +186,7 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < grid.Height; j++)
             {
-                Debug.Log(grid.TypeAt(i, j));
+                //Debug.Log(grid.TypeAt(i, j));
                 InstantiateGridTile(grid.TypeAt(i, j), i, j);
             }
         }

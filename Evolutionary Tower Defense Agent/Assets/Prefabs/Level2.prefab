@@ -204,10 +204,10 @@ MonoBehaviour:
   Spawn: {fileID: 590402562519189353, guid: 0f16c9e4ef3623e488cc73c639f3f0e1, type: 3}
   Goal: {fileID: 618028937734850643, guid: 74343da6fe0e0014ab42662f0a382600, type: 3}
   Turret: {fileID: 4380238882070342461, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-  numberOfEnemies: 0
-  enemyPrefab: {fileID: 0}
-  enemy: {fileID: 0}
-  enemies: []
+  numberOfEnemies: 1
+  enemyPrefab: {fileID: 7482663565232602093, guid: 3caf5044c1811eb4cac31ddb29207b98, type: 3}
+  enemyGameObjects: []
+  stepCount: 0
 --- !u!1 &2139296940589970016
 GameObject:
   m_ObjectHideFlags: 0

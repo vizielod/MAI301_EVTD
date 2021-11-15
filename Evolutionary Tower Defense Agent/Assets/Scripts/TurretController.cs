@@ -16,9 +16,13 @@ public class TurretController : MonoBehaviour
     public Transform target;
 
     public string enemyTag = "Enemy";
+
+    Turret turret;
     // Start is called before the first frame update
     void Start()
     {
+        turret = new Turret(HitPoints, Range, FieldOfViewAngle, RotationSpeed, Damage);
+
         Vector3 mapCenter = new Vector3(35, head.position.y, 35);
         Vector3 dir = mapCenter - head.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
@@ -31,7 +35,7 @@ public class TurretController : MonoBehaviour
 
         if (target != null && Vector3.Distance(head.position, target.position) <= Range)
         {
-            Debug.Log("KeepTarget");
+            //Debug.Log("KeepTarget");
             return; //Keep old target
         }
 
@@ -98,10 +102,42 @@ public class TurretController : MonoBehaviour
         partToRotate.RotateAround(partToRotate.position, transform.up, -RotationSpeed);
     }
 
+    public void DealDamageToTarget()
+    {
+        if(target != null)
+        {
+            var targetedEnemy = target.GetComponent<EnemyController>().enemy;
+            if (targetedEnemy.GetHitPoints() > turret.Damage)
+            {
+                targetedEnemy.GetDamaged(turret.Damage);
+                Debug.Log("Deal Damage to Enemy: " + target + " " + targetedEnemy.GetHitPoints());
+            }
+            else
+            {
+                Debug.Log("Destroy enemy: " + target);
+                Destroy(target.gameObject);
+                //TODO: remove the destroyed enemy's Agent from the enemyAgent list?
+            }
+        }
+    }
+
+    //Heal Target on Undo action Un-dealing the damage
+    public void HealTarget()
+    {
+        if (target != null)
+        {
+            var targetedEnemy = target.GetComponent<EnemyController>().enemy;
+            targetedEnemy.GetHealed(turret.Damage);
+
+            Debug.Log("Heal Enemy: " + target + " " + targetedEnemy.GetHitPoints());
+            //Here we should check if it heals over its maxhealth then cap the HP at maxhealth
+            //Also it is a bit tricky to handle if an enemy just got destroyed then we want to Undo the action.
+        }
+    }
     bool IsTargetInFOV(GameObject target)
     {
         Vector3 directionToObject = (target.transform.position - head.position);
-        Debug.Log("directionToObject: " + directionToObject);
+        //Debug.Log("directionToObject: " + directionToObject);
 
         float targetToTurretForwardAngle = Vector3.Angle(directionToObject, head.forward);
         bool isInsideAngle = targetToTurretForwardAngle <= FieldOfViewAngle / 2f;

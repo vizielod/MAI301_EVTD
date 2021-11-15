@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class Turret
 {
-    [SerializeField] public float HitPoints { get; set; } = 100f;
-    [SerializeField] float Range { get; set; } = 5f;
-    [SerializeField] float FieldOfViewAngle { get; set; } = 90f;
-    [SerializeField] float RotationSpeed { get; set; } = 10f;
-    [SerializeField] float Damage { get; set; } = 10f;
+    [SerializeField] public float HitPoints { get; set; }
+    [SerializeField] public float Range { get; set; }
+    [SerializeField] public float FieldOfViewAngle { get; set; }
+    [SerializeField] public float RotationSpeed { get; set; }
+    [SerializeField] public float Damage { get; set; }
 
+    public Turret(float hitPoints, float range, float fieldOfView, float rotationSpeed, float damage)
+    {
+        this.HitPoints = hitPoints;
+        this.Range = range;
+        this.FieldOfViewAngle = fieldOfView;
+        this.RotationSpeed = rotationSpeed;
+        this.Damage = damage;
+    }
 }
