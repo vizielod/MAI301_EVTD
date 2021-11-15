@@ -781,7 +781,7 @@ GameObject:
   - component: {fileID: 7393225354905604575}
   m_Layer: 0
   m_Name: Turret
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -817,7 +817,8 @@ MonoBehaviour:
   HitPoints: 100
   Range: 8
   FieldOfViewAngle: 90
-  RotationSpeed: 100
+  RotationSpeed: 15
+  Damage: 10
   partToRotate: {fileID: 4380238882436732515}
   head: {fileID: 4380238882583426747}
   target: {fileID: 0}

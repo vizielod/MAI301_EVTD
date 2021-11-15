@@ -13,8 +13,16 @@ public class GameManager : MonoBehaviour
     public GameObject Goal;
     public GameObject Turret;
 
-    public GameObject enemy;
+    public int numberOfEnemies;
+    public GameObject enemyPrefab;
+    //public GameObject enemy;
     private Grid grid;
+
+    public List<GameObject> enemyGameObjects;
+    private GameObject[] turrets;
+
+    private string enemyTag = "Enemy";
+    private string turretTag = "Turret";
 
     public int[,] gridArray = new int[,]
         {
@@ -60,11 +68,35 @@ public class GameManager : MonoBehaviour
         grid = new Grid(tileTypeArray.GetLength(0), tileTypeArray.GetLength(1), 5, tileTypeArray); // int rowsOrHeight = ary.GetLength(0); int colsOrWidth = ary.GetLength(1);
         InitializeGridTiles();
 
-        List<IAgent> enemies = new List<IAgent>();
+        InitializeEnemies();
+
+        /*List<IAgent> enemies = new List<IAgent>();
         enemies.Add(new SimpleEnemyAgent((1,1)));
         sim = new SimulatorFactory().CreateSimulator(grid, enemies, new List<IAgent>()); // Parse enemies and tower agents
-        enemy.transform.position = new Vector3(5, 1, 5);
+        enemy.transform.position = new Vector3(5, 3, 5);*/
 
+        turrets = GameObject.FindGameObjectsWithTag(turretTag);
+
+    }
+
+    void InitializeEnemies()
+    {
+        Vector3 spawnPosition = new Vector3(5, 3, 5);
+        List<IAgent> enemyAgents = new List<IAgent>();
+
+        for (int i = 0; i < numberOfEnemies; i++)
+        {
+            GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity) as GameObject;
+
+            //Transform newEnemy = (Instantiate(enemyPrefab, spawnPosition, Quaternion.identity) as GameObject).transform;
+
+            newEnemy.transform.SetParent(transform.Find("Enemies"));
+
+            enemyGameObjects.Add(newEnemy);
+            enemyAgents.Add(new SimpleEnemyAgent((1, 1)));
+        }
+
+        sim = new SimulatorFactory().CreateSimulator(grid, enemyAgents, new List<IAgent>()); // Parse enemies and tower agents
     }
 
     // Update is called once per frame
@@ -84,20 +116,54 @@ public class GameManager : MonoBehaviour
     {
         //enemy.GetComponent<EnemyMovementController>().PerformStepForward();
         sim.StepForward();
-        IState state = sim.GetCurrentStep();
+        StepEnemiesForward();
+        /*IState state = sim.GetCurrentStep();
         IAgent agent = state.Agents.First();
         (int x, int y) = state.PositionOf(agent);
-        enemy.transform.position = new Vector3(x * 5, 1, y * 5);
+        enemy.transform.position = new Vector3(x * 5, 3, y * 5);*/
+
+        foreach (var turret in turrets)
+        {
+            turret.GetComponent<TurretController>().DoScanForTargetRotation();
+        }
+    }
+
+    void StepEnemiesForward()
+    {
+        for (int i = 0; i < numberOfEnemies; i++)
+        {
+            IState state = sim.GetCurrentStep();
+            IAgent agent = state.Agents.ElementAt(i);
+            (int x, int y) = state.PositionOf(agent);
+            enemyGameObjects[i].transform.position = new Vector3(x * 5, 3, y * 5);
+        }
     }
 
     void StepBackward()
     {
         //enemy.GetComponent<EnemyMovementController>().PerformStepBackward();
         sim.StepBackward();
-        IState state = sim.GetCurrentStep();
+        StepEnemiesBackward();
+        /*IState state = sim.GetCurrentStep();
         IAgent agent = state.Agents.First();
         (int x, int y) = state.PositionOf(agent);
-        enemy.transform.position = new Vector3(x * 5, 1, y * 5);
+        enemy.transform.position = new Vector3(x * 5, 3, y * 5);*/
+
+        foreach (var turret in turrets)
+        {
+            turret.GetComponent<TurretController>().UndoScanForTargetRotation();
+        }
+    }
+
+    void StepEnemiesBackward()
+    {
+        for (int i = 0; i < numberOfEnemies; i++)
+        {
+            IState state = sim.GetCurrentStep();
+            IAgent agent = state.Agents.ElementAt(i);
+            (int x, int y) = state.PositionOf(agent);
+            enemyGameObjects[i].transform.position = new Vector3(x * 5, 3, y * 5);
+        }
     }
 
     void InitializeGridTiles()

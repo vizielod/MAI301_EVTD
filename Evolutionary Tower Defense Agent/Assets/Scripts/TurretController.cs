@@ -28,6 +28,13 @@ public class TurretController : MonoBehaviour
 
     void UpdateTarget()
     {
+
+        if (target != null && Vector3.Distance(head.position, target.position) <= Range)
+        {
+            Debug.Log("KeepTarget");
+            return; //Keep old target
+        }
+
         GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
         float shortestDistance = Mathf.Infinity;
         GameObject closestEnemy = null;
@@ -44,7 +51,7 @@ public class TurretController : MonoBehaviour
             }
         }
 
-        if(closestEnemy != null && shortestDistance <= Range/* && IsTargetInFOV(closestEnemy)*/)
+        if(closestEnemy != null && shortestDistance <= Range && IsTargetInFOV(closestEnemy))
         {
             target = closestEnemy.transform;
         }
@@ -53,6 +60,7 @@ public class TurretController : MonoBehaviour
             target = null;
         }
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -65,7 +73,7 @@ public class TurretController : MonoBehaviour
 
         if (target == null)
         {
-            TurretScanningForTarget();
+            //TurretScanningForTarget();
             return;
         }
 
@@ -78,6 +86,16 @@ public class TurretController : MonoBehaviour
     void TurretScanningForTarget()
     {
         partToRotate.RotateAround(partToRotate.position, transform.up, Time.deltaTime * RotationSpeed);
+    }
+
+    public void DoScanForTargetRotation()
+    {
+        partToRotate.RotateAround(partToRotate.position, transform.up, RotationSpeed);
+    }
+
+    public void UndoScanForTargetRotation()
+    {
+        partToRotate.RotateAround(partToRotate.position, transform.up, -RotationSpeed);
     }
 
     bool IsTargetInFOV(GameObject target)
