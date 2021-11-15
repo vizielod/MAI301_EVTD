@@ -25,11 +25,11 @@ namespace BehaviorTree
 
             Selector move = new Selector("Selector", bb);
             ((ParentNodeController)move.GetControl()).
+               AddNode(new MoveSouth(
+               "MoveSouth", bb));
+            ((ParentNodeController)move.GetControl()).
                 AddNode(new MoveEast(
                 "MoveEast", bb));
-            ((ParentNodeController)move.GetControl()).
-                AddNode(new MoveSouth(
-                "MoveSouth", bb));
             ((ParentNodeController)move.GetControl()).
                 AddNode(new MoveWest(
                 "MoveWest", bb));
