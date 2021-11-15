@@ -53,12 +53,12 @@
     <UnityVersion>2020.3.21f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\EnemyMovementController.cs" />
-    <Compile Include="Assets\Scripts\Test1.cs" />
-    <Compile Include="Assets\Scripts\Test2.cs" />
     <Compile Include="Assets\Scripts\WaypointController.cs" />
+    <Compile Include="Assets\Scripts\Test1.cs" />
     <Compile Include="Assets\Scripts\Grid.cs" />
+    <Compile Include="Assets\Scripts\Test2.cs" />
+    <Compile Include="Assets\Scripts\EnemyMovementController.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\libs\simulator\netstandard2.0\netstandard2.0\Simulator.dll" />

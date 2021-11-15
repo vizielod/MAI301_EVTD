@@ -1,29 +1,15 @@
-﻿using Simulator.state;
-
-namespace Simulator.actioncommands
+﻿namespace Simulator.actioncommands
 {
-    class GoNorth : IAction
+    public sealed class GoNorth : IAction
     {
-        private readonly StateObject obj;
-
-        public GoNorth(StateObject obj)
+        void IAction.Apply(IStateObject stateObject)
         {
-            this.obj = obj;
+            stateObject.Move(0, 1);
         }
 
-        public void Apply()
+        void IAction.Undo(IStateObject stateObject)
         {
-            obj.GridLocation = (obj.GridLocation.x, obj.GridLocation.y + 1);
-        }
-
-        public Direction GetDirection()
-        {
-            return Direction.North;
-        }
-
-        public void Undo()
-        {
-            obj.GridLocation = (obj.GridLocation.x, obj.GridLocation.y - 1);
+            stateObject.Move(0, -1);
         }
     }
 }

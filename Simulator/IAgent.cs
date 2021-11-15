@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Simulator
+﻿namespace Simulator
 {
     public interface IAgent
     {

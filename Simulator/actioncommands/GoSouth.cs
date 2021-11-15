@@ -2,28 +2,16 @@
 
 namespace Simulator.actioncommands
 {
-    class GoSouth : IAction
+    public sealed class GoSouth : IAction
     {
-        private readonly StateObject obj;
-
-        public GoSouth(StateObject obj)
+        void IAction.Apply(IStateObject stateObject)
         {
-            this.obj = obj;
+            stateObject.Move(0, -1);
         }
 
-        public void Apply()
+        void IAction.Undo(IStateObject stateObject)
         {
-            obj.GridLocation = (obj.GridLocation.x, obj.GridLocation.y - 1);
-        }
-
-        public Direction GetDirection()
-        {
-            return Direction.South;
-        }
-
-        public void Undo()
-        {
-            obj.GridLocation = (obj.GridLocation.x, obj.GridLocation.y + 1);
+            stateObject.Move(0, 1);
         }
     }
 }
