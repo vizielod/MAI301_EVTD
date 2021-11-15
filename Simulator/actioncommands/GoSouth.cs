@@ -16,7 +16,7 @@ namespace Simulator.actioncommands
 
         public override bool Equals(object obj)
         {
-            return obj.GetType() == typeof(GoEast);
+            return obj != null && obj.GetType() == this.GetType();
         }
 
         public override int GetHashCode()
