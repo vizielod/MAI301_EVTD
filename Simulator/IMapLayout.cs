@@ -7,7 +7,8 @@ namespace Simulator
         Ground,
         Wall,
         Spawn,
-        Goal
+        Goal,
+        Turret
     }
 
     public interface IMapLayout : IEnumerable<TileType>
