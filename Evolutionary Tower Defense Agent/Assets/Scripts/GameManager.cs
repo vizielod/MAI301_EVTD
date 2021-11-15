@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Simulator;
 using System.Linq;
+using BehaviorTree;
 
 public class GameManager : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour
     public TileType[,] tileTypeArray;
     IStateSequence sim;
 
+
     void SetTileTypeArray()
     {
         tileTypeArray = new TileType[gridArray.GetLength(0), gridArray.GetLength(1)];
@@ -57,7 +59,10 @@ public class GameManager : MonoBehaviour
         SetTileTypeArray();
         grid = new Grid(tileTypeArray.GetLength(0), tileTypeArray.GetLength(1), 5, tileTypeArray); // int rowsOrHeight = ary.GetLength(0); int colsOrWidth = ary.GetLength(1);
         InitializeGridTiles();
-        sim = new SimulatorFactory().CreateSimulator(grid, null, null); // Parse enemies and tower agents
+
+        List<IAgent> enemies = new List<IAgent>();
+        enemies.Add(new SimpleEnemyAgent((1,1)));
+        sim = new SimulatorFactory().CreateSimulator(grid, enemies, new List<IAgent>()); // Parse enemies and tower agents
         enemy.transform.position = new Vector3(5, 1, 5);
 
     }

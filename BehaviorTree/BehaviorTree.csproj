@@ -13,6 +13,17 @@
     <Folder Include="NodeBase\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Simulator\Simulator.csproj" />
+    <ProjectReference Include="..\Simulator\Simulator.csproj">
+      <Private>false</Private>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+    </ProjectReference>
   </ItemGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<OutputPath>..\Evolutionary Tower Defense Agent\Assets\libs</OutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<OutputPath>..\Evolutionary Tower Defense Agent\Assets\libs</OutputPath>
+	</PropertyGroup>
 </Project>

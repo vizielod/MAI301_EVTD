@@ -4,42 +4,51 @@ using System.Collections.Generic;
 
 namespace BehaviorTree
 {
-    class SimpleEnemyAgent : IAgent
+    public class SimpleEnemyAgent : IAgent
     {
-        public (int x, int y) InitialPosition => throw new NotImplementedException();
+        public (int x, int y) InitialPosition { get; }
 
-        public SimpleEnemyAgent() { }
+        Blackboard bb;
 
-        public IAction PickAction(IState state, IAction previousAction)
+        public SimpleEnemyAgent((int x, int y) InitialPosition) 
+        {
+            this.InitialPosition = InitialPosition;
+            bb = new Blackboard(null, null);
+        }
+
+        public IAction PickAction(IState state)
         {
             IEnumerable<IAction> actions = state.GetLegalActionGenerator(this).Generate();
+            bb.legalActions = actions;
+         
+           
 
-            Blackboard bb = new Blackboard(actions, previousAction);
+            Selector move = new Selector("Selector", bb);
+            ((ParentNodeController)move.GetControl()).
+                AddNode(new MoveEast(
+                "MoveEast", bb));
+            ((ParentNodeController)move.GetControl()).
+                AddNode(new MoveSouth(
+                "MoveSouth", bb));
+            ((ParentNodeController)move.GetControl()).
+                AddNode(new MoveWest(
+                "MoveWest", bb));
+            ((ParentNodeController)move.GetControl()).
+                AddNode(new MoveNorth(
+                "MoveNorth", bb));
 
-                Selector move = new Selector("Selector", bb);
-                ((ParentNodeController)move.GetControl()).
-                 AddNode(new MoveEast(
-                 "MoveEast", bb));
-                ((ParentNodeController)move.GetControl()).
-                 AddNode(new MoveSouth(
-                 "MoveSouth", bb));
-                ((ParentNodeController)move.GetControl()).
-                 AddNode(new MoveWest(
-                 "MoveWest", bb));
-                ((ParentNodeController)move.GetControl()).
-                 AddNode(new MoveNorth(
-                 "MoveNorth", bb));
+            ((ParentNodeController)move.GetControl()).SafeStart();
 
-                ((ParentNodeController)move.GetControl()).SafeStart();
+            while (!((ParentNodeController)move.GetControl()).Finished()) 
+            {
+                move.DoAction();
+            }
 
-                while (!((ParentNodeController)move.GetControl()).Finished()) 
-                {
-                    move.DoAction();
-                }
+            ((ParentNodeController)move.GetControl()).SafeEnd();
 
-                ((ParentNodeController)move.GetControl()).SafeEnd();
+            bb.previousAction = bb.choosenAction;
 
-                return bb.choosenAction;
+            return bb.choosenAction;
         }
     }
 }

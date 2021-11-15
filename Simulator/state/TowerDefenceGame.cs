@@ -16,7 +16,7 @@ namespace Simulator.state
             {
                 this.agents.Add(agent, new StateObject(agent.InitialPosition)
                 { 
-                    IsActive = false, 
+                    IsActive = true, 
                     Type = AgentType.Enemy 
                 });
             }

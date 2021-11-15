@@ -18,11 +18,12 @@ namespace BehaviorTree
 
         public override void DoAction()
         {
-            if (blackboard.legalActions.Any(a => a.GetDirection() == blackboard.previousAction.GetDirection()))
+            LogTask("Doing action");
+            if (blackboard.legalActions.Contains(blackboard.previousAction))
             {
-                if (blackboard.previousAction.GetDirection() == Simulator.Direction.North)
+                if (blackboard.previousAction is GoNorth)
                 {
-                    blackboard.choosenAction = blackboard.legalActions.First(a => a.GetDirection() == Simulator.Direction.East);
+                    blackboard.choosenAction = blackboard.legalActions.First(a => a is GoNorth);
                     controller.FinishWithSuccess();
                 }
                 else
@@ -32,9 +33,9 @@ namespace BehaviorTree
             }
             else
             {
-                if (blackboard.legalActions.Any(a => a.GetDirection() == Simulator.Direction.North))
+                if (blackboard.legalActions.Any(a => a is GoNorth))
                 {
-                    blackboard.choosenAction = blackboard.legalActions.First(a => a.GetDirection() == Simulator.Direction.North);
+                    blackboard.choosenAction = blackboard.legalActions.First(a => a is GoNorth);
                     controller.FinishWithSuccess();
                 }
                 else
