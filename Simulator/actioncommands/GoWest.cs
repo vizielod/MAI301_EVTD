@@ -13,5 +13,15 @@ namespace Simulator.actioncommands
         {
             stateObject.Move(1, 0);
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj.GetType() == typeof(GoEast);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }
