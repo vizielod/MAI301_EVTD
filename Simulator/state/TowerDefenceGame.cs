@@ -30,7 +30,7 @@ namespace Simulator.state
             }
         }
 
-        public IEnumerable<IAgent> Agents => agents.Keys;
+        public IEnumerable<IAgent> Agents => agents.Where(a => a.Value.IsActive).Select(a => a.Key);
 
         public IState GenerateState()
         {
