@@ -22,6 +22,7 @@ namespace Simulator
             round++;
             if (round >= rounds.Count)
             {
+                game.SpawnAgents(round);
                 rounds.Add(
                     new Round(
                         game.Agents.Select(a => new Event(a, a.PickAction(game.GenerateState())))
