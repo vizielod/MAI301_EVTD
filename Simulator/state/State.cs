@@ -40,5 +40,10 @@ namespace Simulator.state
         {
             return new LegalMoveGenerator(MapLayout, agents[agent]); // TODO: Fix Control Freak anti pattern
         }
+
+        public IAgent GetClosestEnemy(IAgent agent)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

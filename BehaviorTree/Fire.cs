@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Simulator.actioncommands;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,12 +12,12 @@ namespace BehaviorTree
 
         public override bool CheckConditions()
         {
-            return blackboard.closestEnemy != null && blackboard.isEnemyInRange; 
+            return blackboard.ClosestEnemy != null && blackboard.IsEnemyInRange; 
         }
 
         public override void DoAction()
         {
-            blackboard.choosenAction = Attack;
+            blackboard.ChoosenAction = new QuickAttack(blackboard.Damage, blackboard.ClosestEnemy);
             controller.FinishWithSuccess();
         }
 

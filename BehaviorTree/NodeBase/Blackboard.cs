@@ -5,20 +5,22 @@ namespace BehaviorTree
 {
     public class Blackboard
     {
-        public IEnumerable<IAction> legalActions;
-        public IAction choosenAction;
-        public IAction previousAction;
-        public IAgent closestEnemy;
-        public bool isEnemyInRange;
+        public IEnumerable<IAction> LegalActions { get; set; }
+        public IAction ChoosenAction { get; set; }
+        public IAction PreviousAction { get; set; }
+        public IAgent ClosestEnemy { get; set; }
+        public bool IsEnemyInRange { get; set; }
+        public int Damage { get; set; }
 
         public Blackboard(IEnumerable<IAction> legalActions, IAction previousAction) 
         {
 
-            this.legalActions = legalActions;
-            this.previousAction = previousAction;
-            this.choosenAction = null;
-            closestEnemy = null;
-            isEnemyInRange = false;
+            LegalActions = legalActions;
+            PreviousAction = previousAction;
+            ChoosenAction = null;
+            ChoosenAction = null;
+            IsEnemyInRange = false;
+            Damage = 0;
         }
     }
 }

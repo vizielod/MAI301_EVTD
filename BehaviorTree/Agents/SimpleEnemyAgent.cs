@@ -20,7 +20,7 @@ namespace BehaviorTree
         public IAction PickAction(IState state)
         {
             IEnumerable<IAction> actions = state.GetLegalActionGenerator(this).Generate();
-            bb.legalActions = actions;
+            bb.LegalActions = actions;
          
            
 
@@ -47,9 +47,9 @@ namespace BehaviorTree
 
             ((ParentNodeController)move.GetControl()).SafeEnd();
 
-            bb.previousAction = bb.choosenAction;
+            bb.PreviousAction = bb.ChoosenAction;
 
-            return bb.choosenAction;
+            return bb.ChoosenAction;
         }
 
         public void Damage(int v)

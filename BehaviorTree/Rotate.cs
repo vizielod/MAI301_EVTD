@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Simulator.actioncommands;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,7 +17,7 @@ namespace BehaviorTree
 
         public override void DoAction()
         {
-            blackboard.choosenAction = Turn;
+            blackboard.ChoosenAction = new Turn();
             controller.FinishWithSuccess();
         }
 
@@ -36,4 +37,4 @@ namespace BehaviorTree
         }
     }
 }
-}
+
