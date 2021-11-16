@@ -7,6 +7,7 @@ namespace BehaviorTree
     public class SimpleEnemyAgent : IAgent
     {
         public (int x, int y) InitialPosition { get; }
+        public int spawnRound => 0;
 
         Blackboard bb;
 
@@ -49,6 +50,16 @@ namespace BehaviorTree
             bb.previousAction = bb.choosenAction;
 
             return bb.choosenAction;
+        }
+
+        public void Damage(int v)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Heal(int v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

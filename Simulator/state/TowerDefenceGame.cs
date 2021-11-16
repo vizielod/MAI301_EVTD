@@ -16,7 +16,7 @@ namespace Simulator.state
             {
                 this.agents.Add(agent, new StateObject(agent.InitialPosition)
                 { 
-                    IsActive = true, 
+                    IsActive = false, 
                     Type = AgentType.Enemy 
                 });
             }
@@ -44,6 +44,11 @@ namespace Simulator.state
         public IStateObject GetStateObject(IAgent agent)
         {
             return agents.First(a => a.Key == agent).Value;
+        }
+
+        public void SpawnAgents(int round)
+        {
+            agents.Where(a => a.Key.spawnRound <= round).AsParallel().ForAll(a => a.Value.IsActive = true);
         }
     }
 }

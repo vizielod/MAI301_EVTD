@@ -7,5 +7,6 @@ namespace Simulator
         IEnumerable<IAgent> Agents { get; }
         IState GenerateState();
         IStateObject GetStateObject(IAgent agent);
+        void SpawnAgents(int round);
     }
 }
