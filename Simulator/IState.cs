@@ -8,5 +8,6 @@ namespace Simulator
         IEnumerable<IAgent> GetAgentsAt(int x, int y);
         (int x, int y) PositionOf(IAgent agent);
         IActionGenerator GetLegalActionGenerator(IAgent agent);
+        IAgent GetClosestEnemy(IAgent agent);
     }
 }
