@@ -25,8 +25,8 @@ namespace BehaviorTree
 
             Selector move = new Selector("Selector", bb);
             ((ParentNodeController)move.GetControl()).
-               AddNode(new MoveSouth(
-               "MoveSouth", bb));
+               AddNode(new RepeatPrevActionDecorator("Repeat",bb, new MoveSouth(
+               "MoveSouth", bb)));
             ((ParentNodeController)move.GetControl()).
                 AddNode(new MoveEast(
                 "MoveEast", bb));

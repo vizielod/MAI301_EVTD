@@ -16,30 +16,17 @@ namespace BehaviorTree
         public override void DoAction()
         {
             LogTask("Doing action");
-            if (blackboard.legalActions.Contains(blackboard.previousAction))
+           
+            if (blackboard.legalActions.Any(a => a is GoSouth))
             {
-                if (blackboard.previousAction is GoSouth)
-                {
-                    blackboard.choosenAction = blackboard.legalActions.First(a => a is GoSouth);
-                    controller.FinishWithSuccess();
-                }
-                else
-                {
-                    controller.FinishWithFailure();
-                }
+                blackboard.choosenAction = blackboard.legalActions.First(a => a is GoSouth);
+                controller.FinishWithSuccess();
             }
             else
             {
-                if (blackboard.legalActions.Any(a => a is GoSouth))
-                {
-                    blackboard.choosenAction = blackboard.legalActions.First(a => a is GoSouth);
-                    controller.FinishWithSuccess();
-                }
-                else
-                {
-                    controller.FinishWithFailure();
-                }
+                controller.FinishWithFailure();
             }
+            
 
         }
 

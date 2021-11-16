@@ -6,7 +6,7 @@ namespace BehaviorTree
         /**
          * Reference to the decorated node
          */
-        Node node;
+        protected Node node;
 
         public DecoratorNode(string name, Blackboard blackboard, Node node):base(name,blackboard)
         {
