@@ -14,12 +14,15 @@ public class GameManager : MonoBehaviour
     public GameObject Turret;
 
     public int numberOfEnemies;
+    public int numberOfTurrets = 0;
     public GameObject enemyPrefab;
     //public GameObject enemy;
     private Grid grid;
 
     public List<GameObject> enemyGameObjects;
+    public List<GameObject> turretGameObjects;
     private GameObject[] turrets;
+    
 
     private string enemyTag = "Enemy";
     private string turretTag = "Turret";
@@ -70,7 +73,7 @@ public class GameManager : MonoBehaviour
         grid = new Grid(tileTypeArray.GetLength(0), tileTypeArray.GetLength(1), 5, tileTypeArray); // int rowsOrHeight = ary.GetLength(0); int colsOrWidth = ary.GetLength(1);
         InitializeGridTiles();
 
-        InitializeEnemies();
+        InitializeAgents();
 
         /*List<IAgent> enemies = new List<IAgent>();
         enemies.Add(new SimpleEnemyAgent((1,1)));
@@ -78,13 +81,13 @@ public class GameManager : MonoBehaviour
         enemy.transform.position = new Vector3(5, 3, 5);*/
 
         turrets = GameObject.FindGameObjectsWithTag(turretTag);
-
     }
 
-    void InitializeEnemies()
+    void InitializeAgents()
     {
         Vector3 spawnPosition = new Vector3(5, 3, 5);
         List<IAgent> enemyAgents = new List<IAgent>();
+        List<IAgent> turretAgents = new List<IAgent>();
 
         for (int i = 0; i < numberOfEnemies; i++)
         {
@@ -96,7 +99,21 @@ public class GameManager : MonoBehaviour
             enemyAgents.Add(new SimpleEnemyAgent((1, 1)));
         }
 
-        sim = new SimulatorFactory().CreateSimulator(grid, enemyAgents, new List<IAgent>()); // Parse enemies and tower agents
+        for (int i = 0; i < grid.Width; i++)
+        {
+            for (int j = 0; j < grid.Height; j++)
+            {
+                //Debug.Log(grid.TypeAt(i, j));
+                //InstantiateGridTile(grid.TypeAt(i, j), i, j);
+                if(grid.TypeAt(i,j) == TileType.Turret)
+                {
+                    numberOfTurrets++;
+                    turretAgents.Add(new TurretAgent((i, j)));
+                }
+            }
+        }
+
+        sim = new SimulatorFactory().CreateSimulator(grid, enemyAgents, turretAgents); // Parse enemies and tower agents
     }
 
     // Update is called once per frame
@@ -114,7 +131,6 @@ public class GameManager : MonoBehaviour
 
     void StepForward()
     {
-        stepCount++;
 
         sim.StepForward();
         StepEnemiesForward();
@@ -131,15 +147,8 @@ public class GameManager : MonoBehaviour
 
         //DealDamageToTarget();
     }
-
     void StepEnemiesForward()
     {
-        /*if(stepCount >= numberOfEnemies)
-        {
-            stepCount = numberOfEnemies;
-        }
-
-        var enemiesToMove = stepCount;*/
 
         for (int i = 0; i < numberOfEnemies; i++)
         {
