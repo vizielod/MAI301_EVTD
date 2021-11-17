@@ -5,6 +5,14 @@ using System.Text;
 
 namespace BehaviorTree
 {
+    class TurretIdle : IAction
+    {
+        public void Apply(IStateObject stateObject)
+        { }
+        public void Undo(IStateObject stateObject)
+        { }
+    }
+
     public class TurretAgent : IAgent
     {
         Blackboard bb;
@@ -13,7 +21,9 @@ namespace BehaviorTree
 
         public (int x, int y) InitialPosition { get; }
 
-        public int spawnRound => throw new NotImplementedException();
+        public int SpawnRound => 0;
+
+        public bool IsActive => true;
 
         public TurretAgent((int x, int y) InitialPosition)
         {

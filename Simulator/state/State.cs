@@ -62,5 +62,10 @@ namespace Simulator.state
 
             return closest != null? new Maybe<IAgent>(closest): new Maybe<IAgent>();
         }
+
+        public Maybe<IAgent> GetTargetOf(IAgent agent)
+        {
+            return agents[agent].Target != null ? new Maybe<IAgent>(agents[agent].Target) : new Maybe<IAgent>(); 
+        }
     }
 }

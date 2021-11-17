@@ -9,6 +9,7 @@ namespace BehaviorTree
         public IAction ChoosenAction { get; set; }
         public IAction PreviousAction { get; set; }
         public IAgent ClosestEnemy { get; set; }
+        public IAgent PreviousTargetEnemy { get; set; }
         public bool IsEnemyInRange { get; set; }
         public int Damage { get; set; }
 
@@ -18,7 +19,8 @@ namespace BehaviorTree
             LegalActions = legalActions;
             PreviousAction = previousAction;
             ChoosenAction = null;
-            ChoosenAction = null;
+            ClosestEnemy = null;
+            PreviousTargetEnemy = null;
             IsEnemyInRange = false;
             Damage = 0;
         }

@@ -7,7 +7,7 @@ namespace BehaviorTree
     public class SimpleEnemyAgent : IAgent
     {
         public (int x, int y) InitialPosition { get; }
-        public int SpawnRound { get; };
+        public int SpawnRound { get; }
 
         Blackboard bb;
         int health;
