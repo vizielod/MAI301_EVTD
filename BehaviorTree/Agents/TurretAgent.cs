@@ -25,37 +25,37 @@ namespace BehaviorTree
 
         public IAction PickAction(IState state)
         {
-            IAgent closest = state.GetClosestEnemy(this);
-
-            bb.ClosestEnemy = closest;
-            bb.Damage = damage;
-            bb.IsEnemyInRange = false;
-            // Calculate the distance
-            (int x, int y) turretPos = state.PositionOf(this);
-            (int x, int y) enemyPos = state.PositionOf(closest);
-            (int x, int y) p = (enemyPos.x - turretPos.x, enemyPos.y - turretPos.y);
-            if (Math.Max(Math.Abs(p.x), Math.Abs(p.y)) <= range)
-                bb.IsEnemyInRange = true;
-
-            Selector move = new Selector("Selector", bb);
-            ((ParentNodeController)move.GetControl()).
-                AddNode(new Fire(
-                "Fire", bb));
-            ((ParentNodeController)move.GetControl()).
-                AddNode(new Rotate(
-                "Rotate", bb));
-
-            ((ParentNodeController)move.GetControl()).SafeStart();
-
-            while (!((ParentNodeController)move.GetControl()).Finished())
+            state.GetClosestEnemy(this).Apply(closest =>
             {
-                move.DoAction();
-            }
+                bb.ClosestEnemy = closest;
+                bb.Damage = damage;
+                bb.IsEnemyInRange = false;
+                // Calculate the distance
+                (int x, int y) turretPos = state.PositionOf(this);
+                (int x, int y) enemyPos = state.PositionOf(closest);
+                (int x, int y) p = (enemyPos.x - turretPos.x, enemyPos.y - turretPos.y);
+                if (Math.Max(Math.Abs(p.x), Math.Abs(p.y)) <= range)
+                    bb.IsEnemyInRange = true;
+
+                Selector move = new Selector("Selector", bb);
+                ((ParentNodeController)move.GetControl()).
+                    AddNode(new Fire(
+                    "Fire", bb));
+                ((ParentNodeController)move.GetControl()).
+                    AddNode(new Rotate(
+                    "Rotate", bb));
+
+                ((ParentNodeController)move.GetControl()).SafeStart();
+
+                while (!((ParentNodeController)move.GetControl()).Finished())
+                {
+                    move.DoAction();
+                }
 
             ((ParentNodeController)move.GetControl()).SafeEnd();
 
-            bb.PreviousAction = bb.ChoosenAction;
-
+                bb.PreviousAction = bb.ChoosenAction;
+            });
             return bb.ChoosenAction;
         }
 
