@@ -20,12 +20,13 @@ namespace Simulator
         public void StepForward()
         {
             round++;
+            game.SpawnAgents(round);
             if (round >= rounds.Count)
             {
-                game.SpawnAgents(round);
+                IState state = game.GenerateState();
                 rounds.Add(
                     new Round(
-                        game.Agents.Select(a => new Event(a, a.PickAction(game.GenerateState())))
+                        game.Agents.Select(a => new Event(a, a.PickAction(state)))
                         )
                     );
             }
@@ -37,6 +38,7 @@ namespace Simulator
             if (round < 0)
                 return;
 
+            game.DespawnAgents(round);
             rounds[round].UndoAll(game);
             round--;
         }

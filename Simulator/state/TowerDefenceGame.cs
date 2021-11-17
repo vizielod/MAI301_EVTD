@@ -30,7 +30,12 @@ namespace Simulator.state
             }
         }
 
-        public IEnumerable<IAgent> Agents => agents.Where(a => a.Value.IsActive).Select(a => a.Key);
+        public IEnumerable<IAgent> Agents => agents.Where(a => a.Value.IsActive && a.Key.IsActive).Select(a => a.Key);
+
+        public void DespawnAgents(int round)
+        {
+            agents.Where(a => a.Key.SpawnRound >= round).AsParallel().ForAll(a => a.Value.IsActive = false);
+        }
 
         public IState GenerateState()
         {

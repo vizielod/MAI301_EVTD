@@ -8,5 +8,6 @@ namespace Simulator
         IState GenerateState();
         IStateObject GetStateObject(IAgent agent);
         void SpawnAgents(int round);
+        void DespawnAgents(int round);
     }
 }

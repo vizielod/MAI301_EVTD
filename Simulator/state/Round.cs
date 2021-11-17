@@ -14,12 +14,18 @@ namespace Simulator.state
 
         public void ApplyAll(IGame game)
         {
-            events.AsParallel().ForAll((evnt) => { evnt.Action.Apply(game.GetStateObject(evnt.Agent)); });
+            events.AsParallel().ForAll((evnt) => 
+            { 
+                evnt.Action.Apply(game.GetStateObject(evnt.Agent)); 
+            });
         }
 
         public void UndoAll(IGame game)
         {
-            events.AsParallel().ForAll((evnt) => { evnt.Action.Undo(game.GetStateObject(evnt.Agent)); });
+            events.AsParallel().ForAll((evnt) => 
+            { 
+                evnt.Action.Undo(game.GetStateObject(evnt.Agent)); 
+            });
         }
     }
 }
