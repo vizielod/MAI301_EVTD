@@ -25,6 +25,7 @@ namespace BehaviorTree
 
         public IAction PickAction(IState state)
         {
+            bb.ChoosenAction = null;
             state.GetClosestEnemy(this).Apply(closest =>
             {
                 bb.ClosestEnemy = closest;
@@ -56,6 +57,10 @@ namespace BehaviorTree
 
                 bb.PreviousAction = bb.ChoosenAction;
             });
+            if (bb.ChoosenAction == null)
+            {
+                return new TurretIdle();
+            }
             return bb.ChoosenAction;
         }
 
