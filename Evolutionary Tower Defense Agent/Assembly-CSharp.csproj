@@ -293,6 +293,9 @@
     <Reference Include="Simulator">
       <HintPath>Assets\libs\simulator\netstandard2.0\netstandard2.0\Simulator.dll</HintPath>
     </Reference>
+    <Reference Include="Simulator">
+      <HintPath>Assets\libs\simulator\netstandard2.0\netstandard2.0\Simulator.dll</HintPath>
+    </Reference>
     <Reference Include="BehaviorTree">
       <HintPath>Assets\libs\netstandard2.0\BehaviorTree.dll</HintPath>
     </Reference>

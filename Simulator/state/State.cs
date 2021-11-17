@@ -41,9 +41,26 @@ namespace Simulator.state
             return new LegalMoveGenerator(MapLayout, agents[agent]); // TODO: Fix Control Freak anti pattern
         }
 
-        public IAgent GetClosestEnemy(IAgent agent)
+        public Maybe<IAgent> GetClosestEnemy(IAgent agent)
         {
-            throw new System.NotImplementedException();
+            if (!agents.ContainsKey(agent))
+                return new Maybe<IAgent>();
+
+            float closestSQDistance = float.MaxValue;
+            IAgent closest = null;
+
+            foreach (var enemy in agents.Where(a => a.Value.IsActive && a.Value.Type == AgentType.Enemy && a.Key != agent))
+            {
+                var squaredDistance = (enemy.Value.GridLocation.x - agents[agent].GridLocation.x) ^ 2 +
+                    (enemy.Value.GridLocation.y - agents[agent].GridLocation.y) ^ 2;
+                if (squaredDistance < closestSQDistance)
+                {
+                    closest = enemy.Key;
+                    closestSQDistance = squaredDistance;
+                }
+            }
+
+            return closest != null? new Maybe<IAgent>(closest): new Maybe<IAgent>();
         }
     }
 }
