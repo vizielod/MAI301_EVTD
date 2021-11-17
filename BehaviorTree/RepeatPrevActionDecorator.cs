@@ -12,9 +12,9 @@ namespace BehaviorTree
         { }
         public override void DoAction()
         {
-            if (blackboard.legalActions.Contains(blackboard.previousAction))
+            if (blackboard.LegalActions.Contains(blackboard.PreviousAction))
             {
-                blackboard.choosenAction = blackboard.previousAction;
+                blackboard.ChoosenAction = blackboard.PreviousAction;
                 GetControl().FinishWithSuccess();
             }
             else 
