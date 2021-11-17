@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BehaviorTree
 {
-    class TurretAgent : IAgent
+    public class TurretAgent : IAgent
     {
         Blackboard bb;
         float range;
