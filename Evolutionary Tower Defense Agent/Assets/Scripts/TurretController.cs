@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Simulator;
+using BehaviorTree;
 
 public class TurretController : MonoBehaviour
 {
@@ -18,10 +20,13 @@ public class TurretController : MonoBehaviour
     public string enemyTag = "Enemy";
 
     Turret turret;
+    public TurretAgent turretAgent;
+    public IState state;
     // Start is called before the first frame update
     void Start()
     {
         turret = new Turret(HitPoints, Range, FieldOfViewAngle, RotationSpeed, Damage);
+        //turretAgent = new TurretAgent();
 
         Vector3 mapCenter = new Vector3(35, head.position.y, 35);
         Vector3 dir = mapCenter - head.position;
@@ -55,7 +60,7 @@ public class TurretController : MonoBehaviour
             }
         }
 
-        if(closestEnemy != null && shortestDistance <= Range && IsTargetInFOV(closestEnemy))
+        if(closestEnemy != null && shortestDistance <= Range/* && IsTargetInFOV(closestEnemy)*/)
         {
             target = closestEnemy.transform;
         }
@@ -65,6 +70,16 @@ public class TurretController : MonoBehaviour
         }
     }
 
+    void LookTowardsTarget()
+    {
+        /*state.GetTargetOf(turretAgent).Apply(target => {
+            Vector3 dir = target.position - head.position;
+            Quaternion lookRotation = Quaternion.LookRotation(dir);
+            Vector3 rotation = lookRotation.eulerAngles;
+            partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+        })*/
+
+    }
     // Update is called once per frame
     void Update()
     {
@@ -115,7 +130,8 @@ public class TurretController : MonoBehaviour
             else
             {
                 Debug.Log("Destroy enemy: " + target);
-                Destroy(target.gameObject);
+                target.gameObject.SetActive(false);
+                //Destroy(target.gameObject);
                 //TODO: remove the destroyed enemy's Agent from the enemyAgent list?
             }
         }

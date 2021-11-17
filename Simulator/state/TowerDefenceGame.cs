@@ -48,7 +48,7 @@ namespace Simulator.state
 
         public void SpawnAgents(int round)
         {
-            agents.Where(a => a.Key.spawnRound <= round).AsParallel().ForAll(a => a.Value.IsActive = true);
+            agents.Where(a => a.Key.SpawnRound <= round).AsParallel().ForAll(a => a.Value.IsActive = true);
         }
     }
 }

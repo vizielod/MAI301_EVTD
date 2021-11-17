@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BehaviorTree;
 
 public class EnemyController : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class EnemyController : MonoBehaviour
     private int waypointIndex = 0;
 
     public Enemy enemy;
+
+    public SimpleEnemyAgent simpleEnemyAgent;
+    public int enemyAgentIndex;
 
     // Start is called before the first frame update
     void Start()

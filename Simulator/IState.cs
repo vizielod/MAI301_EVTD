@@ -9,5 +9,7 @@ namespace Simulator
         (int x, int y) PositionOf(IAgent agent);
         IActionGenerator GetLegalActionGenerator(IAgent agent);
         Maybe<IAgent> GetClosestEnemy(IAgent agent);
+
+        Maybe<IAgent> GetTargetOf(IAgent agent);
     }
 }

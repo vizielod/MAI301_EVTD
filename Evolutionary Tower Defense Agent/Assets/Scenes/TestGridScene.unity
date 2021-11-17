@@ -16916,8 +16916,10 @@ MonoBehaviour:
   Goal: {fileID: 0}
   Turret: {fileID: 0}
   numberOfEnemies: 0
+  numberOfTurrets: 0
   enemyPrefab: {fileID: 0}
   enemyGameObjects: []
+  turretGameObjects: []
   stepCount: 0
 --- !u!1 &1515467637
 GameObject:
@@ -25793,6 +25795,7 @@ MonoBehaviour:
   hitPoints: 50
   speed: 10
   stepSize: 5
+  enemyAgentIndex: 0
 --- !u!1001 &1583157919637418448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31329,6 +31332,10 @@ PrefabInstance:
       propertyPath: enemy
       value: 
       objectReference: {fileID: 334089630}
+    - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: numberOfEnemies
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387587, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: m_RootOrder
       value: 7

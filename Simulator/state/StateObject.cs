@@ -12,7 +12,7 @@
         public bool IsActive { get; set; }
         public (int x, int y) GridLocation => (x, y);
 
-        public IAgent Target { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public IAgent Target { get; set; }
 
         private int x;
         private int y;

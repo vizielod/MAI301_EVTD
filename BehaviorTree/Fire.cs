@@ -17,7 +17,8 @@ namespace BehaviorTree
 
         public override void DoAction()
         {
-            blackboard.ChoosenAction = new QuickAttack(blackboard.Damage, blackboard.ClosestEnemy);
+            blackboard.ChoosenAction = new QuickAttack(blackboard.Damage, blackboard.ClosestEnemy, blackboard.PreviousTargetEnemy);
+            blackboard.PreviousTargetEnemy = blackboard.ClosestEnemy;
             controller.FinishWithSuccess();
         }
 
