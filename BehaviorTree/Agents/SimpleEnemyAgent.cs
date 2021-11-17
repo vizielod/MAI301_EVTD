@@ -7,14 +7,19 @@ namespace BehaviorTree
     public class SimpleEnemyAgent : IAgent
     {
         public (int x, int y) InitialPosition { get; }
-        public int spawnRound => 0;
+        public int SpawnRound { get; };
 
         Blackboard bb;
+        int health;
 
-        public SimpleEnemyAgent((int x, int y) InitialPosition) 
+        public bool IsActive => health > 0;
+
+        public SimpleEnemyAgent((int x, int y) initialPosition, int spawnRound) 
         {
-            this.InitialPosition = InitialPosition;
+            this.InitialPosition = initialPosition;
             bb = new Blackboard(null, null);
+            health = 10;
+            this.SpawnRound = spawnRound;
         }
 
         public IAction PickAction(IState state)
@@ -54,12 +59,12 @@ namespace BehaviorTree
 
         public void Damage(int v)
         {
-            throw new NotImplementedException();
+            health -= v;
         }
 
         public void Heal(int v)
         {
-            throw new NotImplementedException();
+            health += v;
         }
     }
 }

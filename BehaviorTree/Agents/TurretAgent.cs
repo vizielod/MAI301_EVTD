@@ -5,6 +5,14 @@ using System.Text;
 
 namespace BehaviorTree
 {
+    class TurretIdle : IAction
+    {
+        void Apply(IStateObject stateObject)
+        { }
+        void Undo(IStateObject stateObject)
+        { }
+    }
+
     class TurretAgent : IAgent
     {
         Blackboard bb;
@@ -25,6 +33,7 @@ namespace BehaviorTree
 
         public IAction PickAction(IState state)
         {
+            bb.ChoosenAction = null;
             state.GetClosestEnemy(this).Apply(closest =>
             {
                 bb.ClosestEnemy = closest;
@@ -56,6 +65,10 @@ namespace BehaviorTree
 
                 bb.PreviousAction = bb.ChoosenAction;
             });
+            if (bb.ChoosenAction == null)
+            {
+                return new TurretIdle();
+            }
             return bb.ChoosenAction;
         }
 
