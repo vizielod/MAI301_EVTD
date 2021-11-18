@@ -5,9 +5,9 @@ namespace Simulator.state
 {
     class Round
     {
-        private IEnumerable<Event> events;
+        private IList<Event> events;
 
-        public Round(IEnumerable<Event> events)
+        public Round(IList<Event> events)
         {
             this.events = events;
         }

@@ -34,7 +34,7 @@ namespace Simulator.state
 
         public void DespawnAgents(int round)
         {
-            agents.Where(a => a.Key.SpawnRound >= round).AsParallel().ForAll(a => a.Value.IsActive = false);
+            agents.Where(a => a.Key.SpawnRound > round).AsParallel().ForAll(a => a.Value.IsActive = false);
         }
 
         public IState GenerateState()
@@ -48,7 +48,7 @@ namespace Simulator.state
 
         public IStateObject GetStateObject(IAgent agent)
         {
-            return agents.First(a => a.Key == agent).Value;
+            return agents[agent];
         }
 
         public void SpawnAgents(int round)
