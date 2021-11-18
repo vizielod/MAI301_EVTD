@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
             enemyAgents.Add(enemyAgent);
 
             newEnemy.GetComponent<EnemyController>().simpleEnemyAgent = (SimpleEnemyAgent)enemyAgents[i];
-            newEnemy.GetComponent<EnemyController>().enemyAgentIndex = i;
+            //newEnemy.GetComponent<EnemyController>().enemyAgentIndex = i;
 
             agentGODictionary.Add(enemyAgent, newEnemy);
 
@@ -116,8 +116,6 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < grid.Height; j++)
             {
-                //Debug.Log(grid.TypeAt(i, j));
-                //InstantiateGridTile(grid.TypeAt(i, j), i, j);
                 if(grid.TypeAt(i,j) == TileType.Turret)
                 {
                     IAgent turretAgent = new TurretAgent((i, j));
@@ -162,14 +160,33 @@ public class GameManager : MonoBehaviour
                 (int x, int y) = state.PositionOf(agent);
 
                 agentGODictionary[agent].transform.position = new Vector3(x * 5, 3, y * 5);
+
+                var enemyAgent = (SimpleEnemyAgent)agent;
+                Debug.Log("Agent: " + agent + " Health: " + enemyAgent.health);
             }
             if(agent is TurretAgent)
             {
+
+                var turretAgent = (TurretAgent)agent;
+                var target = turretAgent.Target;
+                Debug.Log(target);
+
+                //Debug.Log(targetGO);
                 agentGODictionary[agent].GetComponent<TurretController>().state = state;
+
+                if (target != null)
+                {
+                    agentGODictionary[agent].GetComponent<TurretController>().LookTowardsTarget(target);
+                }
+
                 //agentGODictionary[agent].GetComponent<TurretController>().DoScanForTargetRotation();
-                agentGODictionary[agent].GetComponent<TurretController>().DealDamageToTarget();
+                //agentGODictionary[agent].GetComponent<TurretController>().DealDamageToTarget();
             }
 
+            if (!agent.IsActive)
+            {
+                agentGODictionary[agent].SetActive(false);
+            }
         }
 
         /*foreach (var turret in turrets)

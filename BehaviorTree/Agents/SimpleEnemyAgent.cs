@@ -10,7 +10,7 @@ namespace BehaviorTree
         public int SpawnRound { get; }
 
         Blackboard bb;
-        int health;
+        public int health;
 
         public bool IsActive => health > 0;
 

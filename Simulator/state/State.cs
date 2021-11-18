@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Simulator.state
@@ -49,7 +50,7 @@ namespace Simulator.state
             float closestSQDistance = float.MaxValue;
             IAgent closest = null;
 
-            foreach (var enemy in agents.Where(a => a.Value.IsActive && a.Value.Type == AgentType.Enemy && a.Key != agent))
+            foreach (var enemy in agents.Where(a => a.Key.IsActive && a.Value.Type == AgentType.Enemy && a.Key != agent))
             {
                 var squaredDistance = (enemy.Value.GridLocation.x - agents[agent].GridLocation.x) ^ 2 +
                     (enemy.Value.GridLocation.y - agents[agent].GridLocation.y) ^ 2;

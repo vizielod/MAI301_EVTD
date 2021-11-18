@@ -70,14 +70,27 @@ public class TurretController : MonoBehaviour
         }
     }
 
-    void LookTowardsTarget()
+    public void LookTowardsTarget(IAgent target)
     {
-        /*state.GetTargetOf(turretAgent).Apply(target => {
-            Vector3 dir = target.position - head.position;
+        var targetGridPosition = state.PositionOf(target);
+        Debug.Log("targetGridPosition: " + targetGridPosition);
+        Vector3 targetWorldPosition = new Vector3(targetGridPosition.x * 5, 3, targetGridPosition.y * 5);
+        Debug.Log("targetWorldPosition: " + targetWorldPosition);
+        Vector3 dir = targetWorldPosition - head.position;
+        Quaternion lookRotation = Quaternion.LookRotation(dir);
+        Vector3 rotation = lookRotation.eulerAngles;
+        partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+        /*state.GetTargetOf(turretAgent).Apply(target =>
+        {
+            var targetGridPosition = state.PositionOf(target);
+            Debug.Log("targetGridPosition: " + targetGridPosition);
+            Vector3 targetWorldPosition = new Vector3(targetGridPosition.x * 5, 3, targetGridPosition.y * 5);
+            Debug.Log("targetWorldPosition: " + targetWorldPosition);
+            Vector3 dir = targetWorldPosition - head.position;
             Quaternion lookRotation = Quaternion.LookRotation(dir);
             Vector3 rotation = lookRotation.eulerAngles;
             partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-        })*/
+        });*/
 
     }
     // Update is called once per frame
@@ -88,7 +101,7 @@ public class TurretController : MonoBehaviour
         Vector3 rotation = lookRotation.eulerAngles;
         partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);*/
 
-        UpdateTarget();
+        /*UpdateTarget();
 
         if (target == null)
         {
@@ -99,7 +112,7 @@ public class TurretController : MonoBehaviour
         Vector3 dir = target.position - head.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
         Vector3 rotation = lookRotation.eulerAngles;
-        partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+        partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);*/
     }
 
     void TurretScanningForTarget()

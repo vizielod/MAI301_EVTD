@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
     public Enemy enemy;
 
     public SimpleEnemyAgent simpleEnemyAgent;
-    public int enemyAgentIndex;
+    //public int enemyAgentIndex;
 
     // Start is called before the first frame update
     void Start()
