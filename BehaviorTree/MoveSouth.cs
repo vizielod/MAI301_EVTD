@@ -11,20 +11,22 @@ namespace BehaviorTree
 
         public override bool CheckConditions()
         {
-            return blackboard.legalActions != null && blackboard.legalActions.Any();
+            return blackboard.LegalActions != null && blackboard.LegalActions.Any();
         }
         public override void DoAction()
         {
             LogTask("Doing action");
-            if (blackboard.legalActions.Any(a => a.GetDirection() == Simulator.Direction.South))
+           
+            if (blackboard.LegalActions.Any(a => a is GoSouth))
             {
-                blackboard.choosenAction = blackboard.legalActions.First(a => a.GetDirection() == Simulator.Direction.South);
+                blackboard.ChoosenAction = blackboard.LegalActions.First(a => a is GoSouth);
                 controller.FinishWithSuccess();
             }
             else
             {
                 controller.FinishWithFailure();
             }
+            
 
         }
 

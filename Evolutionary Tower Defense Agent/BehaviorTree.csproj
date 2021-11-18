@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Controller\" />
+    <None Remove="NodeBase\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NodeControllers\" />
+    <Folder Include="NodeBase\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Simulator\Simulator.csproj" />
+  </ItemGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	    <OutputPath>..\Evolutionary Tower Defense Agent\Assets\libs\BT\netstandard2.0</OutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	    <OutputPath>..\Evolutionary Tower Defense Agent\Assets\libs\BT\netstandard2.0</OutputPath>
+    </PropertyGroup>
+</Project>

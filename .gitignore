@@ -1,4 +1,4 @@
-
+/Evolutionary Tower Defense Agent/Assets/Materials/libs 
 # Created by https://www.toptal.com/developers/gitignore/api/unity,visualstudio,visualstudiocode,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=unity,visualstudio,visualstudiocode,python
 
@@ -607,3 +607,5 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/unity,visualstudio,visualstudiocode,python
+*.dll
+*.dll

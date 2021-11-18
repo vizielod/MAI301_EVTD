@@ -2,28 +2,26 @@
 
 namespace Simulator.actioncommands
 {
-    class GoWest : IAction
+    public sealed class GoWest : IAction
     {
-        private readonly StateObject obj;
-
-        public GoWest(StateObject obj)
+        void IAction.Apply(IStateObject stateObject)
         {
-            this.obj = obj;
+            stateObject.Move(0, -1);
         }
 
-        public void Apply()
+        void IAction.Undo(IStateObject stateObject)
         {
-            obj.GridLocation = (obj.GridLocation.x - 1, obj.GridLocation.y);
+            stateObject.Move(0, 1);
         }
 
-        public Direction GetDirection()
+        public override bool Equals(object obj)
         {
-            return Direction.West;
+            return obj != null && obj.GetType() == this.GetType();
         }
 
-        public void Undo()
+        public override int GetHashCode()
         {
-            obj.GridLocation = (obj.GridLocation.x + 1, obj.GridLocation.y);
+            return base.GetHashCode();
         }
     }
 }
