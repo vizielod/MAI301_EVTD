@@ -52,9 +52,9 @@ namespace BehaviorTree
                 ((ParentNodeController)move.GetControl()).
                     AddNode(new Fire(
                     "Fire", bb));
-                ((ParentNodeController)move.GetControl()).
+               /* ((ParentNodeController)move.GetControl()).
                     AddNode(new Rotate(
-                    "Rotate", bb));
+                    "Rotate", bb));*/
 
                 ((ParentNodeController)move.GetControl()).SafeStart();
 
