@@ -24,7 +24,7 @@ namespace Simulator.state
             {
                 this.agents.Add(tower, new StateObject(tower.InitialPosition)
                 {
-                    IsActive = true,
+                    IsActive = false,
                     Type = AgentType.Tower
                 });
             }

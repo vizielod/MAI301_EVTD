@@ -160,14 +160,13 @@ public class GameManager : MonoBehaviour
             if(agent is SimpleEnemyAgent)
             {
                 (int x, int y) = state.PositionOf(agent);
-
                 agentGODictionary[agent].transform.position = new Vector3(x * 5, 3, y * 5);
             }
             if(agent is TurretAgent)
             {
                 agentGODictionary[agent].GetComponent<TurretController>().state = state;
                 //agentGODictionary[agent].GetComponent<TurretController>().DoScanForTargetRotation();
-                agentGODictionary[agent].GetComponent<TurretController>().DealDamageToTarget();
+                //agentGODictionary[agent].GetComponent<TurretController>().DealDamageToTarget();
             }
 
         }

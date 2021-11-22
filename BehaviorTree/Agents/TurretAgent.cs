@@ -30,7 +30,7 @@ namespace BehaviorTree
             this.InitialPosition = InitialPosition;
             bb = new Blackboard(null, null);
             range = 1.0f;
-            damage = 2;
+            damage = 0;
         }
 
         public IAction PickAction(IState state)

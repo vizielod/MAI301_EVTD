@@ -27,30 +27,21 @@ namespace BehaviorTree
             IEnumerable<IAction> actions = state.GetLegalActionGenerator(this).Generate();
             bb.LegalActions = actions;
          
-           
-
             Selector move = new Selector("Selector", bb);
-            ((ParentNodeController)move.GetControl()).
-               AddNode(new RepeatPrevActionDecorator("Repeat",bb, new MoveSouth(
-               "MoveSouth", bb)));
-            ((ParentNodeController)move.GetControl()).
-                AddNode(new MoveEast(
-                "MoveEast", bb));
-            ((ParentNodeController)move.GetControl()).
-                AddNode(new MoveWest(
-                "MoveWest", bb));
-            ((ParentNodeController)move.GetControl()).
-                AddNode(new MoveNorth(
-                "MoveNorth", bb));
+            ParentNodeController pnc = (ParentNodeController)move.GetControl();
 
-            ((ParentNodeController)move.GetControl()).SafeStart();
+            pnc.AddNode(new RepeatPrevActionDecorator("Repeat",bb, new MoveSouth("MoveSouth", bb)));
+            pnc.AddNode(new MoveEast("MoveEast", bb));
+            pnc.AddNode(new MoveWest("MoveWest", bb));
+            pnc.AddNode(new MoveNorth("MoveNorth", bb));
+            pnc.SafeStart();
 
-            while (!((ParentNodeController)move.GetControl()).Finished()) 
+            while (!pnc.Finished()) 
             {
                 move.DoAction();
             }
 
-            ((ParentNodeController)move.GetControl()).SafeEnd();
+            pnc.SafeEnd();
 
             bb.PreviousAction = bb.ChoosenAction;
 

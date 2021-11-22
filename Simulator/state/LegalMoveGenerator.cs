@@ -7,6 +7,7 @@ namespace Simulator.state
     {
         private readonly IMapLayout map;
         private readonly StateObject agent;
+        private List<TileType> groundTiles = new List<TileType> { TileType.Ground, TileType.Goal, TileType.Spawn };
 
         public LegalMoveGenerator(IMapLayout map, StateObject agent)
         {
@@ -17,14 +18,19 @@ namespace Simulator.state
         public IEnumerable<IAction> Generate()
         {
             (int x, int y) = agent.GridLocation;
-            if (map.TypeAt(x - 1, y) == TileType.Ground)
+            if (IsGround(map.TypeAt(x - 1, y)))
                 yield return new GoNorth();
-            if (map.TypeAt(x + 1, y) == TileType.Ground)
+            if (IsGround(map.TypeAt(x + 1, y)))
                 yield return new GoSouth();
-            if (map.TypeAt(x, y + 1) == TileType.Ground)
+            if (IsGround(map.TypeAt(x, y + 1)))
                 yield return new GoEast();
-            if (map.TypeAt(x, y - 1) == TileType.Ground)
+            if (IsGround(map.TypeAt(x, y - 1)))
                 yield return new GoWest();
+
+            if (map.TypeAt(x, y) == TileType.Goal)
+                yield return new ScorePoints();
         }
+
+        private bool IsGround(TileType type) => groundTiles.Contains(type);
     }
 }
