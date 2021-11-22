@@ -28,7 +28,7 @@ namespace Simulator
                 IState state = game.GenerateState();
                 rounds.Add(
                     new Round(
-                        game.Agents.Select(a => new Event(a, a.PickAction(state))).ToList()
+                        game.ActiveAgents.Select(a => new Event(a, a.PickAction(state))).ToList()
                         )
                     );
             }
@@ -66,7 +66,7 @@ namespace Simulator
 
         public IEnumerable<IAgent> GetAgents()
         {
-            return game.Agents;
+            return game.ActiveAgents;
         }
     }
 }

@@ -32,22 +32,17 @@ namespace Simulator.state
         {
             var goals = 0;
             var activeEnemies = 0;
-            var totalEnemies = 0;
             foreach (var evnt in events)
             {
                 IStateObject stateObj = game.GetStateObject(evnt.Agent);
                 if (stateObj.GoalReached) goals++;
-                if (stateObj.IsEnemy)
-                {
-                    totalEnemies++;
-                    if (evnt.Agent.IsActive && stateObj.IsActive) activeEnemies++;
-                }
+                if (stateObj.IsEnemy && evnt.Agent.IsActive && stateObj.IsActive) activeEnemies++;
             }
 
             events.AsParallel().ForAll(e => 
             {
                 if (e.Agent.IsActive)
-                    e.Reward = (goals + activeEnemies) / totalEnemies;
+                    e.Reward = (goals + activeEnemies + 1) / (game.CountEnemies() + 1);
             });
         }
     }
