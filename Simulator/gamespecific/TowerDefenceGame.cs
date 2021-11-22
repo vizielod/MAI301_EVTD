@@ -8,12 +8,12 @@ namespace Simulator.gamespecific
     {
         private readonly IMapLayout map;
         private readonly Dictionary<IAgent, StateObject> agents;
-        private readonly BroadFirstSearch bfsMap;
+        private readonly BreadthFirstSearch bfsMap;
 
         public TowerDefenceGame(IMapLayout map, IEnumerable<IAgent> agents, IEnumerable<IAgent> towers)
         {
             this.map = map;
-            this.bfsMap = new BroadFirstSearch(map);
+            this.bfsMap = new BreadthFirstSearch(map);
             this.agents = new Dictionary<IAgent, StateObject>();
             var enemyType = new TowerDefenceEnemyAgent();
             foreach (var agent in agents)
