@@ -64,12 +64,12 @@
     <Compile Include="Assets\Scripts\WaypointController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\libs\simulator\netstandard2.0\netstandard2.0\UnityEngine.CoreModule.dll" />
-    <None Include="Assets\libs\simulator\netstandard2.0\netstandard2.0\UnityEngine.SharedInternalsModule.xml" />
-    <None Include="Assets\libs\simulator\netstandard2.0\netstandard2.0\UnityEngine.CoreModule.xml" />
+    <None Include="Assets\libs\netstandard2.0\UnityEngine.SharedInternalsModule.xml" />
+    <None Include="Assets\libs\netstandard2.0\Simulator.dll" />
     <None Include="Assets\libs\netstandard2.0\BehaviorTree.dll" />
-    <None Include="Assets\libs\simulator\netstandard2.0\netstandard2.0\UnityEngine.SharedInternalsModule.dll" />
-    <None Include="Assets\libs\simulator\netstandard2.0\netstandard2.0\Simulator.dll" />
+    <None Include="Assets\libs\netstandard2.0\UnityEngine.CoreModule.xml" />
+    <None Include="Assets\libs\netstandard2.0\UnityEngine.CoreModule.dll" />
+    <None Include="Assets\libs\netstandard2.0\UnityEngine.SharedInternalsModule.dll" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -294,20 +294,20 @@
     <Reference Include="UnityEditor.UnityConnectModule">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.21f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
-    <Reference Include="BehaviorTree">
-      <HintPath>Assets\libs\netstandard2.0\BehaviorTree.dll</HintPath>
-    </Reference>
     <Reference Include="Simulator">
-      <HintPath>Assets\libs\simulator\netstandard2.0\netstandard2.0\Simulator.dll</HintPath>
+      <HintPath>Assets\libs\netstandard2.0\Simulator.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Library\PackageCache\com.unity.nuget.newtonsoft-json@2.0.0\Runtime\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>Assets\libs\simulator\netstandard2.0\netstandard2.0\UnityEngine.CoreModule.dll</HintPath>
+    <Reference Include="BehaviorTree">
+      <HintPath>Assets\libs\netstandard2.0\BehaviorTree.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SharedInternalsModule">
-      <HintPath>Assets\libs\simulator\netstandard2.0\netstandard2.0\UnityEngine.SharedInternalsModule.dll</HintPath>
+      <HintPath>Assets\libs\netstandard2.0\UnityEngine.SharedInternalsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>Assets\libs\netstandard2.0\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.21f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
