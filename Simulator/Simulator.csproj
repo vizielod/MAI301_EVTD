@@ -13,4 +13,10 @@
     <OutputPath>..\Evolutionary Tower Defense Agent\Assets\libs\simulator\netstandard2.0</OutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>C:\Program Files\Unity 2020.3.21f1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

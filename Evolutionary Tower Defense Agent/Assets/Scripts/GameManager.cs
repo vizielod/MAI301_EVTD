@@ -97,19 +97,20 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < numberOfEnemies; i++)
         {
-            GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity) as GameObject;
+            GameObject newEnemyGO = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity) as GameObject;
 
-            newEnemy.transform.SetParent(transform.Find("Enemies"));
+            newEnemyGO.transform.SetParent(transform.Find("Enemies"));
 
             IAgent enemyAgent = new SimpleEnemyAgent((1, 1), i);
+            newEnemyGO.GetComponent<EnemyController>().simpleEnemyAgent = (SimpleEnemyAgent)enemyAgent;
+            newEnemyGO.GetComponent<EnemyController>().enabled = true;
             enemyAgents.Add(enemyAgent);
 
-            newEnemy.GetComponent<EnemyController>().simpleEnemyAgent = (SimpleEnemyAgent)enemyAgents[i];
-            //newEnemy.GetComponent<EnemyController>().enemyAgentIndex = i;
+            newEnemyGO.GetComponent<EnemyController>().simpleEnemyAgent = (SimpleEnemyAgent)enemyAgents[i];
 
-            agentGODictionary.Add(enemyAgent, newEnemy);
+            agentGODictionary.Add(enemyAgent, newEnemyGO);
 
-            enemyGameObjects.Add(newEnemy);
+            enemyGameObjects.Add(newEnemyGO);
         }
 
         for (int i = 0; i < grid.Width; i++)
@@ -152,7 +153,44 @@ public class GameManager : MonoBehaviour
         sim.StepForward();
         int numberOfAgents = numberOfEnemies + numberOfTurrets;
         IState state = sim.GetCurrentStep();
-        for (int i = 0; i < numberOfAgents; i++)
+        List<IAgent> agents = state.Agents.ToList();
+
+        foreach(IAgent agent in agents)
+        {
+            //if(agent.IsActive)
+            if (agent is SimpleEnemyAgent && agent.IsActive)
+            {
+                (int x, int y) = state.PositionOf(agent);
+                agentGODictionary[agent].transform.position = new Vector3(x * 5, 2.75f, y * 5);
+
+                var enemyAgent = (SimpleEnemyAgent)agent;
+                Debug.Log("Agent: " + agent + " Health: " + enemyAgent.health);
+            }
+            if (agent is TurretAgent && agent.IsActive)
+            {
+
+                var turretAgent = (TurretAgent)agent;
+                var target = turretAgent.Target;
+                Debug.Log(target);
+
+                //Debug.Log(targetGO);
+                agentGODictionary[agent].GetComponent<TurretController>().state = state;
+
+                if (target != null)
+                {
+                    agentGODictionary[agent].GetComponent<TurretController>().LookTowardsTarget(target);
+                }
+
+                //agentGODictionary[agent].GetComponent<TurretController>().DoScanForTargetRotation();
+                //agentGODictionary[agent].GetComponent<TurretController>().DealDamageToTarget();
+            }
+
+            /*if (!agent.IsActive)
+            {
+                agentGODictionary[agent].SetActive(false);
+            }*/
+        }
+        /*for (int i = 0; i < numberOfAgents; i++)
         {
             IAgent agent = state.Agents.ElementAt(i);
             if(agent is SimpleEnemyAgent)
@@ -186,7 +224,7 @@ public class GameManager : MonoBehaviour
             {
                 agentGODictionary[agent].SetActive(false);
             }
-        }
+        }*/
 
         /*foreach (var turret in turrets)
         {
@@ -196,22 +234,11 @@ public class GameManager : MonoBehaviour
 
         //DealDamageToTarget();
     }
-    void StepEnemiesForward()
-    {
-
-        for (int i = 0; i < numberOfEnemies; i++)
-        {
-            IState state = sim.GetCurrentStep();
-            IAgent agent = state.Agents.ElementAt(i);
-            (int x, int y) = state.PositionOf(agent);
-            enemyGameObjects[i].transform.position = new Vector3(x * 5, 3, y * 5);
-        }
-    }
 
     void StepBackward()
     {
         sim.StepBackward();
-        StepEnemiesBackward();
+        //StepEnemiesBackward();
         /*IState state = sim.GetCurrentStep();
         IAgent agent = state.Agents.First();
         (int x, int y) = state.PositionOf(agent);
@@ -221,17 +248,6 @@ public class GameManager : MonoBehaviour
         {
             turret.GetComponent<TurretController>().UndoScanForTargetRotation();
             turret.GetComponent<TurretController>().HealTarget();
-        }
-    }
-
-    void StepEnemiesBackward()
-    {
-        for (int i = 0; i < numberOfEnemies; i++)
-        {
-            IState state = sim.GetCurrentStep();
-            IAgent agent = state.Agents.ElementAt(i);
-            (int x, int y) = state.PositionOf(agent);
-            enemyGameObjects[i].transform.position = new Vector3(x * 5, 3, y * 5);
         }
     }
 
