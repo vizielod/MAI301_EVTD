@@ -18,7 +18,7 @@ namespace Simulator.state
             agents = new Dictionary<IAgent, StateObject>();
         }
 
-        public void AddAgent(IAgent agent, (int x, int y) gridLocation, AgentType type)
+        public void AddAgent(IAgent agent, (int x, int y) gridLocation, IAgentType type)
         {
             agents.Add(agent, new StateObject(gridLocation) { 
                 IsActive = true, 
@@ -38,7 +38,7 @@ namespace Simulator.state
 
         public IActionGenerator GetLegalActionGenerator(IAgent agent)
         {
-            return new LegalMoveGenerator(MapLayout, agents[agent]); // TODO: Fix Control Freak anti pattern
+            return agents[agent].GetLegalActionGenerator(MapLayout);
         }
 
         public Maybe<IAgent> GetClosestEnemy(IAgent agent)
@@ -49,7 +49,7 @@ namespace Simulator.state
             float closestSQDistance = float.MaxValue;
             IAgent closest = null;
 
-            foreach (var enemy in agents.Where(a => (a.Value.IsActive && a.Key.IsActive && a.Value.Type == AgentType.Enemy && a.Key != agent)))
+            foreach (var enemy in agents.Where(a => (a.Value.IsActive && a.Key.IsActive && a.Value.Type.IsEnemy && a.Key != agent)))
             {
                 var squaredDistance = (enemy.Value.GridLocation.x - agents[agent].GridLocation.x) ^ 2 +
                     (enemy.Value.GridLocation.y - agents[agent].GridLocation.y) ^ 2;
@@ -60,12 +60,12 @@ namespace Simulator.state
                 }
             }
 
-            return closest != null? new Maybe<IAgent>(closest): new Maybe<IAgent>();
+            return Maybe.Create(closest);
         }
 
         public Maybe<IAgent> GetTargetOf(IAgent agent)
         {
-            return agents[agent].Target != null ? new Maybe<IAgent>(agents[agent].Target) : new Maybe<IAgent>(); 
+            return Maybe.Create(agents[agent].Target);
         }
     }
 }

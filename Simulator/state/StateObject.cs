@@ -1,14 +1,8 @@
 ﻿namespace Simulator.state
 {
-    enum AgentType
-    {
-        Enemy,
-        Tower
-    }
-
     class StateObject : IStateObject
     {
-        public AgentType Type { get; set; }
+        public IAgentType Type { get; set; }
         public bool IsActive { get; set; }
         public (int x, int y) GridLocation => (x, y);
         public IAgent Target { get; set; }
@@ -21,12 +15,18 @@
         {
             (x, y) = gridLocation;
             GoalReached = false;
+            IsActive = false;
         }
 
         public void Move(int xref, int yref)
         {
             x += xref;
             y += yref;
+        }
+
+        internal IActionGenerator GetLegalActionGenerator(IMapLayout map)
+        {
+            return Type.GetLegalActionGenerator(map, this);
         }
     }
 }

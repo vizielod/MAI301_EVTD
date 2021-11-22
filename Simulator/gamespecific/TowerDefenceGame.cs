@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Simulator.state;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace Simulator.state
+namespace Simulator.gamespecific
 {
     class TowerDefenceGame : IGame
     {
@@ -12,20 +13,22 @@ namespace Simulator.state
         {
             this.map = map;
             this.agents = new Dictionary<IAgent, StateObject>();
+            var enemyType = new TowerDefenceEnemyAgent();
             foreach (var agent in agents)
             {
                 this.agents.Add(agent, new StateObject(agent.InitialPosition)
-                { 
-                    IsActive = false, 
-                    Type = AgentType.Enemy 
-                });
+                {
+                    IsActive = false,
+                    Type = enemyType
+                }) ;
             }
+            var towerType = new TowerDefenceTowerAgent();
             foreach (var tower in towers)
             {
                 this.agents.Add(tower, new StateObject(tower.InitialPosition)
                 {
                     IsActive = false,
-                    Type = AgentType.Tower
+                    Type = towerType
                 });
             }
         }
