@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
 
     void InitializeAgents()
     {
-        Vector3 spawnPosition = new Vector3(5, 3, 5);
+        Vector3 spawnPosition = new Vector3(5, 2.75f, 5);
         List<IAgent> enemyAgents = new List<IAgent>();
         List<IAgent> turretAgents = new List<IAgent>();
 
@@ -158,7 +158,7 @@ public class GameManager : MonoBehaviour
             if(agent is SimpleEnemyAgent)
             {
                 (int x, int y) = state.PositionOf(agent);
-                agentGODictionary[agent].transform.position = new Vector3(x * 5, 3, y * 5);
+                agentGODictionary[agent].transform.position = new Vector3(x * 5, 2.75f, y * 5);
 
                 var enemyAgent = (SimpleEnemyAgent)agent;
                 Debug.Log("Agent: " + agent + " Health: " + enemyAgent.health);
