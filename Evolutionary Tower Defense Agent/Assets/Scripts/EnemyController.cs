@@ -8,7 +8,8 @@ public class EnemyController : MonoBehaviour
 {
     public Image healthBar;
     public float startHealthPoints;
-    private float currentHealthPoints;
+    public float currentHealthPoints;
+    public float newHealthPoints;
     public SimpleEnemyAgent simpleEnemyAgent;
     public Enemy enemy;
     //public int enemyAgentIndex;
@@ -20,12 +21,23 @@ public class EnemyController : MonoBehaviour
             return;
 
         startHealthPoints = simpleEnemyAgent.health;
+        currentHealthPoints = simpleEnemyAgent.health;
+        newHealthPoints = simpleEnemyAgent.health;
         enemy = new Enemy(startHealthPoints);
     }
 
     // Update is called once per frame
     void Update()
     {
-        healthBar.fillAmount = simpleEnemyAgent.health / startHealthPoints;
+        //healthBar.fillAmount = simpleEnemyAgent.health / startHealthPoints;
+    }
+
+    public void UpdateHealthBar()
+    {
+        if(currentHealthPoints != newHealthPoints)
+        {
+            healthBar.fillAmount = simpleEnemyAgent.health / startHealthPoints;
+            currentHealthPoints = newHealthPoints;
+        }
     }
 }

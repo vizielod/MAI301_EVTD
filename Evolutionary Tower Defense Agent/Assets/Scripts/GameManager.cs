@@ -164,11 +164,16 @@ public class GameManager : MonoBehaviour
                 agentGODictionary[agent].transform.position = new Vector3(x * 5, 2.75f, y * 5);
 
                 var enemyAgent = (SimpleEnemyAgent)agent;
-                Debug.Log("Agent: " + agent + " Health: " + enemyAgent.health);
+                var enemyController = agentGODictionary[agent].GetComponent<EnemyController>();
+                enemyController.newHealthPoints = enemyAgent.health;
+                enemyController.UpdateHealthBar();
+
+                /*var enemyAgent = (SimpleEnemyAgent)agent;
+                Debug.Log("Agent: " + agent + " Health: " + enemyAgent.health);*/
             }
             if (agent is TurretAgent && agent.IsActive)
             {
-
+                
                 var turretAgent = (TurretAgent)agent;
                 var target = turretAgent.Target;
                 Debug.Log(target);
@@ -180,15 +185,12 @@ public class GameManager : MonoBehaviour
                 {
                     agentGODictionary[agent].GetComponent<TurretController>().LookTowardsTarget(target);
                 }
-
-                //agentGODictionary[agent].GetComponent<TurretController>().DoScanForTargetRotation();
-                //agentGODictionary[agent].GetComponent<TurretController>().DealDamageToTarget();
             }
 
-            /*if (!agent.IsActive)
+            if (!agent.IsActive)
             {
                 agentGODictionary[agent].SetActive(false);
-            }*/
+            }
         }
         /*for (int i = 0; i < numberOfAgents; i++)
         {
