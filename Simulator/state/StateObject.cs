@@ -8,6 +8,8 @@
         public IAgent Target { get; set; }
         public bool GoalReached { get; set; }
 
+        public bool IsEnemy => Type.IsEnemy;
+
         private int x;
         private int y;
 

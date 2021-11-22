@@ -37,10 +37,10 @@ namespace Simulator.state
             {
                 IStateObject stateObj = game.GetStateObject(evnt.Agent);
                 if (stateObj.GoalReached) goals++;
-                
+                if (evnt.Agent.IsActive && stateObj.IsActive && stateObj.IsEnemy) enemies++;
             }
 
-            // Apply score for every event
+            events.AsParallel().ForAll(e => e.Reward = goals + enemies);
         }
     }
 }

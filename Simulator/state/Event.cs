@@ -10,6 +10,6 @@
 
         public IAgent Agent { get; }
         public IAction Action { get; }
-        public float Reward { get; }
+        public float Reward { get; set; }
     }
 }

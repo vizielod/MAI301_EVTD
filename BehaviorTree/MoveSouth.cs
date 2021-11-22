@@ -37,7 +37,7 @@ namespace BehaviorTree
 
         public override void LogTask(string log)
         {
-            Console.WriteLine("Name: " + name + ", " + log);
+            Console.WriteLine("Name: " + nameof(MoveSouth) + ", " + log);
         }
 
         public override void Start()
