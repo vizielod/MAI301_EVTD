@@ -158,7 +158,6 @@ public class GameManager : MonoBehaviour
             if(agent is SimpleEnemyAgent)
             {
                 (int x, int y) = state.PositionOf(agent);
-
                 agentGODictionary[agent].transform.position = new Vector3(x * 5, 3, y * 5);
 
                 var enemyAgent = (SimpleEnemyAgent)agent;

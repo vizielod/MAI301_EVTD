@@ -27,5 +27,20 @@ namespace Simulator.state
                 evnt.Action.Undo(game.GetStateObject(evnt.Agent)); 
             });
         }
+
+        private void ScoreAll(IGame game)
+        {
+            // Calculate score
+            var goals = 0;
+            var enemies = 0;
+            foreach (var evnt in events)
+            {
+                IStateObject stateObj = game.GetStateObject(evnt.Agent);
+                if (stateObj.GoalReached) goals++;
+                if (evnt.Agent.IsActive && stateObj.IsActive && stateObj.IsEnemy) enemies++;
+            }
+
+            events.AsParallel().ForAll(e => e.Reward = goals + enemies);
+        }
     }
 }
