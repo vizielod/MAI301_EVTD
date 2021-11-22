@@ -16,6 +16,7 @@ namespace Simulator
         TileType TypeAt(int x, int y);
         int Height { get; }
         int Width { get; }
-        (int x, int y) GetSpawnPoint();
+        (int x, int y) Spawn { get; }
+        (int x, int y) Goal { get; }
     }
 }

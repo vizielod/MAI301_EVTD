@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Simulator.gamespecific;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Simulator.state
 {
@@ -11,11 +13,14 @@ namespace Simulator.state
 
         private IDictionary<IAgent, StateObject> agents;
         private List<Event> events;
+        private readonly BroadFirstSearch bfs;
+
         internal IEnumerable<Event> Events => events;
 
-        public State(IMapLayout map)
+        public State(IMapLayout map, BroadFirstSearch bfs)
         {
             MapLayout = map;
+            this.bfs = bfs;
             agents = new Dictionary<IAgent, StateObject>();
         }
 
@@ -47,13 +52,13 @@ namespace Simulator.state
             if (!agents.ContainsKey(agent))
                 return new Maybe<IAgent>();
 
-            float closestSQDistance = float.MaxValue;
+            double closestSQDistance = double.MaxValue;
             IAgent closest = null;
 
-            foreach (var enemy in agents.Where(a => (a.Value.IsActive && a.Key.IsActive && a.Value.Type.IsEnemy && a.Key != agent)))
+            foreach (var enemy in agents.Where(a => (a.Key.IsActive && a.Value.Type.IsEnemy && a.Key != agent)))
             {
-                var squaredDistance = (enemy.Value.GridLocation.x - agents[agent].GridLocation.x) ^ 2 +
-                    (enemy.Value.GridLocation.y - agents[agent].GridLocation.y) ^ 2;
+                var squaredDistance = Mathf.Pow(enemy.Value.GridLocation.x - agents[agent].GridLocation.x, 2) + Mathf.Pow(enemy.Value.GridLocation.y - agents[agent].GridLocation.y, 2);
+
                 if (squaredDistance < closestSQDistance)
                 {
                     closest = enemy.Key;
@@ -67,6 +72,11 @@ namespace Simulator.state
         public Maybe<IAgent> GetTargetOf(IAgent agent)
         {
             return Maybe.Create(agents[agent].Target);
+        }
+
+        public (int x, int y) SuggestPosition(IAgent agent)
+        {
+            return bfs.Next(agents[agent].GridLocation);
         }
     }
 }
