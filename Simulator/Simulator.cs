@@ -21,7 +21,9 @@ namespace Simulator
         {
             round++;
             game.SpawnAgents(round);
-            if (round >= rounds.Count)
+            var newRound = round >= rounds.Count;
+            
+            if (newRound)
             {
                 IState state = game.GenerateState();
                 rounds.Add(
@@ -30,7 +32,11 @@ namespace Simulator
                         )
                     );
             }
+
             rounds[round].ApplyAll(game);
+
+            if (newRound)
+                rounds[round].ScoreAll(game);
         }
 
         public void StepBackward()

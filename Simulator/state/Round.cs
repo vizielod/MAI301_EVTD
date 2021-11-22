@@ -28,19 +28,27 @@ namespace Simulator.state
             });
         }
 
-        private void ScoreAll(IGame game)
+        public void ScoreAll(IGame game)
         {
-            // Calculate score
             var goals = 0;
-            var enemies = 0;
+            var activeEnemies = 0;
+            var totalEnemies = 0;
             foreach (var evnt in events)
             {
                 IStateObject stateObj = game.GetStateObject(evnt.Agent);
                 if (stateObj.GoalReached) goals++;
-                if (evnt.Agent.IsActive && stateObj.IsActive && stateObj.IsEnemy) enemies++;
+                if (stateObj.IsEnemy)
+                {
+                    totalEnemies++;
+                    if (evnt.Agent.IsActive && stateObj.IsActive) activeEnemies++;
+                }
             }
 
-            events.AsParallel().ForAll(e => e.Reward = goals + enemies);
+            events.AsParallel().ForAll(e => 
+            {
+                if (e.Agent.IsActive)
+                    e.Reward = (goals + activeEnemies) / totalEnemies;
+            });
         }
     }
 }
