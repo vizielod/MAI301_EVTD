@@ -11,5 +11,7 @@ namespace Simulator
         void SpawnAgents(int round);
         void DespawnAgents(int round);
         int CountEnemies();
+        int CountActiveEnemies();
+        int CountEnemiesSuccess();
     }
 }

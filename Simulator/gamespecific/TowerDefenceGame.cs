@@ -39,9 +39,19 @@ namespace Simulator.gamespecific
 
         public IEnumerable<IAgent> AllAgents => agents.Keys;
 
+        public int CountActiveEnemies()
+        {
+            return agents.Where(a => a.Key.IsActive && a.Value.IsActive).Count(a => a.Value.IsEnemy);
+        }
+
         public int CountEnemies()
         {
             return agents.Count(a => a.Value.IsEnemy);
+        }
+
+        public int CountEnemiesSuccess()
+        {
+            return agents.Count(a => a.Value.GoalReached && a.Value.IsEnemy);
         }
 
         public void DespawnAgents(int round)
