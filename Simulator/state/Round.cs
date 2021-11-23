@@ -6,10 +6,12 @@ namespace Simulator.state
     class Round
     {
         private IList<Event> events;
+        private readonly int roundNumber;
 
-        public Round(IList<Event> events)
+        public Round(IList<Event> events, int roundNumber)
         {
             this.events = events;
+            this.roundNumber = roundNumber;
         }
 
         public void ApplyAll(IGame game)
@@ -30,19 +32,20 @@ namespace Simulator.state
 
         public void ScoreAll(IGame game)
         {
-            var goals = 0;
-            var activeEnemies = 0;
-            foreach (var evnt in events)
-            {
-                IStateObject stateObj = game.GetStateObject(evnt.Agent);
-                if (stateObj.GoalReached) goals++;
-                if (stateObj.IsEnemy && evnt.Agent.IsActive && stateObj.IsActive) activeEnemies++;
-            }
-
+            var goals = game.CountEnemiesSuccess();
+            var activeEnemies = game.CountActiveEnemies();
+            var enemies = game.CountEnemies();
+            
             events.AsParallel().ForAll(e => 
             {
-                if (e.Agent.IsActive)
-                    e.Reward = (goals + activeEnemies + 1) / (game.CountEnemies() + 1);
+                var sObj = game.GetStateObject(e.Agent);
+                if (sObj.IsEnemy)
+                {
+                    if (e.Agent.IsActive && sObj.IsActive)
+                        e.Reward = (goals + activeEnemies + 1) / (enemies + 1) * (1 / roundNumber - e.Agent.SpawnRound + 1);
+                    else if (sObj.GoalReached)
+                        e.Reward = 1;
+                }
             });
         }
     }

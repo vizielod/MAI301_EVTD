@@ -29,6 +29,7 @@ namespace BehaviorTree
             bb.LegalActions = actions;
             bb.ChoosenAction = null;
          
+            
             Selector move = new Selector("Selector", bb);
             ParentNodeController pnc = (ParentNodeController)move.GetControl();
 
