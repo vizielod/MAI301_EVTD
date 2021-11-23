@@ -10,7 +10,7 @@ public class Grid : IMapLayout
     public int Width { get; }
     public int Height { get; }
 
-    public float cellSize;
+    public float tileSize;
 
     public TileType[,] tileTypeArray;
 
@@ -18,11 +18,11 @@ public class Grid : IMapLayout
 
     public (int x, int y) Goal { get; set; }
 
-    public Grid(int height, int width, float cellSize, TileType[,] tileTypeArray)
+    public Grid(int height, int width, int tileSize, TileType[,] tileTypeArray)
     {
         Height = height;
         Width = width;
-        this.cellSize = cellSize;
+        this.tileSize = tileSize;
 
         this.tileTypeArray = tileTypeArray;
         SavePointsOfInterests();
@@ -44,7 +44,7 @@ public class Grid : IMapLayout
 
     public Vector3 GetWorldPosition(int i, int j)
     {
-        return new Vector3(i, 0, j) * cellSize;
+        return new Vector3(i, 0, j) * tileSize;
     }
 
     public TileType TypeAt(int x, int y)
