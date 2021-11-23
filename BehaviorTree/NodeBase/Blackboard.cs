@@ -7,6 +7,8 @@ namespace BehaviorTree
     {
         // Enemy
         public IEnumerable<IAction> LegalActions { get; set; }
+        public (int x, int y) ForwardPosition { get; set; }
+        public (int x, int y) CurrentPosition { get; set; }
 
         // Common
         public IAction ChoosenAction { get; set; }
@@ -28,6 +30,8 @@ namespace BehaviorTree
             PreviousTargetEnemy = null;
             IsEnemyInRange = false;
             Damage = 0;
+            ForwardPosition = (0, 0);
+            CurrentPosition = (0, 0);
         }
     }
 }

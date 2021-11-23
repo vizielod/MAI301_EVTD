@@ -1,10 +1,10 @@
-﻿using Simulator;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Simulator;
 
 namespace BehaviorTree
 {
-    public class SimpleEnemyAgent : IAgent
+    public class ForwardEnemyAgent : IAgent
     {
         public (int x, int y) InitialPosition { get; }
         public int SpawnRound { get; }
@@ -14,7 +14,7 @@ namespace BehaviorTree
 
         public bool IsActive => health > 0;
 
-        public SimpleEnemyAgent((int x, int y) initialPosition, int spawnRound) 
+        public ForwardEnemyAgent((int x, int y) initialPosition, int spawnRound)
         {
             this.InitialPosition = initialPosition;
             bb = new Blackboard(null, null);
@@ -31,18 +31,14 @@ namespace BehaviorTree
 
             bb.ForwardPosition = state.SuggestPosition(this);
             bb.CurrentPosition = state.PositionOf(this);
-            
+
             Selector move = new Selector("Selector", bb);
             ParentNodeController pnc = (ParentNodeController)move.GetControl();
 
-            pnc.AddNode(new RepeatPreviousAction("Repeat", bb));
-            pnc.AddNode(new MoveSouth("MoveSouth", bb));
-            pnc.AddNode(new MoveEast("MoveEast", bb));
-            pnc.AddNode(new MoveWest("MoveWest", bb));
-            pnc.AddNode(new MoveNorth("MoveNorth", bb));
+            pnc.AddNode(new MoveForward("Forward", bb));
             pnc.SafeStart();
 
-            while (!pnc.Finished()) 
+            while (!pnc.Finished())
             {
                 move.DoAction();
             }
@@ -65,3 +61,4 @@ namespace BehaviorTree
         }
     }
 }
+
