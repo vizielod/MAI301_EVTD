@@ -25726,9 +25726,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c57b88176cbf3e4080fedba0369e2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPoints: 50
-  speed: 10
-  stepSize: 5
+  healthBar: {fileID: 0}
+  startHealthPoints: 0
+  currentHealthPoints: 0
+  newHealthPoints: 0
 --- !u!1001 &1583157919637418448
 PrefabInstance:
   m_ObjectHideFlags: 0
