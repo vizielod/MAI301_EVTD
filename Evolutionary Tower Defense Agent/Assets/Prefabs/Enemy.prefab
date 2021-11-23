@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1348502293716793417}
   - component: {fileID: 7722387456267042395}
   - component: {fileID: 6347248776567211481}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: HealthBGImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 8876250050605480936}
   - component: {fileID: 4820716618393060799}
   - component: {fileID: 3401619018913053388}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: HealthBarFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 8831782460915856732}
   - component: {fileID: 967576300644394428}
   - component: {fileID: 2362190104885542642}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 696949028613294345}
   - component: {fileID: 6487840701567659007}
   - component: {fileID: 1296100022998346733}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -340,7 +340,7 @@ GameObject:
   - component: {fileID: 3553485690602333523}
   - component: {fileID: 1325563421290208282}
   - component: {fileID: 7482663565232602098}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -389,7 +389,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ec41e6091edd8404bae44a7f6cdd4532, type: 2}
+  - {fileID: 2100000, guid: 0982f3ad50ff94e4580d0fb158492ae8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -438,3 +438,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 2362190104885542642}
   startHealthPoints: 0
+  currentHealthPoints: 0
+  newHealthPoints: 0

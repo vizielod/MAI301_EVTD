@@ -18,7 +18,13 @@ public class TurretController : MonoBehaviour
     public Transform target;
 
     public string enemyTag = "Enemy";
+    public float enemySize = 1.5f;
 
+    public LineRenderer lineRenderer;
+    public ParticleSystem laserImpactEffect;
+    public Transform firePoint;
+
+    [Header("Simulator")]
     Turret turret;
     public TurretAgent turretAgent;
     public IState state;
@@ -33,6 +39,9 @@ public class TurretController : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(dir);
         Vector3 rotation = lookRotation.eulerAngles;
         partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+
+        lineRenderer.enabled = false;
+        laserImpactEffect.Stop();
     }
 
     void UpdateTarget()
@@ -80,10 +89,37 @@ public class TurretController : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(dir);
         Vector3 rotation = lookRotation.eulerAngles;
         partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+
+        ShootLaser(targetWorldPosition);
+    }
+
+    void ShootLaser(Vector3 targetPosition)
+    {
+        if (!lineRenderer.enabled)
+        {
+            lineRenderer.enabled = true;
+            laserImpactEffect.Play();
+        }
+
+        lineRenderer.SetPosition(0, firePoint.position);
+        lineRenderer.SetPosition(1, targetPosition);
+
+        Vector3 dir = firePoint.position - targetPosition;
+
+        laserImpactEffect.transform.position = targetPosition + dir.normalized * enemySize / 2;
+        laserImpactEffect.transform.rotation = Quaternion.LookRotation(dir);
+    }
+
+    public void DisableLaser()
+    {
+        lineRenderer.enabled = false;
+        laserImpactEffect.Stop();
     }
     // Update is called once per frame
     void Update()
     {
+
+
         /*Vector3 dir = head.forward;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
         Vector3 rotation = lookRotation.eulerAngles;

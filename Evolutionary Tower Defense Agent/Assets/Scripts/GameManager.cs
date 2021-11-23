@@ -185,6 +185,10 @@ public class GameManager : MonoBehaviour
                 {
                     agentGODictionary[agent].GetComponent<TurretController>().LookTowardsTarget(target);
                 }
+                else
+                {
+                    agentGODictionary[agent].GetComponent<TurretController>().DisableLaser();
+                }
             }
 
             if (!agent.IsActive)
