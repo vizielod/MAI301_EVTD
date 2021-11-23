@@ -3,13 +3,13 @@ using System.Linq;
 
 namespace Simulator.gamespecific
 {
-    class BroadFirstSearch
+    class BreadthFirstSearch
     {
         private readonly Dictionary<(int x, int y), (int x, int y)> lookup;
         private readonly List<TileType> groundTiles = new List<TileType> { TileType.Spawn, TileType.Ground, TileType.Goal };
         private readonly IMapLayout map;
 
-        public BroadFirstSearch(IMapLayout map)
+        public BreadthFirstSearch(IMapLayout map)
         {
             this.map = map;
             lookup = new Dictionary<(int x, int y), (int x, int y)>();
@@ -33,7 +33,7 @@ namespace Simulator.gamespecific
             {
                 var current = frontér.Dequeue();
                 lookup.Add(current, previous);
-                foreach (var neighbour in GetNeighbours(map.Goal).Where(n => !(frontér.Contains(n) || lookup.Keys.Contains(n))))
+                foreach (var neighbour in GetNeighbours(current).Where(n => !(frontér.Contains(n) || lookup.Keys.Contains(n))))
                     frontér.Enqueue(neighbour);
 
                 previous = current;

@@ -26,7 +26,7 @@ namespace BehaviorTree
         {
             IEnumerable<IAction> actions = state.GetLegalActionGenerator(this).Generate();
             bb.LegalActions = actions;
-         
+            
             Selector move = new Selector("Selector", bb);
             ParentNodeController pnc = (ParentNodeController)move.GetControl();
 

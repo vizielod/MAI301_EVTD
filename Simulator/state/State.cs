@@ -1,5 +1,4 @@
 ﻿using Simulator.gamespecific;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,11 +12,11 @@ namespace Simulator.state
 
         private IDictionary<IAgent, StateObject> agents;
         private List<Event> events;
-        private readonly BroadFirstSearch bfs;
+        private readonly BreadthFirstSearch bfs;
 
         internal IEnumerable<Event> Events => events;
 
-        public State(IMapLayout map, BroadFirstSearch bfs)
+        public State(IMapLayout map, BreadthFirstSearch bfs)
         {
             MapLayout = map;
             this.bfs = bfs;

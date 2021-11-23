@@ -8,12 +8,12 @@ namespace Simulator.gamespecific
     {
         private readonly IMapLayout map;
         private readonly Dictionary<IAgent, StateObject> agents;
-        private readonly BroadFirstSearch bfsMap;
+        private readonly BreadthFirstSearch bfsMap;
 
         public TowerDefenceGame(IMapLayout map, IEnumerable<IAgent> agents, IEnumerable<IAgent> towers)
         {
             this.map = map;
-            this.bfsMap = new BroadFirstSearch(map);
+            this.bfsMap = new BreadthFirstSearch(map);
             this.agents = new Dictionary<IAgent, StateObject>();
             var enemyType = new TowerDefenceEnemyAgent();
             foreach (var agent in agents)
@@ -39,9 +39,19 @@ namespace Simulator.gamespecific
 
         public IEnumerable<IAgent> AllAgents => agents.Keys;
 
+        public int CountActiveEnemies()
+        {
+            return agents.Where(a => a.Key.IsActive && a.Value.IsActive).Count(a => a.Value.IsEnemy);
+        }
+
         public int CountEnemies()
         {
             return agents.Count(a => a.Value.IsEnemy);
+        }
+
+        public int CountEnemiesSuccess()
+        {
+            return agents.Count(a => a.Value.GoalReached && a.Value.IsEnemy);
         }
 
         public void DespawnAgents(int round)
