@@ -25,12 +25,15 @@ namespace BehaviorTree
         public IAction PickAction(IState state)
         {
             IEnumerable<IAction> actions = state.GetLegalActionGenerator(this).Generate();
+
             bb.LegalActions = actions;
+            bb.ChoosenAction = null;
          
             Selector move = new Selector("Selector", bb);
             ParentNodeController pnc = (ParentNodeController)move.GetControl();
 
-            pnc.AddNode(new RepeatPrevActionDecorator("Repeat",bb, new MoveSouth("MoveSouth", bb)));
+            pnc.AddNode(new RepeatPreviousAction("Repeat", bb));
+            pnc.AddNode(new MoveSouth("MoveSouth", bb));
             pnc.AddNode(new MoveEast("MoveEast", bb));
             pnc.AddNode(new MoveWest("MoveWest", bb));
             pnc.AddNode(new MoveNorth("MoveNorth", bb));

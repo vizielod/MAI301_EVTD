@@ -5,9 +5,14 @@ namespace BehaviorTree
 {
     public class Blackboard
     {
+        // Enemy
         public IEnumerable<IAction> LegalActions { get; set; }
+
+        // Common
         public IAction ChoosenAction { get; set; }
         public IAction PreviousAction { get; set; }
+
+        // Turret
         public IAgent ClosestEnemy { get; set; }
         public IAgent PreviousTargetEnemy { get; set; }
         public bool IsEnemyInRange { get; set; }
