@@ -6,7 +6,7 @@ namespace BehaviorTree
 {
     public class MoveRandomly:LeafNode
     {
-        public MoveRandomly(string name, Blackboard bb):base(name, bb)
+        public MoveRandomly( Blackboard bb):base( bb)
         {
         }
 
@@ -17,7 +17,6 @@ namespace BehaviorTree
 
         public override void DoAction()
         {
-            LogTask("Doing action");
 
             if (CheckConditions())
             {

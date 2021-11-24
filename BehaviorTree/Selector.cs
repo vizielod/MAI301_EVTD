@@ -5,7 +5,7 @@ namespace BehaviorTree
 {
     public class Selector: ParentNode
     {
-        public Selector(string name, Blackboard blackboard): base(name, blackboard)
+        public Selector(Blackboard blackboard): base( blackboard)
         {}
 
         /**

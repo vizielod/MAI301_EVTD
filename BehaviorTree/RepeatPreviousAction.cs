@@ -5,7 +5,7 @@ namespace BehaviorTree
 {
     public class RepeatPreviousAction:LeafNode
     {
-        public RepeatPreviousAction(string name, Blackboard bb):base(name,bb)
+        public RepeatPreviousAction( Blackboard bb):base(bb)
         {
         }
 

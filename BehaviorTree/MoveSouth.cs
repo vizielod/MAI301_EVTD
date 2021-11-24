@@ -6,7 +6,7 @@ namespace BehaviorTree
 {
     class MoveSouth : LeafNode
     {
-        public MoveSouth(string name, Blackboard blackboard) : base(name, blackboard)
+        public MoveSouth( Blackboard blackboard) : base( blackboard)
         { }
 
         public override bool CheckConditions()
@@ -15,7 +15,6 @@ namespace BehaviorTree
         }
         public override void DoAction()
         {
-            LogTask("Doing action");
            
             if (blackboard.LegalActions.Any(a => a is GoSouth))
             {

@@ -32,8 +32,8 @@ namespace BehaviorTree
             bb.ForwardPosition = state.SuggestPosition(this);
             bb.CurrentPosition = state.PositionOf(this);
 
-            Selector move = new Selector("Selector", bb);
-            move.AddChildren(new MoveForward("Forward", bb));
+            Selector move = new Selector( bb);
+            move.AddChildren(new MoveForward( bb));
 
             move.Start();
 

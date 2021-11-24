@@ -5,7 +5,7 @@ namespace BehaviorTree
 {
     public class Sequence:ParentNode
     {
-        public Sequence(string name, Blackboard blackboard) : base(name, blackboard)
+        public Sequence( Blackboard blackboard) : base( blackboard)
         { }
 
         public override void AddChildren(Node node)

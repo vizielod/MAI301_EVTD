@@ -7,7 +7,7 @@ namespace BehaviorTree
 {
     class Fire : LeafNode
     {
-        public Fire(string name, Blackboard blackboard) : base(name, blackboard)
+        public Fire(Blackboard blackboard) : base(blackboard)
         { }
 
         public override bool CheckConditions()

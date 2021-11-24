@@ -8,7 +8,7 @@ namespace BehaviorTree
 {
     class EnemyScore : LeafNode
     {
-        public EnemyScore(string name, Blackboard bb):base(name, bb) { }
+        public EnemyScore( Blackboard bb):base( bb) { }
         public override bool CheckConditions()
         {
             return blackboard.LegalActions != null && blackboard.LegalActions.Any();
@@ -16,7 +16,6 @@ namespace BehaviorTree
 
         public override void DoAction()
         {
-            LogTask("Doing action");
 
             if (blackboard.LegalActions.Any(a => a is ScorePoints))
             {

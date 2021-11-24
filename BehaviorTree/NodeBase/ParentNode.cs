@@ -7,7 +7,7 @@ namespace BehaviorTree
     {
         protected ParentNodeController controller;
 
-        public ParentNode(string name, Blackboard blackboard):base(name,blackboard)
+        public ParentNode(Blackboard blackboard):base(blackboard)
         {
             CreateController();
         }
@@ -44,14 +44,12 @@ namespace BehaviorTree
         */
         public override bool CheckConditions()
         {
-            LogTask("Checking conditions");
             return controller.subnodes.Count > 0;
         }
 
 
         public override void DoAction()
         {
-            LogTask("Doing action");
             if (controller.Finished())
             {
                 // If this parent task is finished
@@ -99,7 +97,6 @@ namespace BehaviorTree
         */
         public override void End()
         {
-            LogTask("Ending");
             controller.SafeEnd();
         }
 
@@ -110,7 +107,6 @@ namespace BehaviorTree
         */
         public override void Start()
         {
-            LogTask("Starting");
             controller.currentNode =
             controller.subnodes.First();
             if (controller.currentNode == null)
@@ -124,11 +120,6 @@ namespace BehaviorTree
         public override bool Running()
         {
             return !controller.Finished();
-        }
-
-         public override void LogTask(string log)
-        {
-            Console.WriteLine("Name: " + name + ", " + log);
         }
     }
 }

@@ -7,15 +7,13 @@ namespace BehaviorTree
     public abstract class Node
     {
         protected Blackboard blackboard;
-        protected string name;
 
         /** 
          * When we create a new node we have to pass
          *the blackboard 
          */
-        public Node(string name, Blackboard blackboard)
+        public Node(Blackboard blackboard)
         {
-            this.name = name;
             this.blackboard = blackboard;
         }
 
@@ -49,7 +47,5 @@ namespace BehaviorTree
          * assigned to the node
          */
         public abstract NodeController GetControl();
-
-        public abstract void LogTask(string log);
     }
 }

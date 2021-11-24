@@ -8,7 +8,7 @@ namespace BehaviorTree
          */
         protected Node node;
 
-        public DecoratorNode(string name, Blackboard blackboard, Node node):base(name,blackboard)
+        public DecoratorNode(Blackboard blackboard, Node node):base(blackboard)
         {
             InitTask(node);
         }
@@ -42,11 +42,6 @@ namespace BehaviorTree
         public override bool Running()
         {
             return GetControl().Finished();
-        }
-
-        public override void LogTask(string log)
-        {
-            Console.WriteLine("Name: " + name + ", " + log);
         }
     }
 }

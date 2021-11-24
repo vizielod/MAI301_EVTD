@@ -7,7 +7,7 @@ namespace BehaviorTree
 {
     class Rotate: LeafNode
     {
-        public Rotate(string name, Blackboard blackboard) : base(name, blackboard)
+        public Rotate( Blackboard blackboard) : base( blackboard)
         { }
 
         public override bool CheckConditions()

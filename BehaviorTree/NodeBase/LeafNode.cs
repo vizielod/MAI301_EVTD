@@ -6,7 +6,7 @@ namespace BehaviorTree
     {
         protected NodeController controller;
 
-        public LeafNode(string name, Blackboard blackboard):base(name, blackboard)
+        public LeafNode(Blackboard blackboard):base( blackboard)
         {
             CreateController();
         }
@@ -28,18 +28,11 @@ namespace BehaviorTree
 
         public override void End()
         {
-            LogTask("Ending");
             controller.SafeEnd();
-        }
-
-        public override void LogTask(string log)
-        {
-            Console.WriteLine("Name: " + name + ", " + log);
         }
 
         public override void Start()
         {
-            LogTask("Starting");
             controller.SafeStart();
         }
     }

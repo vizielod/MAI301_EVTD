@@ -6,7 +6,7 @@ namespace BehaviorTree
 {
     public class Inverter : DecoratorNode
     {
-        public Inverter(string name, Blackboard blackboard, Node node) : base(name, blackboard, node)
+        public Inverter( Blackboard blackboard, Node node) : base( blackboard, node)
         {
         }
 

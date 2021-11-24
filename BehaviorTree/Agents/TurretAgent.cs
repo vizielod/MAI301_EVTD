@@ -53,8 +53,8 @@ namespace BehaviorTree
                     Target = closest;
                 }
 
-                Selector move = new Selector("Selector", bb);
-                move.AddChildren(new Fire("Fire", bb));
+                Selector move = new Selector( bb);
+                move.AddChildren(new Fire( bb));
 
                 move.Start();
 

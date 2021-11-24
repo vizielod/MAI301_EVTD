@@ -10,7 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="NodeControllers\" />
-    <Folder Include="NodeBase\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simulator\Simulator.csproj">

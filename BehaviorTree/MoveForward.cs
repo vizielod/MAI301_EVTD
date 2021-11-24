@@ -5,7 +5,7 @@ namespace BehaviorTree
 {
     public class MoveForward: LeafNode
     {
-        public MoveForward(string name, Blackboard bb): base(name,bb)
+        public MoveForward(Blackboard bb): base(bb)
         {
         }
 

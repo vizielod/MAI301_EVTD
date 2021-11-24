@@ -32,23 +32,25 @@ namespace BehaviorTree
             bb.ForwardPosition = state.SuggestPosition(this);
             bb.CurrentPosition = state.PositionOf(this);
             
-            Selector move = new Selector("Selector", bb);
+            Selector move = new Selector( bb);
             
 
-            move.AddChildren(new RepeatPreviousAction("Repeat", bb));
-            move.AddChildren(new MoveSouth("MoveSouth", bb));
-            move.AddChildren(new MoveEast("MoveEast", bb));
-            move.AddChildren(new MoveWest("MoveWest", bb));
-            move.AddChildren(new MoveNorth("MoveNorth", bb));
+            move.AddChildren(new RepeatPreviousAction( bb));
+            move.AddChildren(new MoveSouth( bb));
+            move.AddChildren(new MoveEast( bb));
+            move.AddChildren(new MoveWest( bb));
+            move.AddChildren(new MoveNorth( bb));
 
             move.Start();
 
-            while (move.Running()) 
+            Node node = move;
+
+            while (node.Running()) 
             {
-                move.DoAction();
+                node.DoAction();
             }
 
-            move.End();
+            node.End();
 
             bb.PreviousAction = bb.ChoosenAction;
 
