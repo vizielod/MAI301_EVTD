@@ -43,14 +43,12 @@ namespace BehaviorTree
 
             move.Start();
 
-            Node node = move;
-
-            while (node.Running()) 
+            while (move.Running()) 
             {
-                node.DoAction();
+                move.DoAction();
             }
 
-            node.End();
+            move.End();
 
             bb.PreviousAction = bb.ChoosenAction;
 
