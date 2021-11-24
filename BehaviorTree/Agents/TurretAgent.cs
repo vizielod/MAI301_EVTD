@@ -19,6 +19,7 @@ namespace BehaviorTree
         float range;
         int damage;
 
+        public IAgent Target { get; set; } = null;
         public (int x, int y) InitialPosition { get; }
 
         public int SpawnRound => 0;
@@ -35,6 +36,7 @@ namespace BehaviorTree
 
         public IAction PickAction(IState state)
         {
+            Target = null;
             bb.ChoosenAction = null;
             state.GetClosestEnemy(this).Apply(closest =>
             {
@@ -46,7 +48,10 @@ namespace BehaviorTree
                 (int x, int y) enemyPos = state.PositionOf(closest);
                 (int x, int y) p = (enemyPos.x - turretPos.x, enemyPos.y - turretPos.y);
                 if (Math.Max(Math.Abs(p.x), Math.Abs(p.y)) <= range)
+                {
                     bb.IsEnemyInRange = true;
+                    Target = closest;
+                }
 
                 Selector move = new Selector("Selector", bb);
                 move.AddChildren(new Fire("Fire", bb));

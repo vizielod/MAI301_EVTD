@@ -10,6 +10,8 @@ namespace Simulator
         private readonly IGame game;
         int round;
 
+        public IEnumerable<IAgent> AllAgents => game.AllAgents;
+
         internal Simulator(IGame game)
         {
             this.game = game;
@@ -21,6 +23,13 @@ namespace Simulator
         {
             round++;
             game.SpawnAgents(round);
+
+            if (game.IsGameOver)
+            {
+                round--;
+                return;
+            }
+
             var newRound = round >= rounds.Count;
             
             if (newRound)
@@ -28,7 +37,8 @@ namespace Simulator
                 IState state = game.GenerateState();
                 rounds.Add(
                     new Round(
-                        game.ActiveAgents.Select(a => new Event(a, a.PickAction(state))).ToList()
+                        game.ActiveAgents.Select(a => new Event(a, a.PickAction(state))).ToList(),
+                        round
                         )
                     );
             }
