@@ -13,7 +13,7 @@ namespace BehaviorTree
 
         private void CreateController()
         {
-            this.controller = new NodeController(this);
+            this.controller = new NodeController();
         }
 
         public override NodeController GetControl()
