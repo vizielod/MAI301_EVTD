@@ -69,15 +69,13 @@ namespace BehaviorTree
             GetControl().Started())
             {
                 // ... and it's not started yet, start it.
-                controller.currentNode.
-                GetControl().SafeStart();
+                controller.currentNode.Start();
             }
             else if (controller.currentNode.
             GetControl().Finished())
             {
                 // ... and it's finished, end it properly.
-                controller.currentNode.
-                GetControl().SafeEnd();
+                controller.currentNode.End();
                 if (controller.currentNode.
                 GetControl().Succeeded())
                 {
