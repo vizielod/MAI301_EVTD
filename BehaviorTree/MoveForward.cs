@@ -11,15 +11,15 @@ namespace BehaviorTree
 
         public override bool CheckConditions()
         {
-            return !blackboard.ForwardPosition.Equals(default(ValueTuple<int, int, int>)) && !blackboard.CurrentPosition.Equals(default(ValueTuple<int, int, int>));
+            return blackboard.ForwardPosition.HasValue && blackboard.CurrentPosition.HasValue;
         }
 
         public override void DoAction()
         {
             if (CheckConditions())
             {
-                int x = blackboard.ForwardPosition.x - blackboard.CurrentPosition.x;
-                int y = blackboard.ForwardPosition.y - blackboard.CurrentPosition.y;
+                int x = blackboard.ForwardPosition.Value.x - blackboard.CurrentPosition.Value.x;
+                int y = blackboard.ForwardPosition.Value.y - blackboard.CurrentPosition.Value.y;
 
                 if (x != 0)
                 {
