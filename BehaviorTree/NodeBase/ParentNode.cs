@@ -22,6 +22,8 @@ namespace BehaviorTree
             return this.controller;
         }
 
+        public abstract void AddChildren(Node node);
+
         /**
         * Abstract to be overridden in child
         * classes. Called when a child finishes
@@ -100,6 +102,7 @@ namespace BehaviorTree
         public override void End()
         {
             LogTask("Ending");
+            controller.SafeEnd();
         }
 
         /**
@@ -116,6 +119,18 @@ namespace BehaviorTree
             {
                 Console.Error.Write("Current task has a null action");
             }
+
+            controller.SafeStart();
+        }
+
+        public override bool Running()
+        {
+            return !controller.Finished();
+        }
+
+         public override void LogTask(string log)
+        {
+            Console.WriteLine("Name: " + name + ", " + log);
         }
     }
 }

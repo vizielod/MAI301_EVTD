@@ -38,5 +38,15 @@ namespace BehaviorTree
         {
             return this.node.GetControl();
         }
+
+        public override bool Running()
+        {
+            return GetControl().Finished();
+        }
+
+        public override void LogTask(string log)
+        {
+            Console.WriteLine("Name: " + name + ", " + log);
+        }
     }
 }

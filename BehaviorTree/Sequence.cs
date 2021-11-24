@@ -8,6 +8,11 @@ namespace BehaviorTree
         public Sequence(string name, Blackboard blackboard) : base(name, blackboard)
         { }
 
+        public override void AddChildren(Node node)
+        {
+            controller.AddNode(node);
+        }
+
         public override void ChildFailed()
         {
             controller.FinishWithFailure();
@@ -33,11 +38,6 @@ namespace BehaviorTree
                     controller.FinishWithFailure();
                 }
             }
-        }
-
-        public override void LogTask(string log)
-        {
-            Console.WriteLine("Name: " + name + ", " + log);
         }
     }
 }

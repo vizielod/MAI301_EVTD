@@ -35,6 +35,8 @@ namespace BehaviorTree
          */
         public abstract void End();
 
+        public abstract bool Running();
+
         /**
          * Override to specify the logic that
          * the node should perform 

@@ -30,20 +30,5 @@ namespace BehaviorTree
                 controller.FinishWithFailure();
             }
         }
-
-        public override void End()
-        {
-            LogTask("Ending");
-        }
-
-        public override void LogTask(string log)
-        {
-            Console.WriteLine("Name: " + name + ", " + log);
-        }
-
-        public override void Start()
-        {
-            LogTask("Starting");
-        }
     }
 }

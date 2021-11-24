@@ -33,17 +33,16 @@ namespace BehaviorTree
             bb.CurrentPosition = state.PositionOf(this);
 
             Selector move = new Selector("Selector", bb);
-            ParentNodeController pnc = (ParentNodeController)move.GetControl();
+            move.AddChildren(new MoveForward("Forward", bb));
 
-            pnc.AddNode(new MoveForward("Forward", bb));
-            pnc.SafeStart();
+            move.Start();
 
-            while (!pnc.Finished())
+            while (move.Running())
             {
                 move.DoAction();
             }
 
-            pnc.SafeEnd();
+            move.End();
 
             bb.PreviousAction = bb.ChoosenAction;
 

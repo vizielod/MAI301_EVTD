@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System;
 using System.Linq;
 using Simulator.actioncommands;
 
@@ -30,21 +28,6 @@ namespace BehaviorTree
                 controller.FinishWithFailure();
             }
             
-        }
-
-        public override void End()
-        {
-            LogTask("Ending");
-        }
-
-        public override void LogTask(string log)
-        {
-            Console.WriteLine("Name: " + name + ", " + log);
-        }
-
-        public override void Start()
-        {
-            LogTask("Starting");
         }
     }
 }

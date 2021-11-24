@@ -16,10 +16,5 @@ namespace BehaviorTree
 
             GetControl().FinishWithFailure();
         }
-
-        public override void LogTask(string log)
-        {
-            Console.WriteLine("Name: " + name + ", " + log);
-        }
     }
 }

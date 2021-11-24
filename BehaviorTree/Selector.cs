@@ -54,9 +54,9 @@ namespace BehaviorTree
             controller.FinishWithSuccess();
         }
 
-        public override void LogTask(string log)
+        public override void AddChildren(Node node)
         {
-            Console.WriteLine("Name: " + name + ", " + log);
+            controller.AddNode(node);
         }
     }
 }

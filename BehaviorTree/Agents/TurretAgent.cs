@@ -49,21 +49,16 @@ namespace BehaviorTree
                     bb.IsEnemyInRange = true;
 
                 Selector move = new Selector("Selector", bb);
-                ((ParentNodeController)move.GetControl()).
-                    AddNode(new Fire(
-                    "Fire", bb));
-               /* ((ParentNodeController)move.GetControl()).
-                    AddNode(new Rotate(
-                    "Rotate", bb));*/
+                move.AddChildren(new Fire("Fire", bb));
 
-                ((ParentNodeController)move.GetControl()).SafeStart();
+                move.Start();
 
-                while (!((ParentNodeController)move.GetControl()).Finished())
+                while (move.Running())
                 {
                     move.DoAction();
                 }
 
-            ((ParentNodeController)move.GetControl()).SafeEnd();
+                move.End();
 
                 bb.PreviousAction = bb.ChoosenAction;
             });
