@@ -23,6 +23,13 @@ namespace Simulator
         {
             round++;
             game.SpawnAgents(round);
+
+            if (game.IsGameOver)
+            {
+                round--;
+                return;
+            }
+
             var newRound = round >= rounds.Count;
             
             if (newRound)

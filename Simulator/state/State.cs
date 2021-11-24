@@ -1,7 +1,7 @@
 ﻿using Simulator.gamespecific;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace Simulator.state
 {
@@ -11,8 +11,9 @@ namespace Simulator.state
         public IEnumerable<IAgent> Agents => agents.Select(p => p.Key);
 
         private IDictionary<IAgent, StateObject> agents;
-        private List<Event> events;
+        private readonly List<Event> events;
         private readonly BreadthFirstSearch bfs;
+        public Alliances? Winner { get; set; }
 
         internal IEnumerable<Event> Events => events;
 
@@ -26,7 +27,7 @@ namespace Simulator.state
         public void AddAgent(IAgent agent, (int x, int y) gridLocation, IAgentType type)
         {
             agents.Add(agent, new StateObject(gridLocation) { 
-                IsActive = true, 
+                IsActive = true,
                 Type = type
             });
         }
@@ -56,7 +57,7 @@ namespace Simulator.state
 
             foreach (var enemy in agents.Where(a => (a.Key.IsActive && a.Value.Type.IsEnemy && a.Key != agent)))
             {
-                var squaredDistance = Mathf.Pow(enemy.Value.GridLocation.x - agents[agent].GridLocation.x, 2) + Mathf.Pow(enemy.Value.GridLocation.y - agents[agent].GridLocation.y, 2);
+                var squaredDistance = Math.Pow(enemy.Value.GridLocation.x - agents[agent].GridLocation.x, 2) + Math.Pow(enemy.Value.GridLocation.y - agents[agent].GridLocation.y, 2);
 
                 if (squaredDistance < closestSQDistance)
                 {

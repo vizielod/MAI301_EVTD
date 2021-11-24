@@ -42,7 +42,7 @@ namespace Simulator.state
                 if (sObj.IsEnemy)
                 {
                     if (e.Agent.IsActive && sObj.IsActive)
-                        e.Reward = (goals + activeEnemies + 1) / (enemies + 1) * (1 / roundNumber - e.Agent.SpawnRound + 1);
+                        e.Reward = (goals + activeEnemies + 1) / (enemies + 1) * (1 / (roundNumber - e.Agent.SpawnRound + 1));
                     else if (sObj.GoalReached)
                         e.Reward = 1;
                 }
