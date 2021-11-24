@@ -39,7 +39,9 @@ namespace Simulator.state
 
         public (int x, int y) PositionOf(IAgent agent)
         {
-            return agents[agent].GridLocation;
+            if (agents.ContainsKey(agent))
+                return agents[agent].GridLocation;
+            return (0, 0);
         }
 
         public IActionGenerator GetLegalActionGenerator(IAgent agent)
