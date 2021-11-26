@@ -1,7 +1,7 @@
-﻿using System;
+﻿using BehaviorTree.NodeBase;
 using System.Linq;
 
-namespace BehaviorTree
+namespace BehaviorTree.FlowControllNodes
 {
     public class Selector: ParentNode
     {

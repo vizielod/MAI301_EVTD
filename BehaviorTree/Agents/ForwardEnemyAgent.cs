@@ -1,5 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using BehaviorTree.ActionNodes;
+using BehaviorTree.FlowControllNodes;
+using BehaviorTree.NodeBase;
 using Simulator;
 
 namespace BehaviorTree
@@ -17,7 +19,7 @@ namespace BehaviorTree
         public ForwardEnemyAgent((int x, int y) initialPosition, int spawnRound)
         {
             this.InitialPosition = initialPosition;
-            bb = new Blackboard(null, null);
+            bb = new Blackboard();
             health = 10;
             this.SpawnRound = spawnRound;
         }

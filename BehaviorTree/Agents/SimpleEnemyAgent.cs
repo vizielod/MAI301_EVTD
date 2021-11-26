@@ -1,4 +1,8 @@
-﻿using Simulator;
+﻿using BehaviorTree.ActionNodes;
+using BehaviorTree.ConditionalNodes;
+using BehaviorTree.FlowControllNodes;
+using BehaviorTree.NodeBase;
+using Simulator;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +21,7 @@ namespace BehaviorTree
         public SimpleEnemyAgent((int x, int y) initialPosition, int spawnRound) 
         {
             this.InitialPosition = initialPosition;
-            bb = new Blackboard(null, null);
+            bb = new Blackboard();
             health = 10;
             this.SpawnRound = spawnRound;
         }
@@ -33,13 +37,32 @@ namespace BehaviorTree
             bb.CurrentPosition = state.PositionOf(this);
             
             Selector move = new Selector( bb);
-            
 
-            move.AddChildren(new RepeatPreviousAction( bb));
-            move.AddChildren(new MoveSouth( bb));
-            move.AddChildren(new MoveEast( bb));
-            move.AddChildren(new MoveWest( bb));
-            move.AddChildren(new MoveNorth( bb));
+            Sequence repeatSeq = new Sequence(bb);
+            repeatSeq.AddChildren(new CanRepeatLastMove(bb));
+            repeatSeq.AddChildren(new RepeatPreviousAction( bb));
+            move.AddChildren(repeatSeq);
+
+            Sequence moveSouth = new Sequence(bb);
+            moveSouth.AddChildren(new CanGoSouth(bb));
+            moveSouth.AddChildren(new MoveSouth(bb));
+            move.AddChildren(moveSouth);
+
+            Sequence moveEast = new Sequence(bb);
+            moveEast.AddChildren(new CanMoveEast(bb));
+            moveEast.AddChildren(new MoveEast(bb));
+            move.AddChildren(moveEast);
+
+            Sequence moveWest = new Sequence(bb);
+            moveWest.AddChildren(new CanMoveWest(bb));
+            moveWest.AddChildren(new MoveWest(bb));
+            move.AddChildren(moveWest);
+
+
+            Sequence moveNorth = new Sequence(bb);
+            moveNorth.AddChildren(new CanMoveNorth(bb));
+            moveNorth.AddChildren(new MoveNorth(bb));
+            move.AddChildren(moveNorth);
 
             move.Start();
 

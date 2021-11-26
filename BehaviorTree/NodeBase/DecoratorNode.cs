@@ -1,5 +1,5 @@
 ﻿using System;
-namespace BehaviorTree
+namespace BehaviorTree.NodeBase
 {
     public abstract class DecoratorNode:Node
     {

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using BehaviorTree.NodeBase;
 
-namespace BehaviorTree
+namespace BehaviorTree.DecoratorNodes
 {
     class ForceSuccess : DecoratorNode
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BehaviorTree
+namespace BehaviorTree.NodeBase
 {
     public class ParentNodeController : NodeController
     {

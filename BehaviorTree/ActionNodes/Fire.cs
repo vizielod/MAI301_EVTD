@@ -1,9 +1,7 @@
-﻿using Simulator.actioncommands;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using BehaviorTree.NodeBase;
+using Simulator.actioncommands;
 
-namespace BehaviorTree
+namespace BehaviorTree.ActionNodes
 {
     class Fire : LeafNode
     {

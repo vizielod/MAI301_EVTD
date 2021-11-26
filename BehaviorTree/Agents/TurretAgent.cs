@@ -1,7 +1,8 @@
-﻿using Simulator;
+﻿using BehaviorTree.ActionNodes;
+using BehaviorTree.FlowControllNodes;
+using BehaviorTree.NodeBase;
+using Simulator;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BehaviorTree
 {
@@ -16,7 +17,6 @@ namespace BehaviorTree
     public class TurretAgent : IAgent
     {
         Blackboard bb;
-        float range;
         int damage;
 
         public IAgent Target { get; set; } = null;
@@ -26,11 +26,13 @@ namespace BehaviorTree
 
         public bool IsActive => true;
 
+        public float Range { get; set; }
+
         public TurretAgent((int x, int y) InitialPosition)
         {
             this.InitialPosition = InitialPosition;
-            bb = new Blackboard(null, null);
-            range = 1.0f;
+            bb = new Blackboard();
+            Range = 1.0f;
             damage = 2;
         }
 
@@ -47,7 +49,7 @@ namespace BehaviorTree
                 (int x, int y) turretPos = state.PositionOf(this);
                 (int x, int y) enemyPos = state.PositionOf(closest);
                 (int x, int y) p = (enemyPos.x - turretPos.x, enemyPos.y - turretPos.y);
-                if (Math.Max(Math.Abs(p.x), Math.Abs(p.y)) <= range)
+                if (Math.Max(Math.Abs(p.x), Math.Abs(p.y)) <= Range)
                 {
                     bb.IsEnemyInRange = true;
                     Target = closest;

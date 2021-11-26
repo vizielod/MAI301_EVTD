@@ -1,5 +1,5 @@
 ﻿using System;
-namespace BehaviorTree
+namespace BehaviorTree.NodeBase
 {
     /**
      * Base abstract class for all the nodes

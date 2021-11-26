@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace BehaviorTree
+namespace BehaviorTree.NodeBase
 {
     public abstract class ParentNode:Node
     {

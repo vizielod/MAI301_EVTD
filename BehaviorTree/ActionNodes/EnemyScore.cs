@@ -1,10 +1,8 @@
-﻿using Simulator.actioncommands;
-using System;
-using System.Collections.Generic;
+﻿using BehaviorTree.NodeBase;
+using Simulator.actioncommands;
 using System.Linq;
-using System.Text;
 
-namespace BehaviorTree
+namespace BehaviorTree.ActionNodes
 {
     class EnemyScore : LeafNode
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BehaviorTree
+namespace BehaviorTree.NodeBase
 {
     public abstract class LeafNode : Node
     {

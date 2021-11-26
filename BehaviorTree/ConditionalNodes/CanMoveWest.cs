@@ -1,27 +1,24 @@
-﻿using System;
-using System.Linq;
+﻿using BehaviorTree.NodeBase;
 using Simulator.actioncommands;
+using System.Linq;
 
-namespace BehaviorTree
+namespace BehaviorTree.ConditionalNodes
 {
-    public class MoveRandomly:LeafNode
+    class CanMoveWest:LeafNode
     {
-        public MoveRandomly( Blackboard bb):base( bb)
+        public CanMoveWest(Blackboard blackboard) : base(blackboard)
         {
         }
 
         public override bool CheckConditions()
         {
-            return blackboard.LegalActions != null;
+            return blackboard.LegalActions != null && blackboard.LegalActions.Any(a => a is GoWest);
         }
 
         public override void DoAction()
         {
-
             if (CheckConditions())
             {
-                var rand = new Random();
-                blackboard.ChoosenAction = blackboard.LegalActions.ElementAt(rand.Next(blackboard.LegalActions.Count()));
                 controller.FinishWithSuccess();
             }
             else

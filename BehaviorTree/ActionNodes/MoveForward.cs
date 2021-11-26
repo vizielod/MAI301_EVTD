@@ -1,7 +1,7 @@
-﻿using System;
+﻿using BehaviorTree.NodeBase;
 using Simulator.actioncommands;
 
-namespace BehaviorTree
+namespace BehaviorTree.ActionNodes
 {
     public class MoveForward: LeafNode
     {

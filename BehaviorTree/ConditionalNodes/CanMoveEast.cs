@@ -1,24 +1,24 @@
-﻿using System;
+﻿using BehaviorTree.NodeBase;
+using Simulator.actioncommands;
 using System.Linq;
 
-namespace BehaviorTree
+namespace BehaviorTree.ConditionalNodes
 {
-    public class RepeatPreviousAction:LeafNode
+    class CanMoveEast : LeafNode
     {
-        public RepeatPreviousAction( Blackboard bb):base(bb)
+        public CanMoveEast(Blackboard blackboard) : base(blackboard)
         {
         }
 
         public override bool CheckConditions()
         {
-            return blackboard.LegalActions.Contains(blackboard.PreviousAction);
+            return blackboard.LegalActions != null && blackboard.LegalActions.Any(a => a is GoEast);
         }
 
         public override void DoAction()
         {
             if (CheckConditions())
             {
-                blackboard.ChoosenAction = blackboard.PreviousAction;
                 controller.FinishWithSuccess();
             }
             else
