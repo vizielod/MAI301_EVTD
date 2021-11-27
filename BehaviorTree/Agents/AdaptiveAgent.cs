@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BehaviorTree.Agents
 {
-    public class AdaptiveAgent: IAgent
+    class AdaptiveAgent: IAdaptiveAgent
     {
         public (int x, int y) InitialPosition { get; }
         public int SpawnRound { get; }
@@ -36,7 +36,15 @@ namespace BehaviorTree.Agents
             bb.ForwardPosition = state.SuggestPosition(this);
             bb.CurrentPosition = state.PositionOf(this);
 
-           
+            rootNode.Start();
+
+            while (rootNode.Running())
+            {
+                rootNode.DoAction();
+            }
+
+            rootNode.End();
+
             return bb.ChoosenAction;
         }
 
