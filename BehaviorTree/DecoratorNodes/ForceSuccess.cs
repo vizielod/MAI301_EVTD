@@ -4,7 +4,7 @@ namespace BehaviorTree.DecoratorNodes
 {
     class ForceSuccess : DecoratorNode
     {
-        public ForceSuccess(Blackboard blackboard, Node node) : base( blackboard, node)
+        public ForceSuccess(Node node) : base(node)
         {
         }
 

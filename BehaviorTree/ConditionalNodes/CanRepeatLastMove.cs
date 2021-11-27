@@ -5,8 +5,11 @@ namespace BehaviorTree.ConditionalNodes
 {
     class CanRepeatLastMove:LeafNode
     {
-        public CanRepeatLastMove(Blackboard blackboard) : base(blackboard)
+        private readonly EnemyBlackboard blackboard;
+
+        public CanRepeatLastMove(EnemyBlackboard blackboard)
         {
+            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()

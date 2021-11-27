@@ -16,7 +16,7 @@ namespace BehaviorTree
 
     public class TurretAgent : IAgent
     {
-        Blackboard bb;
+        TurretBlackboard bb;
         int damage;
 
         public IAgent Target { get; set; } = null;
@@ -31,7 +31,7 @@ namespace BehaviorTree
         public TurretAgent((int x, int y) InitialPosition)
         {
             this.InitialPosition = InitialPosition;
-            bb = new Blackboard();
+            bb = new TurretBlackboard();
             Range = 1.0f;
             damage = 2;
         }
@@ -55,7 +55,7 @@ namespace BehaviorTree
                     Target = closest;
                 }
 
-                Selector move = new Selector( bb);
+                Selector move = new Selector();
                 move.AddChildren(new Fire( bb));
 
                 move.Start();

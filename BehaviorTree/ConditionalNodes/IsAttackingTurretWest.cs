@@ -4,8 +4,11 @@ namespace BehaviorTree.ConditionalNodes
 {
     class IsAttackingTurretWest:LeafNode
     {
-        public IsAttackingTurretWest(Blackboard blackboard) : base(blackboard)
+        private readonly EnemyBlackboard blackboard;
+
+        public IsAttackingTurretWest(EnemyBlackboard blackboard)
         {
+            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()

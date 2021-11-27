@@ -6,8 +6,11 @@ namespace BehaviorTree.ConditionalNodes
 {
     class CanGoSouth:LeafNode
     {
-        public CanGoSouth(Blackboard blackboard) : base(blackboard)
+        private readonly EnemyBlackboard blackboard;
+
+        public CanGoSouth(EnemyBlackboard blackboard)
         {
+            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()

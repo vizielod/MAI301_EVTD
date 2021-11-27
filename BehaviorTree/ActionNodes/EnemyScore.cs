@@ -6,7 +6,12 @@ namespace BehaviorTree.ActionNodes
 {
     class EnemyScore : LeafNode
     {
-        public EnemyScore( Blackboard bb):base( bb) { }
+        private readonly EnemyBlackboard blackboard;
+
+        public EnemyScore( EnemyBlackboard blackboard)
+        {
+            this.blackboard = blackboard;
+        }
         public override bool CheckConditions()
         {
             return blackboard.LegalActions != null && blackboard.LegalActions.Any();

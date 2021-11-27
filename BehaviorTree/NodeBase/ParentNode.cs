@@ -7,7 +7,7 @@ namespace BehaviorTree.NodeBase
     {
         protected ParentNodeController controller;
 
-        public ParentNode(Blackboard blackboard):base(blackboard)
+        public ParentNode()
         {
             CreateController();
         }

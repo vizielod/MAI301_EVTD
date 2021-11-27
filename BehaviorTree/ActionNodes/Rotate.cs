@@ -5,8 +5,12 @@ namespace BehaviorTree.ActionNodes
 {
     class Rotate: LeafNode
     {
-        public Rotate( Blackboard blackboard) : base( blackboard)
-        { }
+        private readonly EnemyBlackboard blackboard;
+
+        public Rotate( EnemyBlackboard blackboard)
+        {
+            this.blackboard = blackboard;
+        }
 
         public override bool CheckConditions()
         {

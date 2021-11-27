@@ -5,7 +5,7 @@ namespace BehaviorTree.FlowControllNodes
 {
     public class Selector: ParentNode
     {
-        public Selector(Blackboard blackboard): base( blackboard)
+        public Selector()
         {}
 
         /**

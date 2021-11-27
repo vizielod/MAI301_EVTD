@@ -4,10 +4,13 @@ using System.Linq;
 
 namespace BehaviorTree.ActionNodes
 {
-    public class MoveRandomly:LeafNode
+    class MoveRandomly:LeafNode
     {
-        public MoveRandomly( Blackboard bb):base( bb)
+        private readonly EnemyBlackboard blackboard;
+
+        public MoveRandomly( EnemyBlackboard blackboard)
         {
+            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()

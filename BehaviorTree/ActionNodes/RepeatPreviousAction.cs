@@ -2,10 +2,13 @@
 
 namespace BehaviorTree.ActionNodes
 {
-    public class RepeatPreviousAction:LeafNode
+    class RepeatPreviousAction:LeafNode
     {
-        public RepeatPreviousAction( Blackboard bb):base(bb)
+        private readonly EnemyBlackboard blackboard;
+
+        public RepeatPreviousAction( EnemyBlackboard blackboard)
         {
+            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()

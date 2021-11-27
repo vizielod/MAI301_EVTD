@@ -4,7 +4,7 @@ namespace BehaviorTree.DecoratorNodes
 {
     public class Inverter : DecoratorNode
     {
-        public Inverter( Blackboard blackboard, Node node) : base( blackboard, node)
+        public Inverter( Node node) : base( node)
         {
         }
 

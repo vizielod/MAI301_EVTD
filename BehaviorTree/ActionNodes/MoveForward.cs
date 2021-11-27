@@ -3,10 +3,13 @@ using Simulator.actioncommands;
 
 namespace BehaviorTree.ActionNodes
 {
-    public class MoveForward: LeafNode
+    class MoveForward: LeafNode
     {
-        public MoveForward(Blackboard bb): base(bb)
+         EnemyBlackboard blackboard;
+
+        public MoveForward(EnemyBlackboard blackboard)
         {
+            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()

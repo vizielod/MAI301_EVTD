@@ -5,8 +5,12 @@ namespace BehaviorTree.ActionNodes
 {
     class MoveEast : LeafNode
     {
-        public MoveEast(Blackboard blackboard):base( blackboard) 
-        { }
+        private readonly EnemyBlackboard blackboard;
+
+        public MoveEast(EnemyBlackboard blackboard)
+        {
+            this.blackboard = blackboard;
+        }
 
         public override bool CheckConditions()
         {

@@ -5,7 +5,7 @@ namespace BehaviorTree.FlowControllNodes
 {
     public class Sequence:ParentNode
     {
-        public Sequence( Blackboard blackboard) : base( blackboard)
+        public Sequence()
         { }
 
         public override void AddChildren(Node node)

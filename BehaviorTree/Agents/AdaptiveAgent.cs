@@ -1,25 +1,27 @@
-﻿using System.Collections.Generic;
-using BehaviorTree.ActionNodes;
-using BehaviorTree.FlowControllNodes;
-using BehaviorTree.NodeBase;
+﻿using BehaviorTree.NodeBase;
 using Simulator;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace BehaviorTree
+namespace BehaviorTree.Agents
 {
-    public class ForwardEnemyAgent : IAgent
+    public class AdaptiveAgent: IAgent
     {
         public (int x, int y) InitialPosition { get; }
         public int SpawnRound { get; }
 
         EnemyBlackboard bb;
-        int health;
+        Node rootNode;
+        public int health;
 
         public bool IsActive => health > 0;
 
-        public ForwardEnemyAgent((int x, int y) initialPosition, int spawnRound)
+        public AdaptiveAgent((int x, int y) initialPosition, int spawnRound, EnemyBlackboard bb, Node rootNode)
         {
             this.InitialPosition = initialPosition;
-            bb = new EnemyBlackboard();
+            this.bb = bb;
+            this.rootNode = rootNode;
             health = 10;
             this.SpawnRound = spawnRound;
         }
@@ -34,20 +36,7 @@ namespace BehaviorTree
             bb.ForwardPosition = state.SuggestPosition(this);
             bb.CurrentPosition = state.PositionOf(this);
 
-            Selector move = new Selector( );
-            move.AddChildren(new MoveForward( bb));
-
-            move.Start();
-
-            while (move.Running())
-            {
-                move.DoAction();
-            }
-
-            move.End();
-
-            bb.PreviousAction = bb.ChoosenAction;
-
+           
             return bb.ChoosenAction;
         }
 
@@ -60,6 +49,10 @@ namespace BehaviorTree
         {
             health += v;
         }
+
+        public void Reset() 
+        {
+            bb.Reset();
+        }
     }
 }
-

@@ -3,15 +3,18 @@ using System;
 
 namespace BehaviorTree.ConditionalNodes
 {
-    class CanClosestTurretShootMe:LeafNode
+    class WithinShootingRange:LeafNode
     {
-        public CanClosestTurretShootMe(Blackboard blackboard) : base(blackboard)
+        private readonly EnemyBlackboard blackboard;
+
+        public WithinShootingRange(EnemyBlackboard blackboard)
         {
+            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()
         {
-            return blackboard.ClosestEnemy != null && blackboard.CurrentPosition != null && blackboard.ClosestTurretPosition != null;
+            return blackboard.ClosestTurret != null && blackboard.CurrentPosition != null && blackboard.ClosestTurretPosition != null;
         }
 
         public override void DoAction()

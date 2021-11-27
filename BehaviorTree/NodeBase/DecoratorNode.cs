@@ -8,7 +8,7 @@ namespace BehaviorTree.NodeBase
          */
         protected Node node;
 
-        public DecoratorNode(Blackboard blackboard, Node node):base(blackboard)
+        public DecoratorNode(Node node)
         {
             InitTask(node);
         }

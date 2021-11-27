@@ -6,8 +6,11 @@ namespace BehaviorTree.ConditionalNodes
 {
     class CanMoveNorth:LeafNode
     {
-        public CanMoveNorth(Blackboard blackboard) : base(blackboard)
+        private readonly EnemyBlackboard blackboard;
+
+        public CanMoveNorth(EnemyBlackboard blackboard)
         {
+            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()
