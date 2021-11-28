@@ -17,14 +17,16 @@ namespace Evolution
             factory = new SimulatorFactory();
         }
 
-        List<IAdaptiveAgent> CreatePopulation() 
+        IEnumerable<IAdaptiveAgent> CreatePopulation() 
         {
-            List<IAdaptiveAgent> result = new List<IAdaptiveAgent>();
+            //List<IAdaptiveAgent> result = new List<IAdaptiveAgent>();
 
-            AgentBuilder agentBuilder = new AgentBuilder();
-            result.Add(agentBuilder.SetInitialPosition(1, 1).SetSpawnRound(0).AddActionNode(ActionType.Forward).BuildAgent());
-
-            return result;
+            for (int i = 0; i < populationSize; i++)
+            {
+                AgentBuilder agentBuilder = new AgentBuilder();
+                yield return agentBuilder.SetInitialPosition(1, 1).SetSpawnRound(i).AddActionNode(ActionType.Forward).BuildAgent();
+            }
+           
         }
 
         public IEnumerable<IStateSequence> RunEvolution(IMapLayout map, IEnumerable<IAgent> turrets)
