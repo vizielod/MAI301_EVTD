@@ -40,4 +40,14 @@ public class EnemyController : MonoBehaviour
             currentHealthPoints = newHealthPoints;
         }
     }
+
+    public void CheckIfGoalIsreached((int i, int j) goalPosition)
+    {
+        if(this.transform.position.x == goalPosition.i && this.transform.position.z == goalPosition.j)
+        {
+            Debug.Log("Reached Goal");
+            PlayerStats.Lives--;
+            //transform.gameObject.SetActive(false); //Here would be better to Set the Agent IsActive to false on the backend.
+        }
+    }
 }

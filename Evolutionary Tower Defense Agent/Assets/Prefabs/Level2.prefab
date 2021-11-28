@@ -160,6 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2139296940433387587}
   - component: {fileID: 2139296940433387586}
+  - component: {fileID: 716748622473738507}
   m_Layer: 6
   m_Name: Level2
   m_TagString: Untagged
@@ -199,18 +200,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814eb05588fe7b849b73cda5f006619c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiManager: {fileID: 0}
+  playerStats: {fileID: 0}
   Wall: {fileID: 5207213701149100563, guid: 415115cc8c7eeb74d8dc4b01c32080be, type: 3}
   Ground: {fileID: 6551634818564892039, guid: f89bfa22f2c821546a285923e4123b70, type: 3}
   Spawn: {fileID: 590402562519189353, guid: 0f16c9e4ef3623e488cc73c639f3f0e1, type: 3}
   Goal: {fileID: 618028937734850643, guid: 74343da6fe0e0014ab42662f0a382600, type: 3}
   Turret: {fileID: 8978916146828863867, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
+  enemyPrefab: {fileID: 7482663565232602093, guid: 3caf5044c1811eb4cac31ddb29207b98, type: 3}
   tileSize: 5
   numberOfEnemies: 5
   numberOfTurrets: 0
-  enemyPrefab: {fileID: 7482663565232602093, guid: 3caf5044c1811eb4cac31ddb29207b98, type: 3}
-  enemyGameObjects: []
-  turretGameObjects: []
+  useGridWithTurretsSetup: 0
+  useGridWithoutTurretsSetup: 0
+  maxTurretCount: 10
+  turretCount: 0
   stepCount: 0
+--- !u!114 &716748622473738507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139296940433387645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0929f3cad94e972429fc1ceaeb6076c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startLives: 1
+  livesText: {fileID: 0}
+  remainingTurretCountText: {fileID: 0}
 --- !u!1 &2139296940589970016
 GameObject:
   m_ObjectHideFlags: 0

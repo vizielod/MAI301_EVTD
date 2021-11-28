@@ -20,7 +20,7 @@ public class Tile : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(gameManager.turretCount >= 10)
+        if(gameManager.turretCount >= gameManager.maxTurretCount)
         {
             Debug.LogWarning("YOU CANNOT PLACE MORE TURRETS! PRESS START!");
             return;
@@ -37,6 +37,13 @@ public class Tile : MonoBehaviour
             gameManager.gridWithoutTurretsArray[gridPosition.i, gridPosition.j] = 4;
             gameManager.InitializeTurretAgent(gridPosition.i, gridPosition.j, turret);
             gameManager.turretCount++;
+            PlayerStats.remainingTurretcount--;
+
+            if (PlayerStats.remainingTurretcount <= 0)
+            {
+                gameManager.uiManager.TurretCountReachedZero();
+            }
+            Destroy(transform.gameObject);//Destroy original Tile after replacing with Turret.
         }
         else if (gameManager.useGridWithTurretsSetup)
         {
@@ -51,7 +58,10 @@ public class Tile : MonoBehaviour
     }
     void OnMouseEnter()
     {
-        rend.material.color = hoverColor;
+        if (gameManager.turretCount < 10)
+        {
+            rend.material.color = hoverColor;
+        }
     }
 
     private void OnMouseExit()

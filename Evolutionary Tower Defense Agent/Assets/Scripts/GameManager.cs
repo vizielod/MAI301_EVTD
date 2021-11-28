@@ -7,6 +7,11 @@ using BehaviorTree;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Game State & UI")]
+    public UIManager uiManager;
+    public PlayerStats playerStats;
+    public bool gameOver = false;
+
     [Header("Prefabs")]
     public GameObject Wall;
     public GameObject Ground;
@@ -25,6 +30,7 @@ public class GameManager : MonoBehaviour
     public bool useGridWithTurretsSetup;
     public bool useGridWithoutTurretsSetup;
     public Grid grid;
+    public int maxTurretCount = 10;
     public int turretCount = 0;
 
     private List<GameObject> enemyGameObjects;
@@ -41,19 +47,19 @@ public class GameManager : MonoBehaviour
     public int[,] defaultGridArray = new int[,]
     {
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            { 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 3, 1},
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     };
 
@@ -116,6 +122,7 @@ public class GameManager : MonoBehaviour
     {
         turretAgents = new List<IAgent>();
         enemyAgents = new List<IAgent>();
+        PlayerStats.remainingTurretcount = maxTurretCount;
     }
     // Start is called before the first frame update
     void Start()
@@ -153,6 +160,45 @@ public class GameManager : MonoBehaviour
         InitializeAgents();*/
     }
 
+    public void Restart()
+    {
+        RemoveGameObjects();
+
+        turretAgents = new List<IAgent>();
+        enemyAgents = new List<IAgent>();
+        PlayerStats.remainingTurretcount = maxTurretCount;
+        gridWithoutTurretsArray = defaultGridArray;
+        agentGODictionary = new Dictionary<IAgent, GameObject>();
+        sim = null;
+        grid = null;
+        tileTypeArray = null;
+
+        turretCount = 0;
+        numberOfTurrets = 0;
+
+        useGridWithTurretsSetup = false;
+        useGridWithoutTurretsSetup = true;
+        //RemoveGameObjects();
+
+        if (useGridWithTurretsSetup)
+        {
+            SetTileTypeArray(gridWithTurretsArray);
+        }
+        else if (useGridWithoutTurretsSetup)
+        {
+            SetTileTypeArray(gridWithoutTurretsArray);
+        }
+
+
+        grid = new Grid(tileTypeArray.GetLength(0), tileTypeArray.GetLength(1), tileSize, tileTypeArray); // int rowsOrHeight = ary.GetLength(0); int colsOrWidth = ary.GetLength(1);
+        InitializeGridTiles();
+
+        uiManager.Restart();
+        playerStats.Restart();
+        PlayerStats.remainingTurretcount = maxTurretCount;
+
+        gameOver = false;
+    }
     public void StartGame()
     {
         if (useGridWithTurretsSetup)
@@ -161,7 +207,7 @@ public class GameManager : MonoBehaviour
             InitializeAgents();
             return;
         }
-        else if(turretCount < 10)
+        else if(turretCount < maxTurretCount)
         {
             Debug.LogWarning("YOU NEED TO PLACE ALL 10 TURRETS BEFORE YOU START!");
             return;
@@ -170,9 +216,9 @@ public class GameManager : MonoBehaviour
         {
             //turrets = GameObject.FindGameObjectsWithTag(turretTag);
             InitializeAgents();
-            WriteGridOnDebug();
+            //WriteGridOnDebug();
         }
-
+        uiManager.StartGamePressed();
     }
 
     void WriteGridOnDebug()
@@ -255,14 +301,29 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!gameOver)
         {
-            StepForward();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                StepForward();
+            }
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+                StepBackward();
+            }
+            if (PlayerStats.Lives <= 0)
+            {
+                EndGame();
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.Q))
-        {
-            StepBackward();
-        }
+
+    }
+
+    void EndGame()
+    {
+        Debug.Log("Game Over");
+        uiManager.GameOverState();
+        gameOver = true;
     }
 
     void StepForward()
@@ -286,9 +347,10 @@ public class GameManager : MonoBehaviour
                     var enemyController = agentGODictionary[agent].GetComponent<EnemyController>();
                     enemyController.newHealthPoints = enemyAgent.health;
                     enemyController.UpdateHealthBar();
-
+                    enemyController.CheckIfGoalIsreached((grid.Goal.x * tileSize, grid.Goal.y * tileSize));
                     /*var enemyAgent = (SimpleEnemyAgent)agent;
                     Debug.Log("Agent: " + agent + " Health: " + enemyAgent.health);*/
+                    
                 }
                 if (agent is TurretAgent && agent.IsActive)
                 {
@@ -315,51 +377,12 @@ public class GameManager : MonoBehaviour
                 agentGODictionary[agent].SetActive(false);
             }
         }
-        /*for (int i = 0; i < numberOfAgents; i++)
-        {
-            IAgent agent = state.Agents.ElementAt(i);
-            if(agent is SimpleEnemyAgent)
-            {
-                (int x, int y) = state.PositionOf(agent);
-                agentGODictionary[agent].transform.position = new Vector3(x * 5, 2.75f, y * 5);
-
-                var enemyAgent = (SimpleEnemyAgent)agent;
-                Debug.Log("Agent: " + agent + " Health: " + enemyAgent.health);
-            }
-            if(agent is TurretAgent)
-            {
-
-                var turretAgent = (TurretAgent)agent;
-                var target = turretAgent.Target;
-                Debug.Log(target);
-
-                //Debug.Log(targetGO);
-                agentGODictionary[agent].GetComponent<TurretController>().state = state;
-
-                if (target != null)
-                {
-                    agentGODictionary[agent].GetComponent<TurretController>().LookTowardsTarget(target);
-                }
-
-                //agentGODictionary[agent].GetComponent<TurretController>().DoScanForTargetRotation();
-                //agentGODictionary[agent].GetComponent<TurretController>().DealDamageToTarget();
-            }
-
-            if (!agent.IsActive)
-            {
-                agentGODictionary[agent].SetActive(false);
-            }
-        }*/
-
-        /*foreach (var turret in turrets)
-        {
-            turret.GetComponent<TurretController>().DoScanForTargetRotation();
-            turret.GetComponent<TurretController>().DealDamageToTarget();
-        }*/
-
-        //DealDamageToTarget();
     }
 
+    public (int i, int j) GetGoalPosition()
+    {
+        return grid.Goal;
+    }
     void StepBackward()
     {
         sim.StepBackward();
@@ -437,6 +460,36 @@ public class GameManager : MonoBehaviour
         newTurretTile.SetParent(transform.Find("Turrets"));
 
         return newTurret;
+    }
+
+    public void RemoveGameObjects()
+    {
+        Transform turrets = transform.Find("Turrets");
+        for (int i = 0; i < turrets.childCount; i++)
+        {
+            Destroy(turrets.GetChild(i).gameObject);
+        }
+
+        Transform tiles = transform.Find("Tiles");
+        for (int i = 0; i < tiles.childCount; i++)
+        {
+            Destroy(tiles.GetChild(i).gameObject);
+        }
+
+        Transform ground = transform.Find("Ground");
+        for (int i = 0; i < ground.childCount; i++)
+        {
+            Destroy(ground.GetChild(i).gameObject);
+        }
+
+        Transform enemies = transform.Find("Enemies");
+        for (int i = 0; i < enemies.childCount; i++)
+        {
+            Destroy(enemies.GetChild(i).gameObject);
+        }
+
+        Destroy(transform.Find("START(Clone)").gameObject);
+        Destroy(transform.Find("END(Clone)").gameObject);
     }
 
     void OnDrawGizmos()
