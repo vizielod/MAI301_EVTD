@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
 
     private string enemyTag = "Enemy";
     private string turretTag = "Turret";
+    private List<IAgent> turretAgents;
+    private List<IAgent> enemyAgents;
 
     public int[,] defaultGridArray = new int[,]
     {
@@ -112,6 +114,8 @@ public class GameManager : MonoBehaviour
     }
     private void Awake()
     {
+        turretAgents = new List<IAgent>();
+        enemyAgents = new List<IAgent>();
     }
     // Start is called before the first frame update
     void Start()
@@ -121,6 +125,11 @@ public class GameManager : MonoBehaviour
         if(useGridWithTurretsSetup && useGridWithoutTurretsSetup)
         {
             Debug.LogError("Make sure only one of useGridWithTurretsSetup and useGridWithoutTurretsSetup is selected!");
+            #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+            #else
+            Application.Quit();
+            #endif
             return;
         }
         else if (useGridWithTurretsSetup)
@@ -157,16 +166,40 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("YOU NEED TO PLACE ALL 10 TURRETS BEFORE YOU START!");
             return;
         }
+        else
+        {
+            //turrets = GameObject.FindGameObjectsWithTag(turretTag);
+            InitializeAgents();
+            WriteGridOnDebug();
+        }
 
-        turrets = GameObject.FindGameObjectsWithTag(turretTag);
-        InitializeAgents();
     }
 
+    void WriteGridOnDebug()
+    {
+        for (int i = 0; i < gridWithoutTurretsArray.GetLength(0); i++)
+        {
+            string line = "";
+            for (int j = 0; j < gridWithoutTurretsArray.GetLength(1); j++)
+            {
+                line = System.String.Concat(line, " ", gridWithoutTurretsArray[i, j]);
+            }
+            Debug.Log(line);
+        }
+
+        for (int i = 0; i < grid.Height; i++)
+        {
+            for (int j = 0; j < grid.Width; j++)
+            {
+                Debug.Log(i + " " + j + " " + grid.tileTypeArray[i, j]);
+            }
+        }
+    }
     void InitializeAgents()
     {
         Vector3 spawnPosition = new Vector3(5, 2.75f, 5);
-        List<IAgent> enemyAgents = new List<IAgent>();
-        List<IAgent> turretAgents = new List<IAgent>();
+        //List<IAgent> enemyAgents = new List<IAgent>();
+        //List<IAgent> turretAgents = new List<IAgent>();
 
         for (int i = 0; i < numberOfEnemies; i++)
         {
@@ -174,37 +207,49 @@ public class GameManager : MonoBehaviour
 
             newEnemyGO.transform.SetParent(transform.Find("Enemies"));
 
-            IAgent enemyAgent = new SimpleEnemyAgent((1, 1), i);
+            IAgent enemyAgent = new SimpleEnemyAgent((1, 1), i+1);
             newEnemyGO.GetComponent<EnemyController>().simpleEnemyAgent = (SimpleEnemyAgent)enemyAgent;
             newEnemyGO.GetComponent<EnemyController>().enabled = true;
             enemyAgents.Add(enemyAgent);
 
-            newEnemyGO.GetComponent<EnemyController>().simpleEnemyAgent = (SimpleEnemyAgent)enemyAgents[i];
+            //newEnemyGO.GetComponent<EnemyController>().simpleEnemyAgent = (SimpleEnemyAgent)enemyAgents[i];
 
             agentGODictionary.Add(enemyAgent, newEnemyGO);
 
-            enemyGameObjects.Add(newEnemyGO);
+            //enemyGameObjects.Add(newEnemyGO);
         }
 
-        for (int i = 0; i < grid.Width; i++)
+        if (useGridWithTurretsSetup)
         {
-            for (int j = 0; j < grid.Height; j++)
+            for (int i = 0; i < grid.Height; i++)
             {
-                if(grid.TypeAt(i,j) == TileType.Turret)
+                for (int j = 0; j < grid.Width; j++)
                 {
-                    IAgent turretAgent = new TurretAgent((i, j));
-                    turretAgents.Add(turretAgent);
+                    if (grid.TypeAt(i, j) == TileType.Turret)
+                    {
+                        IAgent turretAgent = new TurretAgent((i, j));
+                        turretAgents.Add(turretAgent);
 
-                    agentGODictionary.Add(turretAgent, turrets[numberOfTurrets].gameObject);
+                        agentGODictionary.Add(turretAgent, turrets[numberOfTurrets].gameObject);
 
-                    turrets[numberOfTurrets].gameObject.GetComponent<TurretController>().turretAgent = (TurretAgent)turretAgent;
+                        turrets[numberOfTurrets].gameObject.GetComponent<TurretController>().turretAgent = (TurretAgent)turretAgent;
 
-                    numberOfTurrets++;
+                        numberOfTurrets++;
+                    }
                 }
             }
         }
 
         sim = new SimulatorFactory().CreateSimulator(grid, enemyAgents, turretAgents); // Parse enemies and tower agents
+    }
+
+    public void InitializeTurretAgent(int i, int j, GameObject turretGO)
+    {
+        IAgent turretAgent = new TurretAgent((i, j));
+        turretAgents.Add(turretAgent);
+        agentGODictionary.Add(turretAgent, turretGO);
+        turretGO.GetComponent<TurretController>().turretAgent = (TurretAgent)turretAgent;
+        numberOfTurrets++;
     }
 
     // Update is called once per frame
@@ -382,6 +427,16 @@ public class GameManager : MonoBehaviour
         Transform newTile = (Instantiate(tile, new Vector3(i * grid.tileSize, 0, j * grid.tileSize), Quaternion.identity) as GameObject).transform;
 
         newTile.SetParent(parent);
+    }
+
+    public GameObject InstantiateTurret(int i, int j)
+    {
+        GameObject newTurret = Instantiate(Turret, new Vector3(i * grid.tileSize, 0, j * grid.tileSize), Quaternion.identity) as GameObject;
+        Transform newTurretTile = newTurret.transform;
+
+        newTurretTile.SetParent(transform.Find("Turrets"));
+
+        return newTurret;
     }
 
     void OnDrawGizmos()

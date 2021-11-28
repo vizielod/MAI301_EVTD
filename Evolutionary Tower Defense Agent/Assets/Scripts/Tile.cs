@@ -33,7 +33,9 @@ public class Tile : MonoBehaviour
             gameManager.grid.tileTypeArray[gridPosition.i, gridPosition.j] = Simulator.TileType.Turret;
             gameManager.tileTypeArray[gridPosition.i, gridPosition.j] = Simulator.TileType.Turret;
             gameManager.InstantiateGridTile(Simulator.TileType.Turret, gridPosition.i, gridPosition.j);
+            GameObject turret = gameManager.InstantiateTurret(gridPosition.i, gridPosition.j);
             gameManager.gridWithoutTurretsArray[gridPosition.i, gridPosition.j] = 4;
+            gameManager.InitializeTurretAgent(gridPosition.i, gridPosition.j, turret);
             gameManager.turretCount++;
         }
         else if (gameManager.useGridWithTurretsSetup)
