@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     [Header("Grid Setup")]
     public bool useGridWithTurretsSetup;
     public bool useGridWithoutTurretsSetup;
+    public bool useGridMultiLineWithoutTurretsSetup;
     public Grid grid;
     public int maxTurretCount = 10;
     public int turretCount = 0;
@@ -101,6 +102,25 @@ public class GameManager : MonoBehaviour
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     };
 
+    public int[,] gridMultiLineWithoutTurretsArray = new int[,]
+{
+            { 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+            { 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1},
+            { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+            { 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 3, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1},
+};
+
     public TileType[,] tileTypeArray;
     IStateSequence sim;
 
@@ -129,7 +149,10 @@ public class GameManager : MonoBehaviour
     {
         agentGODictionary = new Dictionary<IAgent, GameObject>();
 
-        if(useGridWithTurretsSetup && useGridWithoutTurretsSetup)
+        if(useGridWithTurretsSetup && useGridWithoutTurretsSetup && useGridMultiLineWithoutTurretsSetup ||
+            useGridWithTurretsSetup && useGridWithoutTurretsSetup ||
+            useGridWithTurretsSetup && useGridMultiLineWithoutTurretsSetup ||
+            useGridWithoutTurretsSetup && useGridMultiLineWithoutTurretsSetup)
         {
             Debug.LogError("Make sure only one of useGridWithTurretsSetup and useGridWithoutTurretsSetup is selected!");
             #if UNITY_EDITOR
@@ -147,9 +170,13 @@ public class GameManager : MonoBehaviour
         {
             SetTileTypeArray(gridWithoutTurretsArray);
         }
+        else if (useGridMultiLineWithoutTurretsSetup)
+        {
+            SetTileTypeArray(gridMultiLineWithoutTurretsArray);
+        }
         else
         {
-            Debug.LogError("Make sure either useGridWithTurretsSetup or useGridWithoutTurretsSetup is selected!");
+            Debug.LogError("Make sure either useGridWithTurretsSetup, useGridWithoutTurretsSetup or useGridMultiLineWithoutTurretsSetup is selected!");
             return;
         }
 
@@ -188,7 +215,10 @@ public class GameManager : MonoBehaviour
         {
             SetTileTypeArray(gridWithoutTurretsArray);
         }
-
+        else if (useGridMultiLineWithoutTurretsSetup)
+        {
+            SetTileTypeArray(gridMultiLineWithoutTurretsArray);
+        }
 
         grid = new Grid(tileTypeArray.GetLength(0), tileTypeArray.GetLength(1), tileSize, tileTypeArray); // int rowsOrHeight = ary.GetLength(0); int colsOrWidth = ary.GetLength(1);
         InitializeGridTiles();

@@ -6445,6 +6445,7 @@ MonoBehaviour:
   numberOfTurrets: 0
   useGridWithTurretsSetup: 0
   useGridWithoutTurretsSetup: 0
+  useGridMultiLineWithoutTurretsSetup: 0
   maxTurretCount: 10
   turretCount: 0
   stepCount: 0
@@ -16487,6 +16488,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: useGridWithoutTurretsSetup
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: useGridMultiLineWithoutTurretsSetup
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387587, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
