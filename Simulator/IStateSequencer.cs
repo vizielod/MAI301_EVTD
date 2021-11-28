@@ -8,5 +8,6 @@ namespace Simulator
         void StepBackward();
         IState GetCurrentStep();
         IEnumerable<IAgent> AllAgents { get; }
+        bool IsGameOver { get; }
     }
 }

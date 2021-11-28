@@ -2,17 +2,19 @@
 using Simulator;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 
 namespace Evolution
 {
-    class Evolutionary
+    public class Evolutionary
     {
         int populationSize;
+        SimulatorFactory factory;
 
         public Evolutionary(int populationSize)
         {
             this.populationSize = populationSize;
+            factory = new SimulatorFactory();
         }
 
         List<IAdaptiveAgent> CreatePopulation() 
@@ -25,9 +27,18 @@ namespace Evolution
             return result;
         }
 
-        public IEnumerable<IStateSequence> RunEvolution(IMapLayout map, List<IAgent> turrets)
+        public IEnumerable<IStateSequence> RunEvolution(IMapLayout map, IEnumerable<IAgent> turrets)
         {
-            return null;
+            IEnumerable<IAgent> enemies = CreatePopulation().Cast<IAgent>();
+
+            IStateSequence stateSequence = factory.CreateSimulator(map, enemies, turrets);
+
+            while (!stateSequence.IsGameOver)
+            {
+                stateSequence.StepForward();
+            }
+
+            yield return stateSequence;
         }
     }
 }

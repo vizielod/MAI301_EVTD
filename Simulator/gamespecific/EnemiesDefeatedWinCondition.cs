@@ -11,8 +11,11 @@ namespace Simulator.gamespecific
             this.game = game;
         }
 
-        public Alliances? GetWinner()
+        public Alliances? GetWinner(int round)
         {
+            if (game.CountUnspawnedEnemies(round) > 0)
+                return null;
+
             if (game.CountActiveEnemies() == 0)
                 return Alliances.Player;
             return null;

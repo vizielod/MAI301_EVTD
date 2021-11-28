@@ -9,7 +9,6 @@ namespace Simulator.gamespecific
         private readonly IMapLayout map;
         private readonly Dictionary<IAgent, StateObject> agents;
         private readonly BreadthFirstSearch bfsMap;
-        private readonly IWinCondition winCondition;
 
         public TowerDefenceGame(IMapLayout map, IEnumerable<IAgent> agents, IEnumerable<IAgent> towers)
         {
@@ -34,14 +33,11 @@ namespace Simulator.gamespecific
                     Type = towerType
                 });
             }
-            winCondition = new WinConditionChain(new EnemiesDefeatedWinCondition(this), new EnemiesGoalReachedWinCondition(this));
         }
 
         public IEnumerable<IAgent> ActiveAgents => agents.Where(a => a.Value.IsActive && a.Key.IsActive).Select(a => a.Key);
 
         public IEnumerable<IAgent> AllAgents => agents.Keys;
-
-        public bool IsGameOver => winCondition.GetWinner().HasValue;
 
         public int CountActiveEnemies()
         {
@@ -58,6 +54,11 @@ namespace Simulator.gamespecific
             return agents.Count(a => a.Value.GoalReached && a.Value.IsEnemy);
         }
 
+        public int CountUnspawnedEnemies(int round)
+        {
+            return agents.Count(a => a.Key.SpawnRound > round && a.Value.IsEnemy);
+        }
+
         public void DespawnAgents(int round)
         {
             agents.Where(a => a.Key.SpawnRound > round).AsParallel().ForAll(a => a.Value.IsActive = false);
@@ -66,7 +67,6 @@ namespace Simulator.gamespecific
         public IState GenerateState()
         {
             var state = new State(map, bfsMap);
-            state.Winner = winCondition.GetWinner();
             foreach (var agent in agents.Where(a => (a.Value.IsActive && a.Key.IsActive)))
                 state.AddAgent(agent.Key, agent.Value.GridLocation, agent.Value.Type);
 

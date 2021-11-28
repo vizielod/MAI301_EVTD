@@ -8,8 +8,8 @@ namespace Simulator
         IEnumerable<IAgent> AllAgents { get; }
         IState GenerateState();
         IStateObject GetStateObject(IAgent agent);
-        bool IsGameOver { get; }
         void SpawnAgents(int round);
+        int CountUnspawnedEnemies(int round);
         void DespawnAgents(int round);
         int CountEnemies();
         int CountActiveEnemies();

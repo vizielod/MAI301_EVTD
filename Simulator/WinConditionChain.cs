@@ -11,12 +11,12 @@
             this.successor = successor;
         }
 
-        public Alliances? GetWinner()
+        public Alliances? GetWinner(int round)
         {
-            Alliances? winner = winCondition.GetWinner();
+            Alliances? winner = winCondition.GetWinner(round);
             if (winner.HasValue)
                 return winner;
-            return successor.GetWinner();
+            return successor.GetWinner(round);
         }
     }
 }

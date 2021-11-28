@@ -4,6 +4,7 @@ using UnityEngine;
 using Simulator;
 using System.Linq;
 using BehaviorTree;
+using Evolution;
 
 public class GameManager : MonoBehaviour
 {
@@ -131,7 +132,8 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        sim = new SimulatorFactory().CreateSimulator(grid, enemyAgents, turretAgents); // Parse enemies and tower agents
+        //sim = new SimulatorFactory().CreateSimulator(grid, enemyAgents, turretAgents); // Parse enemies and tower agents
+        sim = new Evolutionary(1).RunEvolution(grid, turretAgents).First();
     }
 
     // Update is called once per frame
