@@ -23,7 +23,8 @@ namespace Simulator
             this.game = game;
             rounds = new List<Round>();
             round = -1;
-            winCondition = new WinConditionChain(new EnemiesDefeatedWinCondition(game), new EnemiesGoalReachedWinCondition(game));
+            winCondition = new WinConditionChain(new EnemiesDefeatedWinCondition(game), new WinConditionChain(new EnemiesGoalReachedWinCondition(game), new TimeoutWinCondition(200)));
+
         }
 
         public void StepForward()
@@ -86,6 +87,14 @@ namespace Simulator
         public IEnumerable<IAgent> GetAgents()
         {
             return game.ActiveAgents;
+        }
+
+        public void ReWind()
+        {
+            while(round >= 0)
+            {
+                StepBackward();
+            }
         }
     }
 }

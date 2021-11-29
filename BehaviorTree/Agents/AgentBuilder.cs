@@ -1,5 +1,6 @@
 ﻿using BehaviorTree.ActionNodes;
 using BehaviorTree.Agents;
+using BehaviorTree.ConditionalNodes;
 using BehaviorTree.FlowControllNodes;
 using BehaviorTree.NodeBase;
 using System;
@@ -8,9 +9,30 @@ using System.Text;
 
 namespace BehaviorTree.Agents
 {
+
     public enum ActionType 
     {
         Forward
+    }
+
+    public enum CompositeType
+    {
+        Selector,
+        Sequence
+    }
+
+    public enum ConditionType
+    {
+        CanGoSouth,
+        CanGoNorth,
+        CanGoWest,
+        CanGoEast,
+        CanRepeat,
+        IsAttackingTurretEast,
+        IsAttackingTurretWest,
+        IsAttackingTurretSouth,
+        IsAttackingTurretNorth,
+        WithinShootingRange
     }
     public class AgentBuilder
     {
@@ -27,6 +49,15 @@ namespace BehaviorTree.Agents
             spawnRound = 0;
         }
 
+        public AgentBuilder AddRootNodes(CompositeType compositeType, ConditionType conditionType, ActionType actionType) 
+        {
+            currentNode = rootNode;
+            AddCompositeNode(compositeType);
+            AddConditionNode(conditionType);
+            AddActionNode(actionType);
+            return this;
+        }
+
         public AgentBuilder AddActionNode(ActionType type)
         {
             switch (type)
@@ -41,13 +72,47 @@ namespace BehaviorTree.Agents
             return this;
         }
 
-        public AgentBuilder AddSelector()
+        public AgentBuilder AddConditionNode(ConditionType type)
         {
-            Selector selector = new Selector();
+            switch (type)
+            {
+                case ConditionType.CanGoSouth:
+                    AddLeafNode(new CanMoveSouth(blackboard));
+                    break;
+                case ConditionType.CanGoNorth:
+                    AddLeafNode(new CanMoveNorth(blackboard));
+                    break;
+                case ConditionType.CanGoWest:
+                    AddLeafNode(new CanMoveWest(blackboard));
+                    break;
+                case ConditionType.CanGoEast:
+                    AddLeafNode(new CanMoveEast(blackboard));
+                    break;
+                case ConditionType.CanRepeat:
+                    AddLeafNode(new CanRepeatLastMove(blackboard));
+                    break;
+                case ConditionType.IsAttackingTurretEast:
+                    AddLeafNode(new IsAttackingTurretEast(blackboard));
+                    break;
+                case ConditionType.IsAttackingTurretWest:
+                    AddLeafNode(new IsAttackingTurretWest(blackboard));
+                    break;
+                case ConditionType.IsAttackingTurretSouth:
+                    AddLeafNode(new IsAttackingTurretSouth(blackboard));
+                    break;
+                case ConditionType.IsAttackingTurretNorth:
+                    AddLeafNode(new IsAttackingTurretNorth(blackboard));
+                    break;
+                case ConditionType.WithinShootingRange:
+                    AddLeafNode(new WithinShootingRange(blackboard));
+                    break;
+                default:
+                    break;
+            }
 
-            AddCompositeNode(selector);
             return this;
         }
+
 
         public AgentBuilder SetInitialPosition(int x, int y)
         {
@@ -61,15 +126,19 @@ namespace BehaviorTree.Agents
             return this;
         }
 
-        public AgentBuilder AddSequence()
+        AgentBuilder AddCompositeNode(CompositeType compositeType) 
         {
-            Sequence sequence = new Sequence();
+            ParentNode node;
+            switch (compositeType)
+            {
+                case CompositeType.Sequence:
+                    node = new Sequence();
+                    break;
+                default:
+                    node = new Selector();
+                    break;
+            }
 
-            AddCompositeNode(sequence);
-            return this;
-        }
-        AgentBuilder AddCompositeNode(ParentNode node) 
-        {
             currentNode.AddChildren(node);
             currentNode = node;
             return this;

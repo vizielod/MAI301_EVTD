@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace BehaviorTree.ConditionalNodes
 {
-    class CanGoSouth:LeafNode
+    class CanMoveSouth:LeafNode
     {
         private readonly EnemyBlackboard blackboard;
 
-        public CanGoSouth(EnemyBlackboard blackboard)
+        public CanMoveSouth(EnemyBlackboard blackboard)
         {
             this.blackboard = blackboard;
         }

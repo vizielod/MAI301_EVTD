@@ -46,7 +46,7 @@ namespace BehaviorTree
             move.AddChildren(repeatSeq);
 
             Sequence moveSouth = new Sequence();
-            moveSouth.AddChildren(new CanGoSouth(bb));
+            moveSouth.AddChildren(new CanMoveSouth(bb));
             moveSouth.AddChildren(new MoveSouth(bb));
             move.AddChildren(moveSouth);
 

@@ -17,6 +17,13 @@ namespace Evolution
             factory = new SimulatorFactory();
         }
 
+        T Random<T>()
+        {
+            Array array = Enum.GetValues(typeof(T));
+            Random r = new Random();
+            return (T)array.GetValue(r.Next(array.Length));
+        }
+
         IEnumerable<IEnemyAgent> CreatePopulation() 
         {
             //List<IAdaptiveAgent> result = new List<IAdaptiveAgent>();
@@ -24,7 +31,8 @@ namespace Evolution
             for (int i = 0; i < populationSize; i++)
             {
                 AgentBuilder agentBuilder = new AgentBuilder();
-                yield return agentBuilder.SetInitialPosition(1, 1).SetSpawnRound(i).AddActionNode(ActionType.Forward).BuildAgent();
+
+                yield return agentBuilder.SetInitialPosition(1, 1).AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>()).BuildAgent();
             }
            
         }
@@ -35,12 +43,12 @@ namespace Evolution
 
             IStateSequence stateSequence = factory.CreateSimulator(map, enemies, turrets);
 
-            /*while (!stateSequence.IsGameOver)
+            while (!stateSequence.IsGameOver)
             {
                 stateSequence.StepForward();
-            }*/
+            }
 
-            //stateSequence.ReWind();
+            stateSequence.ReWind();
 
             yield return stateSequence;
         }
