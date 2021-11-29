@@ -1,26 +1,28 @@
 ﻿using System;
 using System.Linq;
 
-namespace BehaviorTree
+namespace BehaviorTree.NodeBase
 {
     public abstract class ParentNode:Node
     {
         protected ParentNodeController controller;
 
-        public ParentNode(string name, Blackboard blackboard):base(name,blackboard)
+        public ParentNode()
         {
             CreateController();
         }
 
         private void CreateController()
         {
-            this.controller = new ParentNodeController(this);
+            this.controller = new ParentNodeController();
         }
 
         public override NodeController GetControl()
         {
             return this.controller;
         }
+
+        public abstract void AddChildren(Node node);
 
         /**
         * Abstract to be overridden in child
@@ -42,14 +44,12 @@ namespace BehaviorTree
         */
         public override bool CheckConditions()
         {
-            LogTask("Checking conditions");
             return controller.subnodes.Count > 0;
         }
 
 
         public override void DoAction()
         {
-            LogTask("Doing action");
             if (controller.Finished())
             {
                 // If this parent task is finished
@@ -67,15 +67,13 @@ namespace BehaviorTree
             GetControl().Started())
             {
                 // ... and it's not started yet, start it.
-                controller.currentNode.
-                GetControl().SafeStart();
+                controller.currentNode.Start();
             }
             else if (controller.currentNode.
             GetControl().Finished())
             {
                 // ... and it's finished, end it properly.
-                controller.currentNode.
-                GetControl().SafeEnd();
+                controller.currentNode.End();
                 if (controller.currentNode.
                 GetControl().Succeeded())
                 {
@@ -99,7 +97,7 @@ namespace BehaviorTree
         */
         public override void End()
         {
-            LogTask("Ending");
+            controller.SafeEnd();
         }
 
         /**
@@ -109,13 +107,19 @@ namespace BehaviorTree
         */
         public override void Start()
         {
-            LogTask("Starting");
             controller.currentNode =
             controller.subnodes.First();
             if (controller.currentNode == null)
             {
                 Console.Error.Write("Current task has a null action");
             }
+
+            controller.SafeStart();
+        }
+
+        public override bool Running()
+        {
+            return !controller.Finished();
         }
     }
 }

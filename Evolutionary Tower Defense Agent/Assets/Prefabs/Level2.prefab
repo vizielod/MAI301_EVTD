@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4575291903224664629}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Turrets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7070061519217657789}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemies
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296940094728901}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Waypoint (Missing Prefab)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296940147408691}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Waypoint_end (Missing Prefab)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296940420508712}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2139296940433387587}
   - component: {fileID: 2139296940433387586}
-  m_Layer: 0
+  - component: {fileID: 716748622473738507}
+  m_Layer: 6
   m_Name: Level2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,15 +200,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814eb05588fe7b849b73cda5f006619c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiManager: {fileID: 0}
+  playerStats: {fileID: 0}
   Wall: {fileID: 5207213701149100563, guid: 415115cc8c7eeb74d8dc4b01c32080be, type: 3}
   Ground: {fileID: 6551634818564892039, guid: f89bfa22f2c821546a285923e4123b70, type: 3}
   Spawn: {fileID: 590402562519189353, guid: 0f16c9e4ef3623e488cc73c639f3f0e1, type: 3}
   Goal: {fileID: 618028937734850643, guid: 74343da6fe0e0014ab42662f0a382600, type: 3}
-  Turret: {fileID: 4380238882070342461, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
-  numberOfEnemies: 1
+  Turret: {fileID: 8978916146828863867, guid: 2712996b3b519a14aa69ab9e374af4f9, type: 3}
   enemyPrefab: {fileID: 7482663565232602093, guid: 3caf5044c1811eb4cac31ddb29207b98, type: 3}
-  enemyGameObjects: []
+  tileSize: 5
+  numberOfEnemies: 5
+  numberOfTurrets: 0
+  useGridWithTurretsSetup: 0
+  useGridWithoutTurretsSetup: 0
+  maxTurretCount: 10
+  turretCount: 0
   stepCount: 0
+--- !u!114 &716748622473738507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139296940433387645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0929f3cad94e972429fc1ceaeb6076c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startLives: 1
+  livesText: {fileID: 0}
+  remainingTurretCountText: {fileID: 0}
 --- !u!1 &2139296940589970016
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +240,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296940589970017}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Waypoint_start (Missing Prefab)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,7 +270,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296940390562868}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Missing Prefab (Dummy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +300,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296941783200533}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Missing Prefab (Dummy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -307,7 +330,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296940628490523}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Waypoint (1) (Missing Prefab)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,7 +360,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296941730265693}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Missing Prefab (Dummy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -367,7 +390,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296940972579065}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Missing Prefab (Dummy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -397,7 +420,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296940882355409}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Waypoint (3) (Missing Prefab)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -427,7 +450,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296940903195711}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Waypoint (2) (Missing Prefab)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -458,7 +481,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2139296940919966769}
   - component: {fileID: 2139296940919966774}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Waypoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -516,7 +539,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296940531721370}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Missing Prefab (Dummy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -546,7 +569,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296941366693270}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Missing Prefab (Dummy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -576,7 +599,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296941959281554}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tiles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -606,7 +629,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296942030002534}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Waypoint (5) (Missing Prefab)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -636,7 +659,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296941450742018}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Missing Prefab (Dummy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -666,7 +689,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296940541379030}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Missing Prefab (Dummy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -696,7 +719,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139296942114850071}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Waypoint (4) (Missing Prefab)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

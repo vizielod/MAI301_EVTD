@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -7,10 +7,6 @@
   <ItemGroup>
     <None Remove="Controller\" />
     <None Remove="NodeBase\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NodeControllers\" />
-    <Folder Include="NodeBase\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simulator\Simulator.csproj">

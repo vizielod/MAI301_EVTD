@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Simulator.gamespecific;
 using Simulator.state;
 
 namespace Simulator
@@ -8,29 +9,51 @@ namespace Simulator
     {
         private readonly List<Round> rounds;
         private readonly IGame game;
+        private readonly IWinCondition winCondition;
         int round;
+
+        public IEnumerable<IAgent> AllAgents => game.AllAgents;
+
+        public IEnumerable<IAgent> AllEnemyAgents => game.AllEnemyAgents;
+
+        public bool IsGameOver => winCondition.GetWinner(round).HasValue;
 
         internal Simulator(IGame game)
         {
             this.game = game;
             rounds = new List<Round>();
             round = -1;
+            winCondition = new WinConditionChain(new EnemiesDefeatedWinCondition(game), new EnemiesGoalReachedWinCondition(game));
         }
 
         public void StepForward()
         {
             round++;
             game.SpawnAgents(round);
-            if (round >= rounds.Count)
+
+            if (IsGameOver)
+            {
+                round--;
+                return;
+            }
+
+            var newRound = round >= rounds.Count;
+            
+            if (newRound)
             {
                 IState state = game.GenerateState();
                 rounds.Add(
                     new Round(
-                        game.Agents.Select(a => new Event(a, a.PickAction(state))).ToList()
+                        game.ActiveAgents.Select(a => new Event(a, a.PickAction(state))).ToList(),
+                        round
                         )
                     );
             }
+
             rounds[round].ApplyAll(game);
+
+            if (newRound)
+                rounds[round].ScoreAll(game);
         }
 
         public void StepBackward()
@@ -45,7 +68,9 @@ namespace Simulator
 
         public IState GetCurrentStep()
         {
-            return game.GenerateState();
+            var state = game.GenerateState();
+            state.Winner = winCondition.GetWinner(round);
+            return state;
         }
 
         public int CurrentStep()
@@ -60,7 +85,7 @@ namespace Simulator
 
         public IEnumerable<IAgent> GetAgents()
         {
-            return game.Agents;
+            return game.ActiveAgents;
         }
     }
 }

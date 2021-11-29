@@ -34,4 +34,14 @@ namespace Simulator
                 action.Invoke();
         }
     }
+
+    public sealed class Maybe
+    {
+        public static Maybe<T> Create<T>(T value)
+        {
+            if (value == null)
+                return new Maybe<T>();
+            return new Maybe<T>(value);
+        }
+    }
 }
