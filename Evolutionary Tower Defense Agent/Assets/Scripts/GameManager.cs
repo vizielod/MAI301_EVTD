@@ -7,6 +7,11 @@ using BehaviorTree;
 using BehaviorTree.Agents;
 using Evolution;
 
+public enum GridType { 
+    useGridWithTurretsSetup = 0, 
+    useGridWithoutTurretsSetup = 1, 
+    useGridMultiLineWithoutTurretsSetup = 2 
+}
 public class GameManager : MonoBehaviour
 {
     [Header("Game State & UI")]
@@ -29,9 +34,7 @@ public class GameManager : MonoBehaviour
     //public GameObject enemy;
 
     [Header("Grid Setup")]
-    public bool useGridWithTurretsSetup;
-    public bool useGridWithoutTurretsSetup;
-    public bool useGridMultiLineWithoutTurretsSetup;
+    public GridType gridType;
     public Grid grid;
     public int maxTurretCount = 10;
     public int turretCount = 0;
@@ -151,7 +154,7 @@ public class GameManager : MonoBehaviour
     {
         agentGODictionary = new Dictionary<IAgent, GameObject>();
 
-        if(useGridWithTurretsSetup && useGridWithoutTurretsSetup && useGridMultiLineWithoutTurretsSetup ||
+        /*if(useGridWithTurretsSetup && useGridWithoutTurretsSetup && useGridMultiLineWithoutTurretsSetup ||
             useGridWithTurretsSetup && useGridWithoutTurretsSetup ||
             useGridWithTurretsSetup && useGridMultiLineWithoutTurretsSetup ||
             useGridWithoutTurretsSetup && useGridMultiLineWithoutTurretsSetup)
@@ -163,16 +166,19 @@ public class GameManager : MonoBehaviour
             Application.Quit();
             #endif
             return;
-        }
-        else if (useGridWithTurretsSetup)
+        }*/
+        if (/*useGridWithTurretsSetup*/gridType == GridType.useGridWithTurretsSetup)
         {
+            uiManager.HintText.SetActive(false);
+            uiManager.RemainingTurrets.SetActive(false);
+            uiManager.RemainingTurretCount.SetActive(false);
             SetTileTypeArray(gridWithTurretsArray);
         }
-        else if (useGridWithoutTurretsSetup)
+        else if (/*useGridWithoutTurretsSetup*/gridType == GridType.useGridWithoutTurretsSetup)
         {
             SetTileTypeArray(gridWithoutTurretsArray);
         }
-        else if (useGridMultiLineWithoutTurretsSetup)
+        else if (/*useGridMultiLineWithoutTurretsSetup*/gridType == GridType.useGridMultiLineWithoutTurretsSetup)
         {
             SetTileTypeArray(gridMultiLineWithoutTurretsArray);
         }
@@ -205,19 +211,18 @@ public class GameManager : MonoBehaviour
         turretCount = 0;
         numberOfTurrets = 0;
 
-        useGridWithTurretsSetup = false;
-        useGridWithoutTurretsSetup = true;
-        //RemoveGameObjects();
-
-        if (useGridWithTurretsSetup)
+        if (gridType == GridType.useGridWithTurretsSetup)
         {
+            uiManager.HintText.SetActive(false);
+            uiManager.RemainingTurrets.SetActive(false);
+            uiManager.RemainingTurretCount.SetActive(false);
             SetTileTypeArray(gridWithTurretsArray);
         }
-        else if (useGridWithoutTurretsSetup)
+        else if (gridType == GridType.useGridWithoutTurretsSetup)
         {
             SetTileTypeArray(gridWithoutTurretsArray);
         }
-        else if (useGridMultiLineWithoutTurretsSetup)
+        else if (gridType == GridType.useGridMultiLineWithoutTurretsSetup)
         {
             SetTileTypeArray(gridMultiLineWithoutTurretsArray);
         }
@@ -233,8 +238,9 @@ public class GameManager : MonoBehaviour
     }
     public void StartGame()
     {
-        if (useGridWithTurretsSetup)
+        if (gridType == GridType.useGridWithTurretsSetup)
         {
+           
             turrets = GameObject.FindGameObjectsWithTag(turretTag);
             InitializeAgents();
             return;
@@ -276,10 +282,8 @@ public class GameManager : MonoBehaviour
     void InitializeAgents()
     {
         Vector3 spawnPosition = new Vector3(5, 2.75f, 5);
-        //List<IAgent> enemyAgents = new List<IAgent>();
-        //List<IAgent> turretAgents = new List<IAgent>();
 
-        if (useGridWithTurretsSetup)
+        if (gridType == GridType.useGridWithTurretsSetup)
         {
             for (int i = 0; i < grid.Height; i++)
             {
@@ -301,6 +305,14 @@ public class GameManager : MonoBehaviour
         }
 
         //sim = new SimulatorFactory().CreateSimulator(grid, enemyAgents, turretAgents); // Parse enemies and tower agents
+
+        /*foreach (var sim in new Evolutionary(numberOfEnemies).RunEvolution(grid, turretAgents))
+        {
+            while (!sim.IsGameOver)
+            {
+                sim.StepForward();
+            }
+        }*/
         sim = new Evolutionary(numberOfEnemies).RunEvolution(grid, turretAgents).First();
 
         enemyAgents = sim.AllEnemyAgents.ToList();
