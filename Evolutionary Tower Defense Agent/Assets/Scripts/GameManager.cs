@@ -4,6 +4,7 @@ using UnityEngine;
 using Simulator;
 using System.Linq;
 using BehaviorTree;
+using BehaviorTree.Agents;
 using Evolution;
 
 public class GameManager : MonoBehaviour
@@ -278,24 +279,6 @@ public class GameManager : MonoBehaviour
         //List<IAgent> enemyAgents = new List<IAgent>();
         //List<IAgent> turretAgents = new List<IAgent>();
 
-        for (int i = 0; i < numberOfEnemies; i++)
-        {
-            GameObject newEnemyGO = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity) as GameObject;
-
-            newEnemyGO.transform.SetParent(transform.Find("Enemies"));
-
-            IAgent enemyAgent = new SimpleEnemyAgent((1, 1), i+1);
-            newEnemyGO.GetComponent<EnemyController>().simpleEnemyAgent = (SimpleEnemyAgent)enemyAgent;
-            newEnemyGO.GetComponent<EnemyController>().enabled = true;
-            enemyAgents.Add(enemyAgent);
-
-            //newEnemyGO.GetComponent<EnemyController>().simpleEnemyAgent = (SimpleEnemyAgent)enemyAgents[i];
-
-            agentGODictionary.Add(enemyAgent, newEnemyGO);
-
-            //enemyGameObjects.Add(newEnemyGO);
-        }
-
         if (useGridWithTurretsSetup)
         {
             for (int i = 0; i < grid.Height; i++)
@@ -318,7 +301,21 @@ public class GameManager : MonoBehaviour
         }
 
         //sim = new SimulatorFactory().CreateSimulator(grid, enemyAgents, turretAgents); // Parse enemies and tower agents
-        sim = new Evolutionary(1).RunEvolution(grid, turretAgents).First();
+        sim = new Evolutionary(numberOfEnemies).RunEvolution(grid, turretAgents).First();
+
+        enemyAgents = sim.AllEnemyAgents.ToList();
+
+        for (int i = 0; i < enemyAgents.Count; i++)
+        {
+            GameObject newEnemyGO = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity) as GameObject;
+            newEnemyGO.transform.SetParent(transform.Find("Enemies"));
+
+            newEnemyGO.GetComponent<EnemyController>().enemyAgent = (IEnemyAgent)enemyAgents[i];
+            newEnemyGO.GetComponent<EnemyController>().enabled = true;
+
+            agentGODictionary.Add(enemyAgents[i], newEnemyGO);
+        }
+
     }
 
     public void InitializeTurretAgent(int i, int j, GameObject turretGO)
@@ -370,21 +367,21 @@ public class GameManager : MonoBehaviour
         {
             if (agent.IsActive)
             {
-                if (agent is SimpleEnemyAgent && agent.IsActive)
+                if (agent is IEnemyAgent && state.Agents.Contains(agent))
                 {
                     (int x, int y) = state.PositionOf(agent);
                     agentGODictionary[agent].transform.position = new Vector3(x * 5, 2.75f, y * 5);
 
-                    var enemyAgent = (SimpleEnemyAgent)agent;
+                    var enemyAgent = (IEnemyAgent)agent;
                     var enemyController = agentGODictionary[agent].GetComponent<EnemyController>();
-                    enemyController.newHealthPoints = enemyAgent.health;
+                    enemyController.newHealthPoints = enemyAgent.Health;
                     enemyController.UpdateHealthBar();
                     enemyController.CheckIfGoalIsreached((grid.Goal.x * tileSize, grid.Goal.y * tileSize));
                     /*var enemyAgent = (SimpleEnemyAgent)agent;
                     Debug.Log("Agent: " + agent + " Health: " + enemyAgent.health);*/
                     
                 }
-                if (agent is TurretAgent && agent.IsActive)
+                if (agent is TurretAgent)
                 {
 
                     var turretAgent = (TurretAgent)agent;
@@ -394,7 +391,7 @@ public class GameManager : MonoBehaviour
                     //Debug.Log(targetGO);
                     agentGODictionary[agent].GetComponent<TurretController>().state = state;
 
-                    if (target != null)
+                    if (target != null && state.Agents.Contains(target))
                     {
                         agentGODictionary[agent].GetComponent<TurretController>().LookTowardsTarget(target);
                     }

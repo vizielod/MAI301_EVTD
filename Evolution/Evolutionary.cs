@@ -17,7 +17,7 @@ namespace Evolution
             factory = new SimulatorFactory();
         }
 
-        IEnumerable<IAdaptiveAgent> CreatePopulation() 
+        IEnumerable<IEnemyAgent> CreatePopulation() 
         {
             //List<IAdaptiveAgent> result = new List<IAdaptiveAgent>();
 
@@ -35,10 +35,12 @@ namespace Evolution
 
             IStateSequence stateSequence = factory.CreateSimulator(map, enemies, turrets);
 
-            while (!stateSequence.IsGameOver)
+            /*while (!stateSequence.IsGameOver)
             {
                 stateSequence.StepForward();
-            }
+            }*/
+
+            //stateSequence.ReWind();
 
             yield return stateSequence;
         }

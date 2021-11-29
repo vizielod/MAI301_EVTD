@@ -80,7 +80,7 @@ namespace BehaviorTree.Agents
             currentNode.AddChildren(node);
             return this;
         }
-        public IAdaptiveAgent BuildAgent()
+        public IEnemyAgent BuildAgent()
         {
             if(initialPosition == null)
                 throw new ArgumentNullException(nameof(initialPosition));

@@ -6,23 +6,24 @@ using System.Text;
 
 namespace BehaviorTree.Agents
 {
-    class AdaptiveAgent: IAdaptiveAgent
+    class AdaptiveAgent: IEnemyAgent
     {
         public (int x, int y) InitialPosition { get; }
         public int SpawnRound { get; }
 
         EnemyBlackboard bb;
         Node rootNode;
-        public int health;
 
-        public bool IsActive => health > 0;
+        public bool IsActive => Health > 0;
+
+        public int Health { get; set; }
 
         public AdaptiveAgent((int x, int y) initialPosition, int spawnRound, EnemyBlackboard bb, Node rootNode)
         {
             this.InitialPosition = initialPosition;
             this.bb = bb;
             this.rootNode = rootNode;
-            health = 10;
+            Health = 10;
             this.SpawnRound = spawnRound;
         }
 
@@ -50,12 +51,12 @@ namespace BehaviorTree.Agents
 
         public void Damage(int v)
         {
-            health -= v;
+            Health -= v;
         }
 
         public void Heal(int v)
         {
-            health += v;
+            Health += v;
         }
 
         public void Reset() 

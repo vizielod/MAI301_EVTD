@@ -14,6 +14,8 @@ namespace Simulator
 
         public IEnumerable<IAgent> AllAgents => game.AllAgents;
 
+        public IEnumerable<IAgent> AllEnemyAgents => game.AllEnemyAgents;
+
         public bool IsGameOver => winCondition.GetWinner(round).HasValue;
 
         internal Simulator(IGame game)

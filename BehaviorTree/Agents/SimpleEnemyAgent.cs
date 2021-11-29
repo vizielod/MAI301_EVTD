@@ -1,4 +1,5 @@
 ﻿using BehaviorTree.ActionNodes;
+using BehaviorTree.Agents;
 using BehaviorTree.ConditionalNodes;
 using BehaviorTree.FlowControllNodes;
 using BehaviorTree.NodeBase;
@@ -8,21 +9,22 @@ using System.Collections.Generic;
 
 namespace BehaviorTree
 {
-    public class SimpleEnemyAgent : IAgent
+    class SimpleEnemyAgent : IEnemyAgent
     {
         public (int x, int y) InitialPosition { get; }
         public int SpawnRound { get; }
 
         EnemyBlackboard bb;
-        public int health;
 
-        public bool IsActive => health > 0;
+        public bool IsActive => Health > 0;
+
+        public int Health { get; set; }
 
         public SimpleEnemyAgent((int x, int y) initialPosition, int spawnRound) 
         {
             this.InitialPosition = initialPosition;
             bb = new EnemyBlackboard();
-            health = 10;
+            Health = 10;
             this.SpawnRound = spawnRound;
         }
 
@@ -80,12 +82,17 @@ namespace BehaviorTree
 
         public void Damage(int v)
         {
-            health -= v;
+            Health -= v;
         }
 
         public void Heal(int v)
         {
-            health += v;
+            Health += v;
+        }
+
+        public void Reset()
+        {
+            throw new NotImplementedException();
         }
     }
 }
