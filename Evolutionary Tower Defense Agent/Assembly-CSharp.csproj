@@ -69,6 +69,7 @@
   <ItemGroup>
     <None Include="Assets\libs\netstandard2.0\Simulator.dll" />
     <None Include="Assets\libs\netstandard2.0\BehaviorTree.dll" />
+    <None Include="Assets\libs\netstandard2.0\UnityEngine.CoreModule.xml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

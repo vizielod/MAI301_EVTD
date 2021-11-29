@@ -11,8 +11,9 @@ namespace Simulator.state
         public IEnumerable<IAgent> Agents => agents.Select(p => p.Key);
 
         private IDictionary<IAgent, StateObject> agents;
-        private List<Event> events;
+        private readonly List<Event> events;
         private readonly BreadthFirstSearch bfs;
+        public Alliances? Winner { get; set; }
 
         internal IEnumerable<Event> Events => events;
 
@@ -26,7 +27,7 @@ namespace Simulator.state
         public void AddAgent(IAgent agent, (int x, int y) gridLocation, IAgentType type)
         {
             agents.Add(agent, new StateObject(gridLocation) { 
-                IsActive = true, 
+                IsActive = true,
                 Type = type
             });
         }
@@ -38,7 +39,9 @@ namespace Simulator.state
 
         public (int x, int y) PositionOf(IAgent agent)
         {
-            return agents[agent].GridLocation;
+            if (agents.ContainsKey(agent))
+                return agents[agent].GridLocation;
+            return (0, 0);
         }
 
         public IActionGenerator GetLegalActionGenerator(IAgent agent)

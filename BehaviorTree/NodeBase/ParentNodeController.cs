@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BehaviorTree
+namespace BehaviorTree.NodeBase
 {
     public class ParentNodeController : NodeController
     {
@@ -16,7 +16,7 @@ namespace BehaviorTree
          */
         public Node currentNode;
 
-        public ParentNodeController(Node node):base(node)
+        public ParentNodeController():base()
         {
             this.subnodes = new List<Node>();
             this.currentNode = null;

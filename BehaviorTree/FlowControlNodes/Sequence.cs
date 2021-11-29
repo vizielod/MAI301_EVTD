@@ -1,12 +1,17 @@
-﻿using System;
+﻿using BehaviorTree.NodeBase;
 using System.Linq;
 
-namespace BehaviorTree
+namespace BehaviorTree.FlowControllNodes
 {
     public class Sequence:ParentNode
     {
-        public Sequence(string name, Blackboard blackboard) : base(name, blackboard)
+        public Sequence()
         { }
+
+        public override void AddChildren(Node node)
+        {
+            controller.AddNode(node);
+        }
 
         public override void ChildFailed()
         {
@@ -33,11 +38,6 @@ namespace BehaviorTree
                     controller.FinishWithFailure();
                 }
             }
-        }
-
-        public override void LogTask(string log)
-        {
-            Console.WriteLine("Name: " + name + ", " + log);
         }
     }
 }

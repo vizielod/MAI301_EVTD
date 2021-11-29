@@ -54,6 +54,11 @@ namespace Simulator.gamespecific
             return agents.Count(a => a.Value.GoalReached && a.Value.IsEnemy);
         }
 
+        public int CountUnspawnedEnemies(int round)
+        {
+            return agents.Count(a => a.Key.SpawnRound > round && a.Value.IsEnemy);
+        }
+
         public void DespawnAgents(int round)
         {
             agents.Where(a => a.Key.SpawnRound > round).AsParallel().ForAll(a => a.Value.IsActive = false);

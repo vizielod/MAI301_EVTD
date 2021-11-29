@@ -1,5 +1,5 @@
 ﻿using System;
-namespace BehaviorTree
+namespace BehaviorTree.NodeBase
 {
     public abstract class DecoratorNode:Node
     {
@@ -8,7 +8,7 @@ namespace BehaviorTree
          */
         protected Node node;
 
-        public DecoratorNode(string name, Blackboard blackboard, Node node):base(name,blackboard)
+        public DecoratorNode(Node node)
         {
             InitTask(node);
         }
@@ -37,6 +37,11 @@ namespace BehaviorTree
         public override NodeController GetControl()
         {
             return this.node.GetControl();
+        }
+
+        public override bool Running()
+        {
+            return GetControl().Finished();
         }
     }
 }

@@ -1,28 +1,28 @@
 ﻿using Simulator;
 using System.Collections.Generic;
 
-namespace BehaviorTree
+namespace BehaviorTree.NodeBase
 {
     public class Blackboard
     {
-        public IEnumerable<IAction> LegalActions { get; set; }
+        
+
+        // Common
         public IAction ChoosenAction { get; set; }
         public IAction PreviousAction { get; set; }
-        public IAgent ClosestEnemy { get; set; }
-        public IAgent PreviousTargetEnemy { get; set; }
-        public bool IsEnemyInRange { get; set; }
-        public int Damage { get; set; }
 
-        public Blackboard(IEnumerable<IAction> legalActions, IAction previousAction) 
+        public Blackboard() 
         {
+            Reset();
+            
+        }
 
-            LegalActions = legalActions;
-            PreviousAction = previousAction;
+        public virtual void Reset() 
+        {
+            PreviousAction = null;
             ChoosenAction = null;
-            ClosestEnemy = null;
-            PreviousTargetEnemy = null;
-            IsEnemyInRange = false;
-            Damage = 0;
+           
+            
         }
     }
 }

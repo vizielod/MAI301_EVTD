@@ -1,5 +1,5 @@
 ﻿using System;
-namespace BehaviorTree
+namespace BehaviorTree.NodeBase
 {
     public class NodeController
     {
@@ -25,11 +25,11 @@ namespace BehaviorTree
          * Reference to the node that
          * the controller controlls
          */
-        private Node node;
+       // private Node node;
 
-        public NodeController(Node node)
+        public NodeController(/*Node node*/)
         {
-            SetNode(node);
+            //SetNode(node);
             Initialize();
         }
 
@@ -45,7 +45,7 @@ namespace BehaviorTree
          */
         public void SetNode(Node node)
         {
-            this.node = node;
+           // this.node = node;
         }
 
         /**
@@ -55,7 +55,7 @@ namespace BehaviorTree
         {
             this.started = true;
 
-            node.Start();
+          //  node.Start();
         }
 
         /**
@@ -66,7 +66,7 @@ namespace BehaviorTree
             this.started = false;
             this.done = false;
             
-            node.End();
+         //   node.End();
         }
 
         /**
@@ -76,7 +76,7 @@ namespace BehaviorTree
         {
             this.sucess = true;
             this.done = true;
-            node.LogTask("Finished with success");
+            //node.LogTask("Finished with success");
         }
 
         /**
@@ -86,7 +86,7 @@ namespace BehaviorTree
         {
             this.sucess = false;
             this.done = true;
-            node.LogTask("Finished with failure");
+           // node.LogTask("Finished with failure");
         }
 
         /**

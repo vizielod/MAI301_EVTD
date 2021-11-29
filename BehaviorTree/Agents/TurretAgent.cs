@@ -1,7 +1,8 @@
-﻿using Simulator;
+﻿using BehaviorTree.ActionNodes;
+using BehaviorTree.FlowControllNodes;
+using BehaviorTree.NodeBase;
+using Simulator;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BehaviorTree
 {
@@ -15,8 +16,7 @@ namespace BehaviorTree
 
     public class TurretAgent : IAgent
     {
-        Blackboard bb;
-        float range;
+        TurretBlackboard bb;
         int damage;
 
         public IAgent Target { get; set; } = null;
@@ -26,11 +26,13 @@ namespace BehaviorTree
 
         public bool IsActive => true;
 
+        public float Range { get; set; }
+
         public TurretAgent((int x, int y) InitialPosition)
         {
             this.InitialPosition = InitialPosition;
-            bb = new Blackboard(null, null);
-            range = 1.0f;
+            bb = new TurretBlackboard();
+            Range = 1.0f;
             damage = 2;
         }
 
@@ -47,28 +49,23 @@ namespace BehaviorTree
                 (int x, int y) turretPos = state.PositionOf(this);
                 (int x, int y) enemyPos = state.PositionOf(closest);
                 (int x, int y) p = (enemyPos.x - turretPos.x, enemyPos.y - turretPos.y);
-                if (Math.Max(Math.Abs(p.x), Math.Abs(p.y)) <= range)
+                if (Math.Max(Math.Abs(p.x), Math.Abs(p.y)) <= Range)
                 {
                     bb.IsEnemyInRange = true;
                     Target = closest;
                 }
 
-                Selector move = new Selector("Selector", bb);
-                ((ParentNodeController)move.GetControl()).
-                    AddNode(new Fire(
-                    "Fire", bb));
-               /* ((ParentNodeController)move.GetControl()).
-                    AddNode(new Rotate(
-                    "Rotate", bb));*/
+                Selector move = new Selector();
+                move.AddChildren(new Fire( bb));
 
-                ((ParentNodeController)move.GetControl()).SafeStart();
+                move.Start();
 
-                while (!((ParentNodeController)move.GetControl()).Finished())
+                while (move.Running())
                 {
                     move.DoAction();
                 }
 
-            ((ParentNodeController)move.GetControl()).SafeEnd();
+                move.End();
 
                 bb.PreviousAction = bb.ChoosenAction;
             });

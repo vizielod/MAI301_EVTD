@@ -1,14 +1,16 @@
-﻿using Simulator.actioncommands;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using BehaviorTree.NodeBase;
+using Simulator.actioncommands;
 
-namespace BehaviorTree
+namespace BehaviorTree.ActionNodes
 {
     class Fire : LeafNode
     {
-        public Fire(string name, Blackboard blackboard) : base(name, blackboard)
-        { }
+        private readonly TurretBlackboard blackboard;
+
+        public Fire(TurretBlackboard blackboard)
+        {
+            this.blackboard = blackboard;
+        }
 
         public override bool CheckConditions()
         {
@@ -27,21 +29,6 @@ namespace BehaviorTree
             {
                 controller.FinishWithFailure();
             }
-        }
-
-        public override void End()
-        {
-            LogTask("Ending");
-        }
-
-        public override void LogTask(string log)
-        {
-            Console.WriteLine("Name: " + name + ", " + log);
-        }
-
-        public override void Start()
-        {
-            LogTask("Starting");
         }
     }
 }

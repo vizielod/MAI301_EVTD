@@ -1,23 +1,15 @@
 ﻿using System;
-namespace BehaviorTree
+namespace BehaviorTree.NodeBase
 {
     /**
      * Base abstract class for all the nodes
      */
     public abstract class Node
     {
-        protected Blackboard blackboard;
-        protected string name;
-
         /** 
          * When we create a new node we have to pass
          *the blackboard 
          */
-        public Node(string name, Blackboard blackboard)
-        {
-            this.name = name;
-            this.blackboard = blackboard;
-        }
 
         /** 
          * Pre-condition check to see if
@@ -35,6 +27,8 @@ namespace BehaviorTree
          */
         public abstract void End();
 
+        public abstract bool Running();
+
         /**
          * Override to specify the logic that
          * the node should perform 
@@ -47,7 +41,5 @@ namespace BehaviorTree
          * assigned to the node
          */
         public abstract NodeController GetControl();
-
-        public abstract void LogTask(string log);
     }
 }
