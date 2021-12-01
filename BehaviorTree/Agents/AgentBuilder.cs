@@ -28,11 +28,11 @@ namespace BehaviorTree.Agents
         CanGoWest,
         CanGoEast,
         CanRepeat,
-        IsAttackingTurretEast,
+       /* IsAttackingTurretEast,
         IsAttackingTurretWest,
         IsAttackingTurretSouth,
         IsAttackingTurretNorth,
-        WithinShootingRange
+        WithinShootingRange*/
     }
     public class AgentBuilder
     {
@@ -91,7 +91,7 @@ namespace BehaviorTree.Agents
                 case ConditionType.CanRepeat:
                     AddLeafNode(new CanRepeatLastMove(blackboard));
                     break;
-                case ConditionType.IsAttackingTurretEast:
+                /*case ConditionType.IsAttackingTurretEast:
                     AddLeafNode(new IsAttackingTurretEast(blackboard));
                     break;
                 case ConditionType.IsAttackingTurretWest:
@@ -105,7 +105,7 @@ namespace BehaviorTree.Agents
                     break;
                 case ConditionType.WithinShootingRange:
                     AddLeafNode(new WithinShootingRange(blackboard));
-                    break;
+                    break;*/
                 default:
                     break;
             }
