@@ -10,6 +10,7 @@ namespace Simulator
         private readonly List<Round> rounds;
         private readonly IGame game;
         private readonly IWinCondition winCondition;
+        IDictionary<IAgent, float> totalScoreboard;
         int round;
 
         public IEnumerable<IAgent> AllAgents => game.AllAgents;
@@ -23,6 +24,7 @@ namespace Simulator
             this.game = game;
             rounds = new List<Round>();
             round = -1;
+            totalScoreboard = new Dictionary<IAgent, float>();
             winCondition = new WinConditionChain(new EnemiesDefeatedWinCondition(game), new WinConditionChain(new EnemiesGoalReachedWinCondition(game), new TimeoutWinCondition(200)));
 
         }
@@ -104,6 +106,11 @@ namespace Simulator
             {
                 StepBackward();
             }
+        }
+
+        public IDictionary<IAgent, float> GetScores()
+        {
+            return new Dictionary<IAgent, float>();
         }
     }
 }

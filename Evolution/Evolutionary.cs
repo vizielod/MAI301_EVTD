@@ -42,6 +42,7 @@ namespace Evolution
         public IEnumerable<IStateSequence> RunEvolution(IMapLayout map, IEnumerable<IAgent> turrets)
         {
             IEnumerable<IAgent> enemies = CreatePopulation().Cast<IAgent>();
+            
 
             IStateSequence stateSequence = factory.CreateSimulator(map, enemies, turrets);
 
@@ -49,6 +50,9 @@ namespace Evolution
             {
                 stateSequence.StepForward();
             }
+
+            IDictionary<IAgent, float> scores = stateSequence.GetScores();
+
 
             stateSequence.ReWind();
 
