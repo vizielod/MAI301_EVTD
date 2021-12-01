@@ -29,14 +29,15 @@ namespace Simulator
 
         public void StepForward()
         {
+            if (IsGameOver)
+            {
+                return;
+            }
+
             round++;
             game.SpawnAgents(round);
 
-            if (IsGameOver)
-            {
-                round--;
-                return;
-            }
+            
 
             var newRound = round >= rounds.Count;
             

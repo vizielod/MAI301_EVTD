@@ -1,5 +1,6 @@
 ﻿using BehaviorTree.NodeBase;
 using Simulator;
+using Simulator.actioncommands;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,7 +33,7 @@ namespace BehaviorTree.Agents
             IEnumerable<IAction> actions = state.GetLegalActionGenerator(this).Generate();
 
             bb.LegalActions = actions;
-            bb.ChoosenAction = null;
+            bb.ChoosenAction = new Idle();
 
             bb.ForwardPosition = state.SuggestPosition(this);
             bb.CurrentPosition = state.PositionOf(this);

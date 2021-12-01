@@ -2,18 +2,11 @@
 using BehaviorTree.FlowControllNodes;
 using BehaviorTree.NodeBase;
 using Simulator;
+using Simulator.actioncommands;
 using System;
 
 namespace BehaviorTree
 {
-    class TurretIdle : IAction
-    {
-        public void Apply(IStateObject stateObject)
-        { }
-        public void Undo(IStateObject stateObject)
-        { }
-    }
-
     public class TurretAgent : IAgent
     {
         TurretBlackboard bb;
@@ -71,7 +64,7 @@ namespace BehaviorTree
             });
             if (bb.ChoosenAction == null)
             {
-                return new TurretIdle();
+                return new Idle();
             }
             return bb.ChoosenAction;
         }

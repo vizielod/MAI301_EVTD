@@ -10,18 +10,20 @@ namespace Evolution
     {
         int populationSize;
         SimulatorFactory factory;
+        Random rand;
 
         public Evolutionary(int populationSize)
         {
             this.populationSize = populationSize;
             factory = new SimulatorFactory();
+            rand = new Random();
         }
 
         T Random<T>()
         {
             Array array = Enum.GetValues(typeof(T));
-            Random r = new Random();
-            return (T)array.GetValue(r.Next(array.Length));
+            
+            return (T)array.GetValue(rand.Next(array.Length));
         }
 
         IEnumerable<IEnemyAgent> CreatePopulation() 
@@ -32,7 +34,7 @@ namespace Evolution
             {
                 AgentBuilder agentBuilder = new AgentBuilder();
 
-                yield return agentBuilder.SetInitialPosition(1, 1).AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>()).BuildAgent();
+                yield return agentBuilder.SetInitialPosition(1, 1).SetSpawnRound(i).AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>()).BuildAgent();
             }
            
         }
