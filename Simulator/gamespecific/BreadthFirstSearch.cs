@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Simulator.gamespecific
@@ -8,7 +9,6 @@ namespace Simulator.gamespecific
         private readonly Dictionary<(int x, int y), (int x, int y)> lookup;
         private readonly List<TileType> groundTiles = new List<TileType> { TileType.Spawn, TileType.Ground, TileType.Goal };
         private readonly IMapLayout map;
-        private readonly (int x, int y)[] directions = { (1, 0), (-1, 0), (0, 1), (0, -1) };
 
         public BreadthFirstSearch(IMapLayout map)
         {
@@ -44,19 +44,19 @@ namespace Simulator.gamespecific
         private IEnumerable<(int x, int y)> GetNeighbours((int x, int y) value)
         {
             (int x, int y) = value;
-            foreach (var direction in directions)
+            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
-                var x_pos = x + direction.x;
-                var y_pos = y + direction.y;
+                var dir = map.Translate(direction);
+                var x_pos = x + dir.x;
+                var y_pos = y + dir.y;
                 
-                if (InBound(x_pos, y_pos) && IsGround(map.TypeAt(x_pos, y_pos)))
+                if (map.InBounds(x_pos, y_pos) && IsGround(map.TypeAt(x_pos, y_pos)))
                 {
                     yield return (x_pos, y_pos);
                 }
             }
         }
 
-        private bool InBound(int x, int y) => (x >= 0 && x < map.Width) && (y >= 0 && y < map.Height);
         private bool IsGround(TileType type) => groundTiles.Contains(type);
     }
 }
