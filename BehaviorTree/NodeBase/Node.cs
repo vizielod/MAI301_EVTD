@@ -1,21 +1,15 @@
 ﻿using System;
-namespace BehaviorTree
+namespace BehaviorTree.NodeBase
 {
     /**
      * Base abstract class for all the nodes
      */
     public abstract class Node
     {
-        protected Blackboard blackboard;
-
         /** 
          * When we create a new node we have to pass
          *the blackboard 
          */
-        public Node(Blackboard blackboard)
-        {
-            this.blackboard = blackboard;
-        }
 
         /** 
          * Pre-condition check to see if

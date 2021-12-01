@@ -2,6 +2,6 @@
 {
     interface IWinCondition
     {
-        Alliances? GetWinner();
+        Alliances? GetWinner(int round);
     }
 }

@@ -9,9 +9,6 @@
     <None Remove="NodeBase\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="NodeControllers\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Simulator\Simulator.csproj">
       <Private>false</Private>
       <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>

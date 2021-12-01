@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BehaviorTree;
+using BehaviorTree.Agents;
 using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
@@ -10,19 +11,20 @@ public class EnemyController : MonoBehaviour
     public float startHealthPoints;
     public float currentHealthPoints;
     public float newHealthPoints;
-    public SimpleEnemyAgent simpleEnemyAgent;
+    //public SimpleEnemyAgent simpleEnemyAgent;
+    public IEnemyAgent enemyAgent;
     public Enemy enemy;
     //public int enemyAgentIndex;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (simpleEnemyAgent == null)
+        if (enemyAgent == null)
             return;
 
-        startHealthPoints = simpleEnemyAgent.health;
-        currentHealthPoints = simpleEnemyAgent.health;
-        newHealthPoints = simpleEnemyAgent.health;
+        startHealthPoints = enemyAgent.Health;
+        currentHealthPoints = enemyAgent.Health;
+        newHealthPoints = enemyAgent.Health;
         enemy = new Enemy(startHealthPoints);
     }
 
@@ -36,8 +38,18 @@ public class EnemyController : MonoBehaviour
     {
         if(currentHealthPoints != newHealthPoints)
         {
-            healthBar.fillAmount = simpleEnemyAgent.health / startHealthPoints;
+            healthBar.fillAmount = enemyAgent.Health / startHealthPoints;
             currentHealthPoints = newHealthPoints;
+        }
+    }
+
+    public void CheckIfGoalIsreached((int i, int j) goalPosition)
+    {
+        if(this.transform.position.x == goalPosition.i && this.transform.position.z == goalPosition.j)
+        {
+            Debug.Log("Reached Goal");
+            PlayerStats.Lives--;
+            //transform.gameObject.SetActive(false); //Here would be better to Set the Agent IsActive to false on the backend.
         }
     }
 }

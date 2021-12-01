@@ -9,7 +9,7 @@
             this.game = game;
         }
 
-        public Alliances? GetWinner()
+        public Alliances? GetWinner(int round)
         {
             if (game.CountEnemiesSuccess() == game.CountEnemies())
                 return Alliances.Enemies;

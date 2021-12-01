@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace BehaviorTree
+namespace BehaviorTree.NodeBase
 {
     public abstract class LeafNode : Node
     {
         protected NodeController controller;
 
-        public LeafNode(Blackboard blackboard):base( blackboard)
+        public LeafNode()
         {
             CreateController();
         }

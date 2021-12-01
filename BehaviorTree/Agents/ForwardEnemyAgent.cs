@@ -1,24 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using BehaviorTree.ActionNodes;
+using BehaviorTree.Agents;
+using BehaviorTree.FlowControllNodes;
+using BehaviorTree.NodeBase;
 using Simulator;
 
 namespace BehaviorTree
 {
-    public class ForwardEnemyAgent : IAgent
+    public class ForwardEnemyAgent : IEnemyAgent
     {
         public (int x, int y) InitialPosition { get; }
         public int SpawnRound { get; }
 
-        Blackboard bb;
-        int health;
+        EnemyBlackboard bb;
+        public int Health { get; set; }
 
-        public bool IsActive => health > 0;
+        public bool IsActive => Health > 0;
 
         public ForwardEnemyAgent((int x, int y) initialPosition, int spawnRound)
         {
             this.InitialPosition = initialPosition;
-            bb = new Blackboard(null, null);
-            health = 10;
+            bb = new EnemyBlackboard();
+            Health = 10;
             this.SpawnRound = spawnRound;
         }
 
@@ -32,7 +35,7 @@ namespace BehaviorTree
             bb.ForwardPosition = state.SuggestPosition(this);
             bb.CurrentPosition = state.PositionOf(this);
 
-            Selector move = new Selector( bb);
+            Selector move = new Selector( );
             move.AddChildren(new MoveForward( bb));
 
             move.Start();
@@ -51,12 +54,17 @@ namespace BehaviorTree
 
         public void Damage(int v)
         {
-            health -= v;
+            Health -= v;
         }
 
         public void Heal(int v)
         {
-            health += v;
+            Health += v;
+        }
+
+        public void Reset()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
