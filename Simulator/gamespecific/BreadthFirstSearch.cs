@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Simulator.gamespecific
@@ -26,31 +27,37 @@ namespace Simulator.gamespecific
             lookup.Add(map.Goal, (-1, -1));
             Queue<(int x, int y)> frontér = new Queue<(int x, int y)>();
             foreach (var neighbour in GetNeighbours(map.Goal))
+            {
                 frontér.Enqueue(neighbour);
-
-            (int x, int y) previous = map.Goal;
+                lookup.Add(neighbour, map.Goal);
+            }
+            
             while (frontér.Count > 0)
             {
                 var current = frontér.Dequeue();
-                lookup.Add(current, previous);
+                
                 foreach (var neighbour in GetNeighbours(current).Where(n => !(frontér.Contains(n) || lookup.Keys.Contains(n))))
+                {
                     frontér.Enqueue(neighbour);
-
-                previous = current;
+                    lookup.Add(neighbour, current);
+                }
             }
         }
 
         private IEnumerable<(int x, int y)> GetNeighbours((int x, int y) value)
         {
             (int x, int y) = value;
-            if (IsGround(map.TypeAt(x - 1, y)))
-                yield return (x - 1, y);
-            if (IsGround(map.TypeAt(x + 1, y)))
-                yield return (x + 1, y);
-            if (IsGround(map.TypeAt(x, y + 1)))
-                yield return (x, y + 1);
-            if (IsGround(map.TypeAt(x, y - 1)))
-                yield return (x, y - 1);
+            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                var dir = map.Translate(direction);
+                var x_pos = x + dir.x;
+                var y_pos = y + dir.y;
+                
+                if (map.InBounds(x_pos, y_pos) && IsGround(map.TypeAt(x_pos, y_pos)))
+                {
+                    yield return (x_pos, y_pos);
+                }
+            }
         }
 
         private bool IsGround(TileType type) => groundTiles.Contains(type);
