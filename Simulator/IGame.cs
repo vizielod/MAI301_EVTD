@@ -16,5 +16,6 @@ namespace Simulator
         int CountEnemies();
         int CountActiveEnemies();
         int CountEnemiesSuccess();
+        void Disable(IAgent agent);
     }
 }
