@@ -1,4 +1,5 @@
 ﻿using Simulator.actioncommands;
+using System;
 using System.Collections.Generic;
 
 namespace Simulator.gamespecific
@@ -8,6 +9,12 @@ namespace Simulator.gamespecific
         private readonly IMapLayout map;
         private readonly IStateObject agentState;
         private List<TileType> groundTiles = new List<TileType> { TileType.Ground, TileType.Goal, TileType.Spawn };
+        private Dictionary<Direction, IAction> translations = new Dictionary<Direction, IAction> {
+            { Direction.North, new GoNorth() },
+            { Direction.South, new GoSouth() },
+            { Direction.East, new GoEast() },
+            { Direction.West, new GoWest() },
+        };
 
         public RigidMoveGenerator(IMapLayout map, IStateObject agentState)
         {
@@ -18,14 +25,12 @@ namespace Simulator.gamespecific
         public IEnumerable<IAction> Generate()
         {
             (int x, int y) = agentState.GridLocation;
-            if (IsGround(map.TypeAt(x - 1, y)))
-                yield return new GoNorth();
-            if (IsGround(map.TypeAt(x + 1, y)))
-                yield return new GoSouth();
-            if (IsGround(map.TypeAt(x, y + 1)))
-                yield return new GoEast();
-            if (IsGround(map.TypeAt(x, y - 1)))
-                yield return new GoWest();
+            foreach(Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                (int i, int j) = map.Translate(direction);
+                if (IsGround(map.TypeAt(x + i, y + j)))
+                    yield return translations[direction];
+            }
         }
 
         private bool IsGround(TileType type) => groundTiles.Contains(type);
