@@ -27,17 +27,20 @@ namespace Simulator.gamespecific
             lookup.Add(map.Goal, (-1, -1));
             Queue<(int x, int y)> frontér = new Queue<(int x, int y)>();
             foreach (var neighbour in GetNeighbours(map.Goal))
+            {
                 frontér.Enqueue(neighbour);
-
-            (int x, int y) previous = map.Goal;
+                lookup.Add(neighbour, map.Goal);
+            }
+            
             while (frontér.Count > 0)
             {
                 var current = frontér.Dequeue();
-                lookup.Add(current, previous);
+                
                 foreach (var neighbour in GetNeighbours(current).Where(n => !(frontér.Contains(n) || lookup.Keys.Contains(n))))
+                {
                     frontér.Enqueue(neighbour);
-
-                previous = current;
+                    lookup.Add(neighbour, current);
+                }
             }
         }
 
