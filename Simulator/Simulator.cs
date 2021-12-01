@@ -45,7 +45,15 @@ namespace Simulator
                 IState state = game.GenerateState();
                 rounds.Add(
                     new Round(
-                        game.ActiveAgents.Select(a => new Event(a, a.PickAction(state))).ToList(),
+                        game.ActiveAgents.Select(agent => {
+                            var action = agent.PickAction(state);
+                            if (action == null)
+                            {
+                                game.Disable(agent);
+                                return null;
+                            }
+                            return new Event(agent, action);
+                            }).Where(e => e != null).ToList(),
                         round
                         )
                     );

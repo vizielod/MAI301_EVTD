@@ -66,6 +66,11 @@ namespace Simulator.gamespecific
             agents.Where(a => a.Key.SpawnRound > round).AsParallel().ForAll(a => a.Value.IsActive = false);
         }
 
+        public void Disable(IAgent agent)
+        {
+            agents[agent].IsActive = false;
+        }
+
         public IState GenerateState()
         {
             var state = new State(map, bfsMap);
