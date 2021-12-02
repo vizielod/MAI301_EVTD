@@ -75,7 +75,10 @@ namespace Simulator.gamespecific
         {
             var state = new State(map, bfsMap);
             foreach (var agent in agents.Where(a => (a.Value.IsActive && a.Key.IsActive)))
+            {
                 state.AddAgent(agent.Key, agent.Value.GridLocation, agent.Value.Type);
+                state.SetTarget(agent.Key, agent.Value.Target, agent.Value.EngagedTarget);
+            }
 
             return state;
         }
@@ -83,6 +86,15 @@ namespace Simulator.gamespecific
         public IStateObject GetStateObject(IAgent agent)
         {
             return agents[agent];
+        }
+
+        public void NewRound()
+        {
+            // Reset temporary states
+            agents.AsParallel().ForAll(a =>
+            {
+                a.Value.EngagedTarget = false;
+            });
         }
 
         public void SpawnAgents(int round)

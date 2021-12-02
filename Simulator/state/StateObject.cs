@@ -10,6 +10,8 @@
 
         public bool IsEnemy => Type.IsEnemy;
 
+        public bool EngagedTarget { get; set; }
+
         private int x;
         private int y;
 
