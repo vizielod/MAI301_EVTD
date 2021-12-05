@@ -17,6 +17,8 @@ namespace BehaviorTree
 
         public bool IsActive => Health > 0;
 
+        public bool IsEnemy => true;
+
         public ForwardEnemyAgent((int x, int y) initialPosition, int spawnRound)
         {
             this.InitialPosition = initialPosition;

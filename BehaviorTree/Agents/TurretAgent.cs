@@ -21,6 +21,8 @@ namespace BehaviorTree
 
         public float Range { get; set; }
 
+        public bool IsEnemy => false;
+
         public TurretAgent((int x, int y) InitialPosition)
         {
             this.InitialPosition = InitialPosition;

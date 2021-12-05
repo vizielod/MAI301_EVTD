@@ -20,6 +20,7 @@ namespace BehaviorTree
 
         public int Health { get; set; }
 
+        public bool IsEnemy => true;
         public SimpleEnemyAgent((int x, int y) initialPosition, int spawnRound) 
         {
             this.InitialPosition = initialPosition;

@@ -19,6 +19,8 @@ namespace BehaviorTree.Agents
 
         public int Health { get; set; }
 
+        public bool IsEnemy => true;
+
         public AdaptiveAgent((int x, int y) initialPosition, int spawnRound, EnemyBlackboard bb, Node rootNode)
         {
             this.InitialPosition = initialPosition;

@@ -8,13 +8,20 @@ namespace Evolution
 {
     public class Evolutionary
     {
+        public IStateSequence NewestSimulation { get; private set; }
+        public int CurrentGeneration { get; private set; }
+
         int populationSize;
+        int generationLength;
         SimulatorFactory factory;
         Random rand;
 
-        public Evolutionary(int populationSize)
+        public Evolutionary(int populationSize, int generationLength)
         {
+            CurrentGeneration = 0;
+            NewestSimulation = null;
             this.populationSize = populationSize;
+            this.generationLength = generationLength;
             factory = new SimulatorFactory();
             rand = new Random();
         }
@@ -26,11 +33,11 @@ namespace Evolution
             return (T)array.GetValue(rand.Next(array.Length));
         }
 
-        IEnumerable<IEnemyAgent> CreatePopulation() 
+        IEnumerable<IEnemyAgent> CreatePopulation(int size) 
         {
             //List<IAdaptiveAgent> result = new List<IAdaptiveAgent>();
 
-            for (int i = 0; i < populationSize; i++)
+            for (int i = 0; i < size; i++)
             {
                 AgentBuilder agentBuilder = new AgentBuilder();
 
@@ -39,25 +46,25 @@ namespace Evolution
            
         }
 
-        IDictionary<IAgent, float> SortIndividualInPopulation(IDictionary<IAgent, float> scores)
+        IReadOnlyDictionary<IAgent, float> SortIndividualInPopulation(IReadOnlyDictionary<IAgent, float> scores)
         {
-            var result = scores.ToList();
+            var result = scores.Where(a => a.Key.IsEnemy).ToList();
 
-            result.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
-
+            result.Sort((pair1, pair2) =>  pair1.Value.CompareTo(pair2.Value));
+            result.Reverse();
             return result.ToDictionary(s => s.Key, s=> s.Value);
         }
 
-        IDictionary<IAgent, float> ElitistSelection(IDictionary<IAgent, float> scores)
+        IEnumerable<IAgent> ElitistSelection(IReadOnlyDictionary<IAgent, float> scores, int size)
         {
-            return null;
+            var result = scores.Keys.ToList();
+            result.Take(size);
+
+            return result;
         }
 
-        public IEnumerable<IStateSequence> RunEvolution(IMapLayout map, IEnumerable<IAgent> turrets)
+        IReadOnlyDictionary<IAgent, float> RunSimulation(IMapLayout map, IEnumerable<IAgent> enemies, IEnumerable<IAgent> turrets)
         {
-            IEnumerable<IAgent> enemies = CreatePopulation().Cast<IAgent>();
-            
-
             IStateSequence stateSequence = factory.CreateSimulator(map, enemies, turrets);
 
             while (!stateSequence.IsGameOver)
@@ -69,16 +76,27 @@ namespace Evolution
 
             scores = SortIndividualInPopulation(scores);
 
-            // Set termination condition here
-            while (true)
-            {
-
-            }
-
-
             stateSequence.ReWind();
 
-            yield return stateSequence;
+            NewestSimulation = stateSequence;
+
+            return scores;
+        }
+
+        public void RunEvolution(IMapLayout map, IEnumerable<IAgent> turrets)
+        {
+            IEnumerable<IAgent> enemies = CreatePopulation(populationSize).Cast<IAgent>();
+
+            IReadOnlyDictionary<IAgent, float> scores = RunSimulation(map, enemies, turrets);
+
+            // Set termination condition here
+            for (int i = 0; i < generationLength; i++)
+            {
+                CurrentGeneration = i + 1;
+                IEnumerable<IAgent> population = ElitistSelection(scores, populationSize/2);
+                population.Union( CreatePopulation(populationSize / 2));
+                scores = RunSimulation(map, population, turrets);
+            }
         }
     }
 }

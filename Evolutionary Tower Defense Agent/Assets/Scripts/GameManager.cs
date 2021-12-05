@@ -313,7 +313,9 @@ public class GameManager : MonoBehaviour
                 sim.StepForward();
             }
         }*/
-        sim = new Evolutionary(numberOfEnemies).RunEvolution(grid, turretAgents).First();
+        Evolutionary evolutionary = new Evolutionary(numberOfEnemies, 50);
+        evolutionary.RunEvolution(grid, turretAgents);
+        sim = evolutionary.NewestSimulation;
 
         enemyAgents = sim.AllEnemyAgents.ToList();
 
