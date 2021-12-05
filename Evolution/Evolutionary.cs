@@ -39,6 +39,20 @@ namespace Evolution
            
         }
 
+        IDictionary<IAgent, float> SortIndividualInPopulation(IDictionary<IAgent, float> scores)
+        {
+            var result = scores.ToList();
+
+            result.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
+
+            return result.ToDictionary(s => s.Key, s=> s.Value);
+        }
+
+        IDictionary<IAgent, float> ElitistSelection(IDictionary<IAgent, float> scores)
+        {
+            return null;
+        }
+
         public IEnumerable<IStateSequence> RunEvolution(IMapLayout map, IEnumerable<IAgent> turrets)
         {
             IEnumerable<IAgent> enemies = CreatePopulation().Cast<IAgent>();
@@ -52,6 +66,14 @@ namespace Evolution
             }
 
             IDictionary<IAgent, float> scores = stateSequence.GetScores();
+
+            scores = SortIndividualInPopulation(scores);
+
+            // Set termination condition here
+            while (true)
+            {
+
+            }
 
 
             stateSequence.ReWind();
