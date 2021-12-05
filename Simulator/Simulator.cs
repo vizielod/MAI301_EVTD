@@ -10,23 +10,22 @@ namespace Simulator
         private readonly List<Round> rounds;
         private readonly IGame game;
         private readonly IWinCondition winCondition;
-        IDictionary<IAgent, float> totalScoreboard;
-        int round;
+        IDictionary<IAgent, float> scoreboard;
+        int roundIndex;
 
         public IEnumerable<IAgent> AllAgents => game.AllAgents;
 
         public IEnumerable<IAgent> AllEnemyAgents => game.AllEnemyAgents;
 
-        public bool IsGameOver => winCondition.GetWinner(round).HasValue;
+        public bool IsGameOver => winCondition.GetWinner(roundIndex).HasValue;
 
         internal Simulator(IGame game)
         {
             this.game = game;
             rounds = new List<Round>();
-            round = -1;
-            totalScoreboard = new Dictionary<IAgent, float>();
+            roundIndex = -1;
+            scoreboard = new Dictionary<IAgent, float>();
             winCondition = new WinConditionChain(new EnemiesDefeatedWinCondition(game), new WinConditionChain(new EnemiesGoalReachedWinCondition(game), new TimeoutWinCondition(200)));
-
         }
 
         public void StepForward()
@@ -36,12 +35,12 @@ namespace Simulator
                 return;
             }
 
-            round++;
-            game.SpawnAgents(round);
+            roundIndex++;
+            game.SpawnAgents(roundIndex);
 
             
 
-            var newRound = round >= rounds.Count;
+            var newRound = roundIndex >= rounds.Count;
             
             if (newRound)
             {
@@ -57,37 +56,48 @@ namespace Simulator
                             }
                             return new Event(agent, action);
                             }).Where(e => e != null).ToList(),
-                        round
+                        roundIndex
                         )
                     );
             }
 
-            rounds[round].ApplyAll(game);
+            rounds[roundIndex].ApplyAll(game);
 
             if (newRound)
-                rounds[round].ScoreAll(game);
+            {
+                rounds[roundIndex].CalculateScores(game);
+
+                foreach (var score in rounds[roundIndex].GetScores())
+                {
+                    if (scoreboard.ContainsKey(score.agent))
+                        scoreboard[score.agent] += score.score;
+                    else
+                        scoreboard[score.agent] = score.score;
+                }
+            }
+                
         }
 
         public void StepBackward()
         {
-            if (round < 0)
+            if (roundIndex < 0)
                 return;
 
-            game.DespawnAgents(round);
-            rounds[round].UndoAll(game);
-            round--;
+            game.DespawnAgents(roundIndex);
+            rounds[roundIndex].UndoAll(game);
+            roundIndex--;
         }
 
         public IState GetCurrentStep()
         {
             var state = game.GenerateState();
-            state.Winner = winCondition.GetWinner(round);
+            state.Winner = winCondition.GetWinner(roundIndex);
             return state;
         }
 
         public int CurrentStep()
         {
-            return round;
+            return roundIndex;
         }
 
         public int CountSteps()
@@ -102,15 +112,15 @@ namespace Simulator
 
         public void ReWind()
         {
-            while(round >= 0)
+            while(roundIndex >= 0)
             {
                 StepBackward();
             }
         }
 
-        public IDictionary<IAgent, float> GetScores()
+        public IReadOnlyDictionary<IAgent, float> GetScores()
         {
-            return new Dictionary<IAgent, float>();
+            return (IReadOnlyDictionary<IAgent, float>)scoreboard;
         }
     }
 }

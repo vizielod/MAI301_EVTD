@@ -32,7 +32,7 @@ namespace Simulator.state
             });
         }
 
-        public void ScoreAll(IGame game)
+        public void CalculateScores(IGame game)
         {
             var goals = game.CountEnemiesSuccess();
             var activeEnemies = game.CountActiveEnemies();
@@ -49,6 +49,12 @@ namespace Simulator.state
                         e.Reward = 1;
                 }
             });
+        }
+
+        public IEnumerable<(IAgent agent, float score)> GetScores()
+        {
+            foreach (var evnt in events)
+                yield return (evnt.Agent, evnt.Reward);
         }
     }
 }
