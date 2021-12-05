@@ -75,10 +75,23 @@ namespace Simulator.state
         {
             return Maybe.Create(agents[agent].Target);
         }
+        public bool EngagedTargetOf(IAgent agent)
+        {
+            return agents[agent].Target != null && agents[agent].EngagedTarget;
+        }
 
         public (int x, int y) SuggestPosition(IAgent agent)
         {
             return bfs.Next(agents[agent].GridLocation);
+        }
+
+        internal void SetTarget(IAgent agent, IAgent target, bool engaged = true)
+        {
+            if (target != null && agents.ContainsKey(target))
+            {
+                agents[agent].Target = target;
+                agents[agent].EngagedTarget = engaged;
+            }
         }
     }
 }

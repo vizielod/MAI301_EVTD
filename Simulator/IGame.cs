@@ -12,6 +12,7 @@ namespace Simulator
         IStateObject GetStateObject(IAgent agent);
         void SpawnAgents(int round);
         int CountUnspawnedEnemies(int round);
+        void NewRound();
         void DespawnAgents(int round);
         int CountEnemies();
         int CountActiveEnemies();

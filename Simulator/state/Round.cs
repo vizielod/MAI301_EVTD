@@ -16,6 +16,7 @@ namespace Simulator.state
 
         public void ApplyAll(IGame game)
         {
+            game.NewRound();
             events.AsParallel().ForAll((evnt) => 
             { 
                 evnt.Action.Apply(game.GetStateObject(evnt.Agent)); 
@@ -24,6 +25,7 @@ namespace Simulator.state
 
         public void UndoAll(IGame game)
         {
+            game.NewRound();
             events.AsParallel().ForAll((evnt) => 
             { 
                 evnt.Action.Undo(game.GetStateObject(evnt.Agent)); 

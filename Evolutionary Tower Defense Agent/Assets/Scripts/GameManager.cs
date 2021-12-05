@@ -397,20 +397,24 @@ public class GameManager : MonoBehaviour
                 {
 
                     var turretAgent = (TurretAgent)agent;
-                    var target = turretAgent.Target;
-                    Debug.Log(target);
-
                     //Debug.Log(targetGO);
                     agentGODictionary[agent].GetComponent<TurretController>().state = state;
+                    Maybe<IAgent> maybeTarget = state.GetTargetOf(turretAgent);
+                    maybeTarget.Apply(target =>
+                    {
+                        Debug.Log(target);
+                        if (state.EngagedTargetOf(agent))
+                        {
+                            agentGODictionary[agent].GetComponent<TurretController>().LookTowardsTarget(target);
+                        }
+                        else
+                        {
+                            agentGODictionary[agent].GetComponent<TurretController>().DisableLaser();
+                        }
 
-                    if (target != null && state.Agents.Contains(target))
-                    {
-                        agentGODictionary[agent].GetComponent<TurretController>().LookTowardsTarget(target);
-                    }
-                    else
-                    {
-                        agentGODictionary[agent].GetComponent<TurretController>().DisableLaser();
-                    }
+                    });
+                    maybeTarget.IfEmpty(agentGODictionary[agent].GetComponent<TurretController>().DisableLaser);
+
                 }
             }
             if (!agent.IsActive)
