@@ -11,6 +11,6 @@ namespace Simulator
         IEnumerable<IAgent> AllEnemyAgents { get; }
         bool IsGameOver { get; }
         void ReWind();
-        IDictionary<IAgent, float> GetScores();
+        IReadOnlyDictionary<IAgent, float> GetScores();
     }
 }

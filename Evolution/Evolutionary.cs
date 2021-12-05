@@ -51,7 +51,7 @@ namespace Evolution
                 stateSequence.StepForward();
             }
 
-            IDictionary<IAgent, float> scores = stateSequence.GetScores();
+            IReadOnlyDictionary<IAgent, float> scores = stateSequence.GetScores();
 
 
             stateSequence.ReWind();
