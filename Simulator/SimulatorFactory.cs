@@ -13,6 +13,7 @@ namespace Simulator
                 throw new ArgumentException("Initial map must have exactly one goal", nameof(initialMap));
 
             var game = new TowerDefenceGame(initialMap, agents, towers);
+            game.RoundLimit = 200;
             return new Simulator(game);
         }
     }

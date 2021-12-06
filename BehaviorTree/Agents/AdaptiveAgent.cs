@@ -21,12 +21,16 @@ namespace BehaviorTree.Agents
 
         public bool IsEnemy => true;
 
+        public float HealthRatio => Health / maxHealth;
+
+        private int maxHealth;
+
         public AdaptiveAgent((int x, int y) initialPosition, int spawnRound, EnemyBlackboard bb, Node rootNode)
         {
             this.InitialPosition = initialPosition;
             this.bb = bb;
             this.rootNode = rootNode;
-            Health = 10;
+            maxHealth = Health = 10;
             this.SpawnRound = spawnRound;
         }
 

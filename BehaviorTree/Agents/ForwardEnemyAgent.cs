@@ -13,17 +13,21 @@ namespace BehaviorTree
         public int SpawnRound { get; }
 
         EnemyBlackboard bb;
+        private int maxHealth;
+
         public int Health { get; set; }
 
         public bool IsActive => Health > 0;
 
         public bool IsEnemy => true;
 
+        public float HealthRatio => Health / maxHealth;
+
         public ForwardEnemyAgent((int x, int y) initialPosition, int spawnRound)
         {
             this.InitialPosition = initialPosition;
             bb = new EnemyBlackboard();
-            Health = 10;
+            maxHealth = Health = 10;
             this.SpawnRound = spawnRound;
         }
 

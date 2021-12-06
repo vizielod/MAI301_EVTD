@@ -41,6 +41,8 @@ namespace Simulator.gamespecific
 
         public IEnumerable<IAgent> AllEnemyAgents => agents.Where(a => a.Value.IsEnemy).Select(a => a.Key);
 
+        public int RoundLimit { get; set; }
+
         public int CountActiveEnemies()
         {
             return agents.Where(a => a.Key.IsActive && a.Value.IsActive).Count(a => a.Value.IsEnemy);

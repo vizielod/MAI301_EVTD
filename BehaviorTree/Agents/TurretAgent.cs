@@ -23,6 +23,8 @@ namespace BehaviorTree
 
         public bool IsEnemy => false;
 
+        public float HealthRatio => 1;
+
         public TurretAgent((int x, int y) InitialPosition)
         {
             this.InitialPosition = InitialPosition;

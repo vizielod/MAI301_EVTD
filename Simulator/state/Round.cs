@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Simulator.state
@@ -43,10 +44,22 @@ namespace Simulator.state
                 var sObj = game.GetStateObject(e.Agent);
                 if (sObj.IsEnemy)
                 {
+                    float degradation = 1 - ((roundNumber - e.Agent.SpawnRound) * (1 / game.RoundLimit));
+
                     if (e.Agent.IsActive && sObj.IsActive)
-                        e.Reward = (goals + activeEnemies + 1) / (enemies + 1) * (1 / (roundNumber - e.Agent.SpawnRound + 1));
+                    {
+                        float successfulEnemies = goals + activeEnemies;
+                        float socialScore = (successfulEnemies + 1) / (enemies + 1);
+                        float healthRatio = e.Agent.HealthRatio;
+                        healthRatio = healthRatio > 1f ? 1f : healthRatio < 0.5f ? 0.5f : healthRatio;
+                        e.Reward = socialScore * healthRatio;
+                    }
                     else if (sObj.GoalReached)
+                    {
                         e.Reward = 1;
+                    }
+
+                    e.Reward *= degradation;
                 }
             });
         }
