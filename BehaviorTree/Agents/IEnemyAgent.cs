@@ -9,5 +9,6 @@ namespace BehaviorTree.Agents
     {
         int Health { get; }
         void Reset();
+        IEnemyAgent Clone();
     }
 }

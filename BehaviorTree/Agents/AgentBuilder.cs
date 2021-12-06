@@ -63,7 +63,7 @@ namespace BehaviorTree.Agents
             switch (type)
             {
                 case ActionType.Forward:
-                    AddLeafNode(new MoveForward(blackboard));
+                    AddLeafNode(new MoveForward());
                     break;
                 default:
                     break;
@@ -77,19 +77,19 @@ namespace BehaviorTree.Agents
             switch (type)
             {
                 case ConditionType.CanGoSouth:
-                    AddLeafNode(new CanMoveSouth(blackboard));
+                    AddLeafNode(new CanMoveSouth());
                     break;
                 case ConditionType.CanGoNorth:
-                    AddLeafNode(new CanMoveNorth(blackboard));
+                    AddLeafNode(new CanMoveNorth());
                     break;
                 case ConditionType.CanGoWest:
-                    AddLeafNode(new CanMoveWest(blackboard));
+                    AddLeafNode(new CanMoveWest());
                     break;
                 case ConditionType.CanGoEast:
-                    AddLeafNode(new CanMoveEast(blackboard));
+                    AddLeafNode(new CanMoveEast());
                     break;
                 case ConditionType.CanRepeat:
-                    AddLeafNode(new CanRepeatLastMove(blackboard));
+                    AddLeafNode(new CanRepeatLastMove());
                     break;
                 /*case ConditionType.IsAttackingTurretEast:
                     AddLeafNode(new IsAttackingTurretEast(blackboard));

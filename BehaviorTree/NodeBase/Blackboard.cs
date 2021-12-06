@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BehaviorTree.NodeBase
 {
-    public class Blackboard
+    abstract class Blackboard
     {
         
 
@@ -24,5 +24,7 @@ namespace BehaviorTree.NodeBase
            
             
         }
+
+        public abstract void AcceptVisitor(LeafNode visitor);
     }
 }

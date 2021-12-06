@@ -2,7 +2,7 @@
 
 namespace BehaviorTree.NodeBase
 {
-    public abstract class LeafNode : Node
+    abstract class LeafNode : Node
     {
         protected NodeController controller;
 
@@ -21,6 +21,11 @@ namespace BehaviorTree.NodeBase
             return this.controller;
         }
 
+        public override void DoAction(Blackboard blackboard)
+        {
+            blackboard.AcceptVisitor(this);
+        }
+
         public override bool Running()
         {
             return !controller.Finished();
@@ -35,5 +40,9 @@ namespace BehaviorTree.NodeBase
         {
             controller.SafeStart();
         }
+
+        public abstract void HandleEnemy(EnemyBlackboard blackboard);
+
+        public abstract void HandleTurret(TurretBlackboard blackboard);
     }
 }

@@ -4,11 +4,8 @@ namespace BehaviorTree.ActionNodes
 {
     class RepeatPreviousAction:LeafNode
     {
-        private readonly EnemyBlackboard blackboard;
-
-        public RepeatPreviousAction( EnemyBlackboard blackboard)
+        public RepeatPreviousAction()
         {
-            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()
@@ -16,10 +13,15 @@ namespace BehaviorTree.ActionNodes
             return true;
         }
 
-        public override void DoAction()
+        public override void HandleEnemy(EnemyBlackboard blackboard)
         {
             blackboard.ChoosenAction = blackboard.PreviousAction;
             controller.FinishWithSuccess();
+        }
+
+        public override void HandleTurret(TurretBlackboard blackboard)
+        {
+            controller.FinishWithFailure();
         }
     }
 }

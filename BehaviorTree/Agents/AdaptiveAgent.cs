@@ -48,7 +48,7 @@ namespace BehaviorTree.Agents
 
             while (rootNode.Running())
             {
-                rootNode.DoAction();
+                rootNode.DoAction(bb);
             }
 
             rootNode.End();
@@ -69,6 +69,12 @@ namespace BehaviorTree.Agents
         public void Reset() 
         {
             bb.Reset();
+        }
+
+        public IEnemyAgent Clone()
+        {
+            AdaptiveAgent clone = new AdaptiveAgent(InitialPosition, SpawnRound, new EnemyBlackboard(), rootNode);
+            return clone;
         }
     }
 }

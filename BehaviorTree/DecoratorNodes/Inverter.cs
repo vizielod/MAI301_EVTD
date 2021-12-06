@@ -2,15 +2,15 @@
 
 namespace BehaviorTree.DecoratorNodes
 {
-    public class Inverter : DecoratorNode
+    class Inverter : DecoratorNode
     {
         public Inverter( Node node) : base( node)
         {
         }
 
-        public override void DoAction()
+        public override void DoAction(Blackboard blackboard)
         {
-            node.DoAction();
+            node.DoAction(blackboard);
 
             if (node.GetControl().Succeeded())
             {

@@ -6,22 +6,18 @@ namespace BehaviorTree.ActionNodes
 {
     class MoveRandomly:LeafNode
     {
-        private readonly EnemyBlackboard blackboard;
-
-        public MoveRandomly( EnemyBlackboard blackboard)
+        public MoveRandomly()
         {
-            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()
         {
-            return blackboard.LegalActions != null;
+            return true;
         }
 
-        public override void DoAction()
+        public override void HandleEnemy(EnemyBlackboard blackboard)
         {
-
-            if (CheckConditions())
+            if (blackboard.LegalActions != null)
             {
                 var rand = new Random();
                 blackboard.ChoosenAction = blackboard.LegalActions.ElementAt(rand.Next(blackboard.LegalActions.Count()));
@@ -31,6 +27,11 @@ namespace BehaviorTree.ActionNodes
             {
                 controller.FinishWithFailure();
             }
+        }
+
+        public override void HandleTurret(TurretBlackboard blackboard)
+        {
+            controller.FinishWithFailure();
         }
     }
 }

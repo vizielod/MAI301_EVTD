@@ -46,36 +46,36 @@ namespace BehaviorTree
             Selector move = new Selector();
 
             Sequence repeatSeq = new Sequence();
-            repeatSeq.AddChildren(new CanRepeatLastMove(bb));
-            repeatSeq.AddChildren(new RepeatPreviousAction( bb));
+            repeatSeq.AddChildren(new CanRepeatLastMove());
+            repeatSeq.AddChildren(new RepeatPreviousAction());
             move.AddChildren(repeatSeq);
 
             Sequence moveSouth = new Sequence();
-            moveSouth.AddChildren(new CanMoveSouth(bb));
-            moveSouth.AddChildren(new MoveSouth(bb));
+            moveSouth.AddChildren(new CanMoveSouth());
+            moveSouth.AddChildren(new MoveSouth());
             move.AddChildren(moveSouth);
 
             Sequence moveEast = new Sequence();
-            moveEast.AddChildren(new CanMoveEast(bb));
-            moveEast.AddChildren(new MoveEast(bb));
+            moveEast.AddChildren(new CanMoveEast());
+            moveEast.AddChildren(new MoveEast());
             move.AddChildren(moveEast);
 
             Sequence moveWest = new Sequence();
-            moveWest.AddChildren(new CanMoveWest(bb));
-            moveWest.AddChildren(new MoveWest(bb));
+            moveWest.AddChildren(new CanMoveWest());
+            moveWest.AddChildren(new MoveWest());
             move.AddChildren(moveWest);
 
 
             Sequence moveNorth = new Sequence();
-            moveNorth.AddChildren(new CanMoveNorth(bb));
-            moveNorth.AddChildren(new MoveNorth(bb));
+            moveNorth.AddChildren(new CanMoveNorth());
+            moveNorth.AddChildren(new MoveNorth());
             move.AddChildren(moveNorth);
 
             move.Start();
 
             while (move.Running()) 
             {
-                move.DoAction();
+                move.DoAction(bb);
             }
 
             move.End();
@@ -96,6 +96,11 @@ namespace BehaviorTree
         }
 
         public void Reset()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnemyAgent Clone()
         {
             throw new NotImplementedException();
         }

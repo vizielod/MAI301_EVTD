@@ -6,21 +6,17 @@ namespace BehaviorTree.ActionNodes
 {
     class EnemyScore : LeafNode
     {
-        private readonly EnemyBlackboard blackboard;
-
-        public EnemyScore( EnemyBlackboard blackboard)
+        public EnemyScore()
         {
-            this.blackboard = blackboard;
         }
         public override bool CheckConditions()
         {
-            return blackboard.LegalActions != null && blackboard.LegalActions.Any();
+            return true;
         }
 
-        public override void DoAction()
+        public override void HandleEnemy(EnemyBlackboard blackboard)
         {
-
-            if (blackboard.LegalActions.Any(a => a is ScorePoints))
+            if(blackboard.LegalActions.Any(a => a is ScorePoints))
             {
                 blackboard.ChoosenAction = blackboard.LegalActions.First(a => a is ScorePoints);
                 controller.FinishWithSuccess();
@@ -29,6 +25,11 @@ namespace BehaviorTree.ActionNodes
             {
                 controller.FinishWithFailure();
             }
+        }
+
+        public override void HandleTurret(TurretBlackboard blackboard)
+        {
+            controller.FinishWithFailure();
         }
     }
 }

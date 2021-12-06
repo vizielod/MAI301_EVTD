@@ -42,13 +42,13 @@ namespace BehaviorTree
             bb.CurrentPosition = state.PositionOf(this);
 
             Selector move = new Selector( );
-            move.AddChildren(new MoveForward( bb));
+            move.AddChildren(new MoveForward());
 
             move.Start();
 
             while (move.Running())
             {
-                move.DoAction();
+                move.DoAction(bb);
             }
 
             move.End();
@@ -69,6 +69,11 @@ namespace BehaviorTree
         }
 
         public void Reset()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnemyAgent Clone()
         {
             throw new System.NotImplementedException();
         }

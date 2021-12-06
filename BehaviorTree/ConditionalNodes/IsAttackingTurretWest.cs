@@ -4,21 +4,19 @@ namespace BehaviorTree.ConditionalNodes
 {
     class IsAttackingTurretWest:LeafNode
     {
-        private readonly EnemyBlackboard blackboard;
 
-        public IsAttackingTurretWest(EnemyBlackboard blackboard)
+        public IsAttackingTurretWest()
         {
-            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()
         {
-            return blackboard.ClosestTurretPosition != null && blackboard.CurrentPosition != null;
+            return true;
         }
 
-        public override void DoAction()
+        public override void HandleEnemy(EnemyBlackboard blackboard)
         {
-            if (CheckConditions())
+            if (blackboard.ClosestTurretPosition != null && blackboard.CurrentPosition != null)
             {
                 int y = blackboard.ClosestTurretPosition.Value.y - blackboard.CurrentPosition.Value.y;
 
@@ -31,6 +29,11 @@ namespace BehaviorTree.ConditionalNodes
             {
                 controller.FinishWithFailure();
             }
+        }
+
+        public override void HandleTurret(TurretBlackboard blackboard)
+        {
+            controller.FinishWithFailure();
         }
     }
 }

@@ -30,5 +30,10 @@ namespace BehaviorTree.NodeBase
             ClosestTurret = null;
             ClosestTurretPosition = null;
         }
+
+        public override void AcceptVisitor(LeafNode visitor)
+        {
+            visitor.HandleEnemy(this);
+        }
     }
 }

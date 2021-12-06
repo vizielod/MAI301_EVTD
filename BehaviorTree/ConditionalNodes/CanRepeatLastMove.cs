@@ -5,21 +5,18 @@ namespace BehaviorTree.ConditionalNodes
 {
     class CanRepeatLastMove:LeafNode
     {
-        private readonly EnemyBlackboard blackboard;
-
-        public CanRepeatLastMove(EnemyBlackboard blackboard)
+        public CanRepeatLastMove()
         {
-            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()
         {
-            return blackboard.LegalActions != null && blackboard.LegalActions.Contains(blackboard.PreviousAction);
+            return true;
         }
 
-        public override void DoAction()
+        public override void HandleEnemy(EnemyBlackboard blackboard)
         {
-            if (CheckConditions())
+            if (blackboard.LegalActions != null && blackboard.LegalActions.Contains(blackboard.PreviousAction))
             {
                 controller.FinishWithSuccess();
             }
@@ -27,6 +24,11 @@ namespace BehaviorTree.ConditionalNodes
             {
                 controller.FinishWithFailure();
             }
+        }
+
+        public override void HandleTurret(TurretBlackboard blackboard)
+        {
+            controller.FinishWithFailure();
         }
     }
 }

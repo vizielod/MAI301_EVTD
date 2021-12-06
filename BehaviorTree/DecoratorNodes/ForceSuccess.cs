@@ -8,9 +8,9 @@ namespace BehaviorTree.DecoratorNodes
         {
         }
 
-        public override void DoAction()
+        public override void DoAction(Blackboard blackboard)
         {
-            node.DoAction();
+            node.DoAction(blackboard);
 
             GetControl().FinishWithSuccess();
         }

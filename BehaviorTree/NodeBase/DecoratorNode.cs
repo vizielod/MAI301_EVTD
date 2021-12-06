@@ -1,7 +1,7 @@
 ﻿using System;
 namespace BehaviorTree.NodeBase
 {
-    public abstract class DecoratorNode:Node
+    abstract class DecoratorNode:Node
     {
         /**
          * Reference to the decorated node

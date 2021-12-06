@@ -4,7 +4,7 @@ namespace BehaviorTree.NodeBase
     /**
      * Base abstract class for all the nodes
      */
-    public abstract class Node
+    abstract class Node
     {
         /** 
          * When we create a new node we have to pass
@@ -34,7 +34,7 @@ namespace BehaviorTree.NodeBase
          * the node should perform 
          * during each update
          */
-        public abstract void DoAction();
+        public abstract void DoAction(Blackboard blackboard);
 
         /**
          * Override to get the controller

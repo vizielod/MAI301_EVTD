@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Release;Debug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,10 +17,10 @@
   </ItemGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<OutputPath>..\Evolutionary Tower Defense Agent\Assets\libs</OutputPath>
+		<OutputPath>..\Evolutionary Tower Defense Agent\Assets\libs\netstandard2.0\netstandard2.0</OutputPath>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<OutputPath>..\Evolutionary Tower Defense Agent\Assets\libs</OutputPath>
+		<OutputPath>..\Evolutionary Tower Defense Agent\Assets\libs\netstandard2.0\netstandard2.0</OutputPath>
 	</PropertyGroup>
 </Project>

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace BehaviorTree.FlowControllNodes
 {
-    public class Selector: ParentNode
+     class Selector: ParentNode
     {
         public Selector()
         {}

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace BehaviorTree.NodeBase
 {
-    public abstract class ParentNode:Node
+    abstract class ParentNode:Node
     {
         protected ParentNodeController controller;
 
@@ -48,7 +48,7 @@ namespace BehaviorTree.NodeBase
         }
 
 
-        public override void DoAction()
+        public override void DoAction(Blackboard blackboard)
         {
             if (controller.Finished())
             {
@@ -88,7 +88,7 @@ namespace BehaviorTree.NodeBase
             else
             {
                 // ... and it's ready, update it.
-                controller.currentNode.DoAction();
+                controller.currentNode.DoAction(blackboard);
             }
         }
 

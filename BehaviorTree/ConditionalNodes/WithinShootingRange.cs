@@ -5,33 +5,42 @@ namespace BehaviorTree.ConditionalNodes
 {
     class WithinShootingRange:LeafNode
     {
-        private readonly EnemyBlackboard blackboard;
-
-        public WithinShootingRange(EnemyBlackboard blackboard)
+        public WithinShootingRange()
         {
-            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()
         {
-            return blackboard.ClosestTurret != null && blackboard.CurrentPosition != null && blackboard.ClosestTurretPosition != null;
+            return true;
         }
 
-        public override void DoAction()
+        public override void HandleEnemy(EnemyBlackboard blackboard)
         {
-            (int x, int y)? turretPos = blackboard.ClosestTurretPosition;
-            (int x, int y)? currentPosition = blackboard.CurrentPosition;
-            (int x, int y) p = (currentPosition.Value.x - turretPos.Value.x, currentPosition.Value.y - turretPos.Value.y);
-            // It might be better to put the Range on the IAgent interface instead of this cast, it would be useful if we have mutiple turret types
-            TurretAgent t = blackboard.ClosestTurret as TurretAgent;
-            if (Math.Max(Math.Abs(p.x), Math.Abs(p.y)) <= t.Range)
+            if (blackboard.ClosestTurret != null && blackboard.CurrentPosition != null && blackboard.ClosestTurretPosition != null)
             {
-                controller.FinishWithSuccess();
+                (int x, int y)? turretPos = blackboard.ClosestTurretPosition;
+                (int x, int y)? currentPosition = blackboard.CurrentPosition;
+                (int x, int y) p = (currentPosition.Value.x - turretPos.Value.x, currentPosition.Value.y - turretPos.Value.y);
+                // It might be better to put the Range on the IAgent interface instead of this cast, it would be useful if we have mutiple turret types
+                TurretAgent t = blackboard.ClosestTurret as TurretAgent;
+                if (Math.Max(Math.Abs(p.x), Math.Abs(p.y)) <= t.Range)
+                {
+                    controller.FinishWithSuccess();
+                }
+                else
+                {
+                    controller.FinishWithFailure();
+                }
             }
-            else 
+            else
             {
                 controller.FinishWithFailure();
             }
+        }
+
+        public override void HandleTurret(TurretBlackboard blackboard)
+        {
+            controller.FinishWithFailure();
         }
     }
 }

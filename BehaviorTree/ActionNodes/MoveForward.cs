@@ -5,21 +5,19 @@ namespace BehaviorTree.ActionNodes
 {
     class MoveForward: LeafNode
     {
-         EnemyBlackboard blackboard;
 
-        public MoveForward(EnemyBlackboard blackboard)
+        public MoveForward()
         {
-            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()
         {
-            return blackboard.ForwardPosition.HasValue && blackboard.CurrentPosition.HasValue;
+            return true;
         }
 
-        public override void DoAction()
+        public override void HandleEnemy(EnemyBlackboard blackboard)
         {
-            if (CheckConditions())
+            if (blackboard.ForwardPosition.HasValue && blackboard.CurrentPosition.HasValue)
             {
                 int x = blackboard.ForwardPosition.Value.x - blackboard.CurrentPosition.Value.x;
                 int y = blackboard.ForwardPosition.Value.y - blackboard.CurrentPosition.Value.y;
@@ -58,6 +56,11 @@ namespace BehaviorTree.ActionNodes
             }
             else
                 controller.FinishWithFailure();
+        }
+
+        public override void HandleTurret(TurretBlackboard blackboard)
+        {
+            controller.FinishWithFailure();
         }
     }
 }

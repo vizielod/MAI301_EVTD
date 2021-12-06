@@ -18,6 +18,11 @@ namespace BehaviorTree.NodeBase
         public bool IsEnemyInRange { get; set; }
         public int Damage { get; set; }
 
+        public override void AcceptVisitor(LeafNode visitor)
+        {
+            visitor.HandleTurret(this);
+        }
+
         public override void Reset()
         {
             base.Reset();

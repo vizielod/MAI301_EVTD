@@ -6,21 +6,18 @@ namespace BehaviorTree.ConditionalNodes
 {
     class CanMoveEast : LeafNode
     {
-        private readonly EnemyBlackboard blackboard;
-
-        public CanMoveEast(EnemyBlackboard blackboard)
+        public CanMoveEast()
         {
-            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()
         {
-            return blackboard.LegalActions != null && blackboard.LegalActions.Any(a => a is GoEast);
+            return true;
         }
 
-        public override void DoAction()
+        public override void HandleEnemy(EnemyBlackboard blackboard)
         {
-            if (CheckConditions())
+            if (blackboard.LegalActions != null && blackboard.LegalActions.Any(a => a is GoEast))
             {
                 controller.FinishWithSuccess();
             }
@@ -28,6 +25,11 @@ namespace BehaviorTree.ConditionalNodes
             {
                 controller.FinishWithFailure();
             }
+        }
+
+        public override void HandleTurret(TurretBlackboard blackboard)
+        {
+            controller.FinishWithFailure();
         }
     }
 }

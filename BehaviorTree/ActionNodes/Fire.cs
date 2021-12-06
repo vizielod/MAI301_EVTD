@@ -5,27 +5,29 @@ namespace BehaviorTree.ActionNodes
 {
     class Fire : LeafNode
     {
-        private readonly TurretBlackboard blackboard;
-
-        public Fire(TurretBlackboard blackboard)
+        public Fire()
         {
-            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()
         {
-            return blackboard.ClosestEnemy != null && blackboard.IsEnemyInRange; 
+            return true; 
         }
 
-        public override void DoAction()
+        public override void HandleEnemy(EnemyBlackboard blackboard)
         {
-            if (CheckConditions())
+            controller.FinishWithFailure();
+        }
+
+        public override void HandleTurret(TurretBlackboard blackboard)
+        {
+            if (blackboard.ClosestEnemy != null && blackboard.IsEnemyInRange)
             {
                 blackboard.ChoosenAction = new QuickAttack(blackboard.Damage, blackboard.ClosestEnemy, blackboard.PreviousTargetEnemy);
                 blackboard.PreviousTargetEnemy = blackboard.ClosestEnemy;
                 controller.FinishWithSuccess();
             }
-            else 
+            else
             {
                 controller.FinishWithFailure();
             }

@@ -53,13 +53,13 @@ namespace BehaviorTree
                 }
 
                 Selector move = new Selector();
-                move.AddChildren(new Fire( bb));
+                move.AddChildren(new Fire());
 
                 move.Start();
 
                 while (move.Running())
                 {
-                    move.DoAction();
+                    move.DoAction(bb);
                 }
 
                 move.End();

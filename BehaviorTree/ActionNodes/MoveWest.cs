@@ -5,11 +5,8 @@ namespace BehaviorTree.ActionNodes
 {
     class MoveWest : LeafNode
     {
-        private readonly EnemyBlackboard blackboard;
-
-        public MoveWest( EnemyBlackboard blackboard)
+        public MoveWest()
         {
-            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()
@@ -17,10 +14,15 @@ namespace BehaviorTree.ActionNodes
             return true;
         }
 
-        public override void DoAction()
+        public override void HandleEnemy(EnemyBlackboard blackboard)
         {
             blackboard.ChoosenAction = new GoWest();
             controller.FinishWithSuccess();
+        }
+
+        public override void HandleTurret(TurretBlackboard blackboard)
+        {
+            controller.FinishWithFailure();
         }
     }
 }

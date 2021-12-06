@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace BehaviorTree.NodeBase
 {
-    public class ParentNodeController : NodeController
+    class ParentNodeController : NodeController
     {
         /**
          * List of nodes that the parent holds

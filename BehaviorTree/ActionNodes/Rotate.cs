@@ -5,11 +5,8 @@ namespace BehaviorTree.ActionNodes
 {
     class Rotate: LeafNode
     {
-        private readonly EnemyBlackboard blackboard;
-
-        public Rotate( EnemyBlackboard blackboard)
+        public Rotate()
         {
-            this.blackboard = blackboard;
         }
 
         public override bool CheckConditions()
@@ -17,7 +14,12 @@ namespace BehaviorTree.ActionNodes
             return true;
         }
 
-        public override void DoAction()
+        public override void HandleEnemy(EnemyBlackboard blackboard)
+        {
+            controller.FinishWithFailure();
+        }
+
+        public override void HandleTurret(TurretBlackboard blackboard)
         {
             blackboard.ChoosenAction = new Turn();
             controller.FinishWithSuccess();

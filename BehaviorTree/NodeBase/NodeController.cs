@@ -1,7 +1,7 @@
 ﻿using System;
 namespace BehaviorTree.NodeBase
 {
-    public class NodeController
+    class NodeController
     {
         /**
         * Indicates if the task has started
