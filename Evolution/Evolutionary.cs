@@ -3,6 +3,7 @@ using Simulator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Evolution
 {
@@ -83,11 +84,12 @@ namespace Evolution
             return scores;
         }
 
-        public void RunEvolution(IMapLayout map, IEnumerable<IAgent> turrets)
+        public IEnumerable<float> RunEvolution(IMapLayout map, IEnumerable<IAgent> turrets)
         {
             IEnumerable<IAgent> enemies = CreatePopulation(populationSize).Cast<IAgent>();
 
             IReadOnlyDictionary<IAgent, float> scores = RunSimulation(map, enemies, turrets);
+            yield return scores.Sum(s => s.Value);
 
             // Set termination condition here
             for (int i = 0; i < generationLength; i++)
@@ -96,6 +98,15 @@ namespace Evolution
                 IEnumerable<IAgent> population = ElitistSelection(scores, populationSize/2);
                 population.Union( CreatePopulation(populationSize / 2));
                 scores = RunSimulation(map, population, turrets);
+                yield return scores.Sum(s => s.Value);
+            }
+        }
+
+        public async void RunEvolutionAsync(IMapLayout map, IEnumerable<IAgent> turrets, Action<float> score_cb)
+        {
+            foreach (float item in RunEvolution(map, turrets))
+            {
+                score_cb.Invoke(item);
             }
         }
     }
