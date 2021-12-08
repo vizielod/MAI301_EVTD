@@ -51,7 +51,6 @@ namespace Simulator.state
                         float successfulEnemies = goals + activeEnemies;
                         float socialScore = (successfulEnemies + 1) / (enemies + 1);
                         float healthRatio = e.Agent.HealthRatio;
-                        healthRatio = healthRatio > 1f ? 1f : healthRatio < 0.5f ? 0.5f : healthRatio;
                         e.Reward = socialScore * healthRatio;
                     }
                     else if (sObj.GoalReached)

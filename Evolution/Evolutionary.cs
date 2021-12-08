@@ -102,11 +102,12 @@ namespace Evolution
             }
         }
 
-        public async void RunEvolutionAsync(IMapLayout map, IEnumerable<IAgent> turrets, Action<float> score_cb)
+        public async Task RunEvolutionAsync(IMapLayout map, IEnumerable<IAgent> turrets, Action<float> score_cb)
         {
             foreach (float item in RunEvolution(map, turrets))
             {
                 score_cb.Invoke(item);
+                await Task.Yield();
             }
         }
     }

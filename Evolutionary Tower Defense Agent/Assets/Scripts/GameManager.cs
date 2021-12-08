@@ -6,6 +6,7 @@ using System.Linq;
 using BehaviorTree;
 using BehaviorTree.Agents;
 using Evolution;
+using System.Threading.Tasks;
 
 public enum GridType { 
     useGridWithTurretsSetup = 0, 
@@ -236,13 +237,13 @@ public class GameManager : MonoBehaviour
 
         gameOver = false;
     }
-    public void StartGame()
+    public async void StartGame()
     {
         if (gridType == GridType.useGridWithTurretsSetup)
         {
            
             turrets = GameObject.FindGameObjectsWithTag(turretTag);
-            InitializeAgents();
+            await InitializeAgents();
             return;
         }
         else if(turretCount < maxTurretCount)
@@ -253,7 +254,7 @@ public class GameManager : MonoBehaviour
         else
         {
             //turrets = GameObject.FindGameObjectsWithTag(turretTag);
-            InitializeAgents();
+            await InitializeAgents();
             //WriteGridOnDebug();
         }
         uiManager.StartGamePressed();
@@ -279,7 +280,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    void InitializeAgents()
+    async Task InitializeAgents()
     {
         Vector3 spawnPosition = new Vector3(5, 2.75f, 5);
 
@@ -314,7 +315,7 @@ public class GameManager : MonoBehaviour
             }
         }*/
         Evolutionary evolutionary = new Evolutionary(numberOfEnemies, 50);
-        evolutionary.RunEvolution(grid, turretAgents);
+        await evolutionary.RunEvolutionAsync(grid, turretAgents, (score) => { Debug.Log($"Score: {score}"); });
         sim = evolutionary.NewestSimulation;
 
         enemyAgents = sim.AllEnemyAgents.ToList();
@@ -329,7 +330,6 @@ public class GameManager : MonoBehaviour
 
             agentGODictionary.Add(enemyAgents[i], newEnemyGO);
         }
-
     }
 
     public void InitializeTurretAgent(int i, int j, GameObject turretGO)
