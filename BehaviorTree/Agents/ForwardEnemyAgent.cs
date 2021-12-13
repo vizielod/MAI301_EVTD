@@ -67,16 +67,6 @@ namespace BehaviorTree
         {
             Health += v;
         }
-
-        public void Reset()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IEnemyAgent Clone()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
 

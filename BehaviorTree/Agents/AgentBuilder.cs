@@ -113,6 +113,11 @@ namespace BehaviorTree.Agents
             return this;
         }
 
+        internal AgentBuilder SetRootNode(ParentNode rootNode)
+        {
+            this.rootNode = rootNode;
+            return this;
+        }
 
         public AgentBuilder SetInitialPosition(int x, int y)
         {
@@ -149,12 +154,18 @@ namespace BehaviorTree.Agents
             currentNode.AddChildren(node);
             return this;
         }
-        public IEnemyAgent BuildAgent()
+
+        public void Mutate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IAdaptiveEnemy BuildAgent()
         {
             if(initialPosition == null)
                 throw new ArgumentNullException(nameof(initialPosition));
 
-            AdaptiveAgent agent = new AdaptiveAgent(initialPosition.Value,spawnRound,blackboard,rootNode);
+            AdaptiveAgent agent = new AdaptiveAgent(initialPosition.Value, spawnRound, blackboard, rootNode);
             return agent;
         }
     }

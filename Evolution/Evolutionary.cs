@@ -14,15 +14,17 @@ namespace Evolution
 
         int populationSize;
         int generationLength;
+        private readonly float mutationRate;
         SimulatorFactory factory;
         Random rand;
 
-        public Evolutionary(int populationSize, int generationLength)
+        public Evolutionary(int populationSize, int generationLength, float mutationRate = 0)
         {
             CurrentGeneration = 0;
             NewestSimulation = null;
             this.populationSize = populationSize;
             this.generationLength = generationLength;
+            this.mutationRate = mutationRate;
             factory = new SimulatorFactory();
             rand = new Random();
         }
@@ -105,8 +107,14 @@ namespace Evolution
 
         private IEnumerable<IAgent> ClonePopulation(IEnumerable<IAgent> population)
         {
-            foreach (IEnemyAgent enemy in population.Cast<IEnemyAgent>())
-                yield return enemy.Clone();
+            foreach (var enemy in population.Cast<IAdaptiveEnemy>())
+            {
+                AgentBuilder builder = enemy.ReverseEngineer();
+                if (rand.NextDouble() < mutationRate)
+                    builder.Mutate();
+
+                yield return builder.BuildAgent();
+            }
         }
 
         public async Task RunEvolutionAsync(IMapLayout map, IEnumerable<IAgent> turrets, Action<float> score_cb)

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace BehaviorTree.Agents
 {
-    class AdaptiveAgent: IEnemyAgent
+    class AdaptiveAgent: IAdaptiveEnemy
     {
         public (int x, int y) InitialPosition { get; }
         public int SpawnRound { get; }
@@ -74,6 +74,12 @@ namespace BehaviorTree.Agents
         public IEnemyAgent Clone()
         {
             return new AdaptiveAgent(InitialPosition, SpawnRound, new EnemyBlackboard(), rootNode);
+        }
+
+        public AgentBuilder ReverseEngineer()
+        {
+            var (x, y) = InitialPosition;
+            return new AgentBuilder().SetInitialPosition(x,y).SetSpawnRound(SpawnRound).SetRootNode((ParentNode)rootNode);
         }
     }
 }
