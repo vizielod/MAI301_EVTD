@@ -1,20 +1,11 @@
 ﻿using BehaviorTree.NodeBase;
 using System;
 
-namespace BehaviorTree.ConditionalNodes
+namespace BehaviorTree.Conditionals
 {
-    class WithinShootingRange:LeafNode
+    class WithinShootingRange : IConditionStrategy
     {
-        public WithinShootingRange()
-        {
-        }
-
-        public override bool CheckConditions()
-        {
-            return true;
-        }
-
-        public override void HandleEnemy(EnemyBlackboard blackboard)
+        public bool HandleEnemy(EnemyBlackboard blackboard)
         {
             if (blackboard.ClosestTurret != null && blackboard.CurrentPosition != null && blackboard.ClosestTurretPosition != null)
             {
@@ -23,24 +14,17 @@ namespace BehaviorTree.ConditionalNodes
                 (int x, int y) p = (currentPosition.Value.x - turretPos.Value.x, currentPosition.Value.y - turretPos.Value.y);
                 // It might be better to put the Range on the IAgent interface instead of this cast, it would be useful if we have mutiple turret types
                 TurretAgent t = blackboard.ClosestTurret as TurretAgent;
-                if (Math.Max(Math.Abs(p.x), Math.Abs(p.y)) <= t.Range)
-                {
-                    controller.FinishWithSuccess();
-                }
-                else
-                {
-                    controller.FinishWithFailure();
-                }
+                return Math.Max(Math.Abs(p.x), Math.Abs(p.y)) <= t.Range;
             }
             else
             {
-                controller.FinishWithFailure();
+                return false;
             }
         }
 
-        public override void HandleTurret(TurretBlackboard blackboard)
+        public bool HandleTurret(TurretBlackboard blackboard)
         {
-            controller.FinishWithFailure();
+            return false;
         }
     }
 }

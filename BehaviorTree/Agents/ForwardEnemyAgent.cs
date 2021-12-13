@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using BehaviorTree.ActionNodes;
+using BehaviorTree.Actions;
 using BehaviorTree.Agents;
 using BehaviorTree.FlowControllNodes;
 using BehaviorTree.NodeBase;
@@ -42,7 +42,7 @@ namespace BehaviorTree
             bb.CurrentPosition = state.PositionOf(this);
 
             Selector move = new Selector( );
-            move.AddChildren(new MoveForward());
+            move.AddChildren(new ActionNode(new MoveForward()));
 
             move.Start();
 

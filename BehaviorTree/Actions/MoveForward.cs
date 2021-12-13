@@ -1,21 +1,11 @@
 ﻿using BehaviorTree.NodeBase;
 using Simulator.actioncommands;
 
-namespace BehaviorTree.ActionNodes
+namespace BehaviorTree.Actions
 {
-    class MoveForward: LeafNode
+    class MoveForward : IActionStrategy
     {
-
-        public MoveForward()
-        {
-        }
-
-        public override bool CheckConditions()
-        {
-            return true;
-        }
-
-        public override void HandleEnemy(EnemyBlackboard blackboard)
+        public bool HandleEnemy(EnemyBlackboard blackboard)
         {
             if (blackboard.ForwardPosition.HasValue && blackboard.CurrentPosition.HasValue)
             {
@@ -52,15 +42,15 @@ namespace BehaviorTree.ActionNodes
                     }
                 }
 
-                controller.FinishWithSuccess();
+                return true;
             }
             else
-                controller.FinishWithFailure();
+                return false;
         }
 
-        public override void HandleTurret(TurretBlackboard blackboard)
+        public bool HandleTurret(TurretBlackboard blackboard)
         {
-            controller.FinishWithFailure();
+            return false;
         }
     }
 }

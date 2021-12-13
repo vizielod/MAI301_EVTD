@@ -1,4 +1,4 @@
-﻿using BehaviorTree.ActionNodes;
+﻿using BehaviorTree.Actions;
 using BehaviorTree.FlowControllNodes;
 using BehaviorTree.NodeBase;
 using Simulator;
@@ -53,7 +53,7 @@ namespace BehaviorTree
                 }
 
                 Selector move = new Selector();
-                move.AddChildren(new Fire());
+                move.AddChildren(new ActionNode(new Fire()));
 
                 move.Start();
 

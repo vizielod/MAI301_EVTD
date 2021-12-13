@@ -1,10 +1,11 @@
-﻿using BehaviorTree.ActionNodes;
+﻿using BehaviorTree.Actions;
 using BehaviorTree.Agents;
-using BehaviorTree.ConditionalNodes;
+using BehaviorTree.Conditionals;
 using BehaviorTree.FlowControllNodes;
 using BehaviorTree.NodeBase;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BehaviorTree.Agents
@@ -51,8 +52,7 @@ namespace BehaviorTree.Agents
         public AgentBuilder()
         {
             blackboard = new EnemyBlackboard();
-            rootNode = new Selector();
-            currentNode = rootNode;
+            rootNode = currentNode = new Selector();
             spawnRound = 0;
         }
 
@@ -67,57 +67,58 @@ namespace BehaviorTree.Agents
 
         public AgentBuilder AddActionNode(ActionType type)
         {
+            IActionStrategy strategy = null;
             switch (type)
             {
                 case ActionType.Forward:
-                    AddLeafNode(new MoveForward());
+                    strategy = new MoveForward();
                     break;
                 case ActionType.GoNorth:
-                    AddLeafNode(new MoveNorth());
+                    strategy = new MoveNorth();
                     break;
                 case ActionType.GoSouth:
-                    AddLeafNode(new MoveSouth());
+                    strategy = new MoveSouth();
                     break;
                 case ActionType.GoEast:
-                    AddLeafNode(new MoveEast());
+                    strategy = new MoveEast();
                     break;
                 case ActionType.GoWest:
-                    AddLeafNode(new MoveWest());
+                    strategy = new MoveWest();
                     break;
                 case ActionType.GoNowhere:
-                    AddLeafNode(new Wait());
+                    strategy = new Wait();
                     break;
                 case ActionType.Score:
-                    AddLeafNode(new EnemyScore());
+                    strategy = new EnemyScore();
                     break;
                 case ActionType.RepeatAction:
-                    AddLeafNode(new RepeatPreviousAction());
-                    break;
-                default:
+                    strategy = new RepeatPreviousAction();
                     break;
             }
+            AddLeafNode(new ActionNode(strategy));
 
             return this;
         }
 
         public AgentBuilder AddConditionNode(ConditionType type)
         {
+            IConditionStrategy strategy = null;
             switch (type)
             {
                 case ConditionType.CanGoSouth:
-                    AddLeafNode(new CanMoveSouth());
+                    strategy = new CanMoveSouth();
                     break;
                 case ConditionType.CanGoNorth:
-                    AddLeafNode(new CanMoveNorth());
+                    strategy = new CanMoveNorth();
                     break;
                 case ConditionType.CanGoWest:
-                    AddLeafNode(new CanMoveWest());
+                    strategy = new CanMoveWest();
                     break;
                 case ConditionType.CanGoEast:
-                    AddLeafNode(new CanMoveEast());
+                    strategy = new CanMoveEast();
                     break;
                 case ConditionType.CanRepeat:
-                    AddLeafNode(new CanRepeatLastMove());
+                    strategy = new CanRepeatLastMove();
                     break;
                 /*case ConditionType.IsAttackingTurretEast:
                     AddLeafNode(new IsAttackingTurretEast(blackboard));
@@ -134,9 +135,8 @@ namespace BehaviorTree.Agents
                 case ConditionType.WithinShootingRange:
                     AddLeafNode(new WithinShootingRange(blackboard));
                     break;*/
-                default:
-                    break;
             }
+            AddLeafNode(new ConditionalNode(strategy));
 
             return this;
         }
@@ -185,7 +185,10 @@ namespace BehaviorTree.Agents
 
         public void Mutate()
         {
-            throw new NotImplementedException();
+            var newRoot = (ParentNode) rootNode.DeepCopy();
+            var candidate = newRoot.GetAllLeafNodes().Where(n => n is ActionNode).Cast<ActionNode>().Random();
+            candidate.Strategy = new MoveEast();
+            rootNode = newRoot;
         }
 
         public IAdaptiveEnemy BuildAgent()
@@ -195,6 +198,16 @@ namespace BehaviorTree.Agents
 
             AdaptiveAgent agent = new AdaptiveAgent(initialPosition.Value, spawnRound, blackboard, rootNode);
             return agent;
+        }
+    }
+
+    static class RandomHelper
+    {
+        public static Random rnd = new Random();
+
+        public static T Random<T>(this IEnumerable<T> list)
+        {
+            return list.ElementAt(rnd.Next(list.Count()));
         }
     }
 }

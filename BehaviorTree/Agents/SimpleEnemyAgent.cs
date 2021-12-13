@@ -1,6 +1,6 @@
-﻿using BehaviorTree.ActionNodes;
+﻿using BehaviorTree.Actions;
 using BehaviorTree.Agents;
-using BehaviorTree.ConditionalNodes;
+using BehaviorTree.Conditionals;
 using BehaviorTree.FlowControllNodes;
 using BehaviorTree.NodeBase;
 using Simulator;
@@ -46,29 +46,29 @@ namespace BehaviorTree
             Selector move = new Selector();
 
             Sequence repeatSeq = new Sequence();
-            repeatSeq.AddChildren(new CanRepeatLastMove());
-            repeatSeq.AddChildren(new RepeatPreviousAction());
+            //repeatSeq.AddChildren(new CanRepeatLastMove());
+            //repeatSeq.AddChildren(new RepeatPreviousAction());
             move.AddChildren(repeatSeq);
 
             Sequence moveSouth = new Sequence();
-            moveSouth.AddChildren(new CanMoveSouth());
-            moveSouth.AddChildren(new MoveSouth());
+            //moveSouth.AddChildren(new CanMoveSouth());
+            //moveSouth.AddChildren(new MoveSouth());
             move.AddChildren(moveSouth);
 
             Sequence moveEast = new Sequence();
-            moveEast.AddChildren(new CanMoveEast());
-            moveEast.AddChildren(new MoveEast());
+            //moveEast.AddChildren(new CanMoveEast());
+            //moveEast.AddChildren(new MoveEast());
             move.AddChildren(moveEast);
 
             Sequence moveWest = new Sequence();
-            moveWest.AddChildren(new CanMoveWest());
-            moveWest.AddChildren(new MoveWest());
+            //moveWest.AddChildren(new CanMoveWest());
+            //moveWest.AddChildren(new MoveWest());
             move.AddChildren(moveWest);
 
 
             Sequence moveNorth = new Sequence();
-            moveNorth.AddChildren(new CanMoveNorth());
-            moveNorth.AddChildren(new MoveNorth());
+            //moveNorth.AddChildren(new CanMoveNorth());
+            //moveNorth.AddChildren(new MoveNorth());
             move.AddChildren(moveNorth);
 
             move.Start();

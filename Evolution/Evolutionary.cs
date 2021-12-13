@@ -18,7 +18,7 @@ namespace Evolution
         SimulatorFactory factory;
         Random rand;
 
-        public Evolutionary(int populationSize, int generationLength, float mutationRate = 0)
+        public Evolutionary(int populationSize, int generationLength, float mutationRate = 0.5f)
         {
             CurrentGeneration = 0;
             NewestSimulation = null;

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BehaviorTree.NodeBase
 {
-    abstract class ParentNode:Node
+    abstract class ParentNode : Node
     {
         protected ParentNodeController controller;
 
@@ -120,6 +121,21 @@ namespace BehaviorTree.NodeBase
         public override bool Running()
         {
             return !controller.Finished();
+        }
+
+        internal IEnumerable<LeafNode> GetAllLeafNodes()
+        {
+            foreach (var child in controller.subnodes)
+            {
+                if (child is ParentNode composit)
+                {
+                    foreach (var leaf in composit.GetAllLeafNodes())
+                        yield return leaf;
+                }
+
+                if (child is LeafNode leafNode)
+                    yield return leafNode;
+            }
         }
     }
 }

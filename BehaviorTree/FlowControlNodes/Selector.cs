@@ -58,5 +58,15 @@ namespace BehaviorTree.FlowControllNodes
         {
             controller.AddNode(node);
         }
+
+        public override Node DeepCopy()
+        {
+            var selector = new Selector();
+            foreach (var child in controller.subnodes)
+            {
+                selector.AddChildren(child.DeepCopy());
+            }
+            return selector;
+        }
     }
 }

@@ -1,35 +1,26 @@
 ﻿using BehaviorTree.NodeBase;
 using Simulator.actioncommands;
 
-namespace BehaviorTree.ActionNodes
+namespace BehaviorTree.Actions
 {
-    class Fire : LeafNode
+    class Fire : IActionStrategy
     {
-        public Fire()
+        public bool HandleEnemy(EnemyBlackboard blackboard)
         {
+            return false;
         }
 
-        public override bool CheckConditions()
-        {
-            return true; 
-        }
-
-        public override void HandleEnemy(EnemyBlackboard blackboard)
-        {
-            controller.FinishWithFailure();
-        }
-
-        public override void HandleTurret(TurretBlackboard blackboard)
+        public bool HandleTurret(TurretBlackboard blackboard)
         {
             if (blackboard.ClosestEnemy != null && blackboard.IsEnemyInRange)
             {
                 blackboard.ChoosenAction = new QuickAttack(blackboard.Damage, blackboard.ClosestEnemy, blackboard.PreviousTargetEnemy);
                 blackboard.PreviousTargetEnemy = blackboard.ClosestEnemy;
-                controller.FinishWithSuccess();
+                return true;
             }
             else
             {
-                controller.FinishWithFailure();
+                return false;
             }
         }
     }

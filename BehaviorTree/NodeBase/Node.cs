@@ -41,5 +41,7 @@ namespace BehaviorTree.NodeBase
          * assigned to the node
          */
         public abstract NodeController GetControl();
+
+        public abstract Node DeepCopy();
     }
 }
