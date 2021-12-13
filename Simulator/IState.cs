@@ -17,7 +17,7 @@ namespace Simulator
         Maybe<IAgent> GetClosestEnemy(IAgent agent);
         Maybe<IAgent> GetTargetOf(IAgent agent);
         bool EngagedTargetOf(IAgent agent);
-        (int x, int y) SuggestPosition(IAgent agent);
+        (int x, int y)? SuggestPosition(IAgent agent);
         Alliances? Winner { get; set; }
     }
 }

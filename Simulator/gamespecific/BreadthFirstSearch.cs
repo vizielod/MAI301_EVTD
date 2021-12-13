@@ -22,11 +22,17 @@ namespace Simulator.gamespecific
 
         public float Distance((int x, int y) pos)
         {
+            if (!goalDistance.ContainsKey(pos))
+                return 1; // Max distance
+
             return goalDistance[pos] / maxDistance;
         }
 
-        public (int x, int y) Next((int x, int y) pos)
+        public (int x, int y)? Next((int x, int y) pos)
         {
+            if (!lookup.ContainsKey(pos))
+                return null;
+
             return lookup[pos];
         }
 
@@ -82,6 +88,11 @@ namespace Simulator.gamespecific
                     yield return (x_pos, y_pos);
                 }
             }
+        }
+
+        internal bool HasNext((int x, int y) location)
+        {
+            return lookup.ContainsKey(location);
         }
 
         private bool IsGround(TileType type) => groundTiles.Contains(type);

@@ -73,6 +73,15 @@ namespace Simulator.gamespecific
             agents[agent].IsActive = false;
         }
 
+        public void DisablePerpetrators()
+        {
+            foreach (var agent in agents.Where(a => a.Key.IsEnemy && a.Key.IsActive && a.Value.IsActive))
+            {
+                if (bfsMap.HasNext(agent.Value.GridLocation))
+                    Disable(agent.Key); 
+            }
+        }
+
         public IState GenerateState()
         {
             var state = new State(map, bfsMap);

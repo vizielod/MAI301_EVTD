@@ -38,8 +38,6 @@ namespace Simulator
             roundIndex++;
             game.SpawnAgents(roundIndex);
 
-            
-
             var newRound = roundIndex >= rounds.Count;
             
             if (newRound)
@@ -62,6 +60,7 @@ namespace Simulator
             }
 
             rounds[roundIndex].ApplyAll(game);
+            game.DisablePerpetrators();
 
             if (newRound)
             {

@@ -20,5 +20,6 @@ namespace Simulator
         void Disable(IAgent agent);
 
         float GetProgression(IAgent agent);
+        void DisablePerpetrators();
     }
 }

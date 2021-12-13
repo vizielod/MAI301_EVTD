@@ -80,7 +80,7 @@ namespace Simulator.state
             return agents[agent].Target != null && agents[agent].EngagedTarget;
         }
 
-        public (int x, int y) SuggestPosition(IAgent agent)
+        public (int x, int y)? SuggestPosition(IAgent agent)
         {
             return bfs.Next(agents[agent].GridLocation);
         }

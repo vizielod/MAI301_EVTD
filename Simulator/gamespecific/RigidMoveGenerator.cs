@@ -24,11 +24,13 @@ namespace Simulator.gamespecific
 
         public IEnumerable<IAction> Generate()
         {
-            (int x, int y) = agentState.GridLocation;
+            (int currentX, int currentY) = agentState.GridLocation;
             foreach(Direction direction in Enum.GetValues(typeof(Direction)))
             {
-                (int i, int j) = map.Translate(direction);
-                if (IsGround(map.TypeAt(x + i, y + j)))
+                var (x, y) = map.Translate(direction);
+                x += currentX;
+                y += currentY;
+                if (map.InBounds(x, y) && IsGround(map.TypeAt(x, y)))
                     yield return translations[direction];
             }
         }
