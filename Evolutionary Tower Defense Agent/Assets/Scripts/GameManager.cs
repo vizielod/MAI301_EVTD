@@ -315,7 +315,7 @@ public class GameManager : MonoBehaviour
             }
         }*/
         Evolutionary evolutionary = new Evolutionary(numberOfEnemies, 50);
-        await evolutionary.RunEvolutionAsync(grid, turretAgents, (score) => { Debug.Log($"Score: {score}"); });
+        await evolutionary.RunEvolutionAsync(grid, turretAgents, (score) => { Debug.Log("Score: " + score); });
         sim = evolutionary.NewestSimulation;
 
         enemyAgents = sim.AllEnemyAgents.ToList();

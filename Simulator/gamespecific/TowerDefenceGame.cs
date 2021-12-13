@@ -85,6 +85,12 @@ namespace Simulator.gamespecific
             return state;
         }
 
+        public float GetProgression(IAgent agent)
+        {
+            // Invert distance to goal to show progression towards the goal.
+            return 1 - bfsMap.Distance(agents[agent].GridLocation);
+        }
+
         public IStateObject GetStateObject(IAgent agent)
         {
             return agents[agent];

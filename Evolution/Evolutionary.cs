@@ -47,6 +47,10 @@ namespace Evolution
                     .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
                     .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
                     .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
+                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
+                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
+                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
+                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
                     .BuildAgent();
             }
         }

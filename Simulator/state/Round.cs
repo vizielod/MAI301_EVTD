@@ -37,7 +37,7 @@ namespace Simulator.state
         {
             var goals = game.CountEnemiesSuccess();
             var activeEnemies = game.CountActiveEnemies();
-            var enemies = game.CountEnemies();
+            var totalEnemies = game.CountEnemies();
             
             events.AsParallel().ForAll(e => 
             {
@@ -49,9 +49,9 @@ namespace Simulator.state
                     if (e.Agent.IsActive && sObj.IsActive)
                     {
                         float successfulEnemies = goals + activeEnemies;
-                        float socialScore = (successfulEnemies + 1) / (enemies + 1);
+                        float socialScore = (successfulEnemies + 1) / (totalEnemies + 1);
                         float healthRatio = e.Agent.HealthRatio;
-                        e.Reward = socialScore * healthRatio;
+                        e.Reward = socialScore * healthRatio * game.GetProgression(e.Agent);
                     }
                     else if (sObj.GoalReached)
                     {
