@@ -73,8 +73,7 @@ namespace BehaviorTree.Agents
 
         public IEnemyAgent Clone()
         {
-            AdaptiveAgent clone = new AdaptiveAgent(InitialPosition, SpawnRound, new EnemyBlackboard(), rootNode);
-            return clone;
+            return new AdaptiveAgent(InitialPosition, SpawnRound, new EnemyBlackboard(), rootNode);
         }
     }
 }

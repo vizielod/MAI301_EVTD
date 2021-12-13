@@ -36,15 +36,17 @@ namespace Evolution
 
         IEnumerable<IEnemyAgent> CreatePopulation(int size) 
         {
-            //List<IAdaptiveAgent> result = new List<IAdaptiveAgent>();
-
             for (int i = 0; i < size; i++)
             {
-                AgentBuilder agentBuilder = new AgentBuilder();
-
-                yield return agentBuilder.SetInitialPosition(1, 1).SetSpawnRound(i).AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>()).BuildAgent();
+                yield return new AgentBuilder()
+                    .SetInitialPosition(1, 1)
+                    .SetSpawnRound(i)
+                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
+                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
+                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
+                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
+                    .BuildAgent();
             }
-           
         }
 
         IReadOnlyDictionary<IAgent, float> SortIndividualInPopulation(IReadOnlyDictionary<IAgent, float> scores)
@@ -59,9 +61,7 @@ namespace Evolution
         IEnumerable<IAgent> ElitistSelection(IReadOnlyDictionary<IAgent, float> scores, int size)
         {
             var result = scores.Keys.ToList();
-            result.Take(size);
-
-            return result;
+            return result.Take(size);
         }
 
         IReadOnlyDictionary<IAgent, float> RunSimulation(IMapLayout map, IEnumerable<IAgent> enemies, IEnumerable<IAgent> turrets)
@@ -95,11 +95,18 @@ namespace Evolution
             for (int i = 0; i < generationLength; i++)
             {
                 CurrentGeneration = i + 1;
-                IEnumerable<IAgent> population = ElitistSelection(scores, populationSize/2);
-                population.Union( CreatePopulation(populationSize / 2));
+                var population = ElitistSelection(scores, populationSize/4);
+                population = population.Concat(ClonePopulation(population));
+                population = population.Concat(CreatePopulation(populationSize - population.Count()));
                 scores = RunSimulation(map, population, turrets);
                 yield return scores.Sum(s => s.Value);
             }
+        }
+
+        private IEnumerable<IAgent> ClonePopulation(IEnumerable<IAgent> population)
+        {
+            foreach (IEnemyAgent enemy in population.Cast<IEnemyAgent>())
+                yield return enemy.Clone();
         }
 
         public async Task RunEvolutionAsync(IMapLayout map, IEnumerable<IAgent> turrets, Action<float> score_cb)
