@@ -209,5 +209,13 @@ namespace BehaviorTree.Agents
             AdaptiveAgent agent = new AdaptiveAgent(initialPosition.Value, spawnRound, blackboard, rootNode);
             return agent;
         }
+
+        public void Cross(AgentBuilder dad)
+        {
+            List<Node> flattenedMom = rootNode.Flatten().ToList();
+
+            IEnumerable<Node> flattenedDad = dad.rootNode.Flatten();
+
+        }
     }
 }

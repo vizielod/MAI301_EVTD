@@ -137,5 +137,20 @@ namespace BehaviorTree.NodeBase
                     yield return leafNode;
             }
         }
+
+        internal void SwapChild(Node newChild, int index)
+        {
+            controller.subnodes.Insert(index, newChild);
+        }
+
+        public override IEnumerable<Node> Flatten()
+        {
+            yield return this;
+
+            foreach (var child in controller.subnodes.Select(x => x.Flatten()).SelectMany(x => x))
+            {
+                yield return child;
+            }
+        }
     }
 }

@@ -38,7 +38,11 @@ namespace BehaviorTree.NodeBase
                 controller.FinishWithSuccess();
             else
                 controller.FinishWithFailure();
+        }
 
+        public override IEnumerable<Node> Flatten()
+        {
+            yield return this;
         }
     }
 }

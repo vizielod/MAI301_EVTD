@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace BehaviorTree.NodeBase
 {
     /**
@@ -43,5 +45,7 @@ namespace BehaviorTree.NodeBase
         public abstract NodeController GetControl();
 
         public abstract Node DeepCopy();
+
+        public abstract IEnumerable<Node> Flatten();
     }
 }

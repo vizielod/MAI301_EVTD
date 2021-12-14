@@ -197,6 +197,9 @@ namespace Evolution
             return population.Cast<IAdaptiveEnemy>().SelectTwo((mom, dad) =>
             {
                 AgentBuilder builder = mom.ReverseEngineer();
+
+                builder.Cross(dad.ReverseEngineer());
+                
                 if (rand.NextDouble() < configuration.MutationRate)
                     builder.Mutate();
 

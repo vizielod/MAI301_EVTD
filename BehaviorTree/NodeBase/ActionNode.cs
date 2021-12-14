@@ -1,4 +1,5 @@
-﻿using BehaviorTree.Actions;
+﻿using System.Collections.Generic;
+using BehaviorTree.Actions;
 
 namespace BehaviorTree.NodeBase
 {
@@ -35,6 +36,11 @@ namespace BehaviorTree.NodeBase
                 controller.FinishWithSuccess();
             else
                 controller.FinishWithFailure();
+        }
+
+        public override IEnumerable<Node> Flatten()
+        {
+            yield return this;
         }
     }
 }

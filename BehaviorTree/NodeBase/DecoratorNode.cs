@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace BehaviorTree.NodeBase
 {
     abstract class DecoratorNode:Node
@@ -42,6 +44,11 @@ namespace BehaviorTree.NodeBase
         public override bool Running()
         {
             return GetControl().Finished();
+        }
+
+        public override IEnumerable<Node> Flatten()
+        {
+            yield return this;
         }
     }
 }
