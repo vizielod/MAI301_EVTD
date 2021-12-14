@@ -20,7 +20,6 @@ namespace Simulator.gamespecific
             {
                 this.agents.Add(agent, new StateObject(agent.InitialPosition)
                 {
-                    IsActive = false,
                     Type = enemyType
                 }) ;
             }
@@ -29,13 +28,12 @@ namespace Simulator.gamespecific
             {
                 this.agents.Add(tower, new StateObject(tower.InitialPosition)
                 {
-                    IsActive = false,
                     Type = towerType
                 });
             }
         }
 
-        public IEnumerable<IAgent> ActiveAgents => agents.Where(a => a.Value.IsActive && a.Key.IsActive).Select(a => a.Key);
+        public IEnumerable<IAgent> ActiveAgents => agents.Where(a => IsActive(a.Key)).Select(a => a.Key);
 
         public IEnumerable<IAgent> AllAgents => agents.Keys;
 
@@ -45,7 +43,7 @@ namespace Simulator.gamespecific
 
         public int CountActiveEnemies()
         {
-            return agents.Where(a => a.Key.IsActive && a.Value.IsActive).Count(a => a.Value.IsEnemy);
+            return agents.Where(a => IsActive(a.Key)).Count(a => a.Value.IsEnemy);
         }
 
         public int CountEnemies()
@@ -65,19 +63,19 @@ namespace Simulator.gamespecific
 
         public void DespawnAgents(int round)
         {
-            agents.Where(a => a.Key.SpawnRound > round).AsParallel().ForAll(a => a.Value.IsActive = false);
+            agents.Where(a => a.Key.SpawnRound > round).AsParallel().ForAll(a => a.Value.Spawned = false);
         }
 
         public void Disable(IAgent agent)
         {
-            agents[agent].IsActive = false;
+            agents[agent].IsEnabled = false;
         }
 
         public void DisablePerpetrators()
         {
-            foreach (var agent in agents.Where(a => a.Key.IsEnemy && a.Key.IsActive && a.Value.IsActive))
+            foreach (var agent in agents.Where(a => a.Key.IsEnemy && IsActive(a.Key)))
             {
-                if (bfsMap.HasNext(agent.Value.GridLocation))
+                if (!bfsMap.HasNext(agent.Value.GridLocation))
                     Disable(agent.Key); 
             }
         }
@@ -85,7 +83,7 @@ namespace Simulator.gamespecific
         public IState GenerateState()
         {
             var state = new State(map, bfsMap);
-            foreach (var agent in agents.Where(a => (a.Value.IsActive && a.Key.IsActive)))
+            foreach (var agent in agents.Where(a => IsActive(a.Key)))
             {
                 state.AddAgent(agent.Key, agent.Value.GridLocation, agent.Value.Type);
                 state.SetTarget(agent.Key, agent.Value.Target, agent.Value.EngagedTarget);
@@ -105,6 +103,11 @@ namespace Simulator.gamespecific
             return agents[agent];
         }
 
+        public bool IsActive(IAgent agent)
+        {
+            return agent.IsActive && agents[agent].Spawned && agents[agent].IsEnabled;
+        }
+
         public void NewRound()
         {
             // Reset temporary states
@@ -116,7 +119,7 @@ namespace Simulator.gamespecific
 
         public void SpawnAgents(int round)
         {
-            agents.Where(a => a.Key.SpawnRound <= round).AsParallel().ForAll(a => a.Value.IsActive = true);
+            agents.Where(a => a.Key.SpawnRound <= round).AsParallel().ForAll(a => a.Value.Spawned = true);
         }
     }
 }

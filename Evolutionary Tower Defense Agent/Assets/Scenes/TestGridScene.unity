@@ -6442,7 +6442,9 @@ MonoBehaviour:
   enemyPrefab: {fileID: 0}
   tileSize: 0
   numberOfEnemies: 0
+  numberOfGenerations: 50
   numberOfTurrets: 0
+  mutationRate: 0.5
   gridType: 0
   maxTurretCount: 10
   turretCount: 0
@@ -16465,6 +16467,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 294142837}
     - target: {fileID: 716748622473738507, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: startLives
+      value: 10000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 716748622473738507, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: remainingTurretCountText
       value: 
       objectReference: {fileID: 1154209565}
@@ -16487,6 +16493,14 @@ PrefabInstance:
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: maxTurretCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: numberOfEnemies
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: numberOfGenerations
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: useGridWithTurretsSetup

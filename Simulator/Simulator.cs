@@ -10,7 +10,7 @@ namespace Simulator
         private readonly List<Round> rounds;
         private readonly IGame game;
         private readonly IWinCondition winCondition;
-        IDictionary<IAgent, float> scoreboard;
+        private readonly IDictionary<IAgent, float> scoreboard;
         int roundIndex;
 
         public IEnumerable<IAgent> AllAgents => game.AllAgents;

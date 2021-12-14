@@ -42,16 +42,16 @@ namespace Simulator.state
             events.AsParallel().ForAll(e => 
             {
                 var sObj = game.GetStateObject(e.Agent);
-                if (sObj.IsEnemy)
+                if (e.Agent.IsEnemy)
                 {
                     float degradation = 1 - ((roundNumber - e.Agent.SpawnRound) * (1 / game.RoundLimit));
 
-                    if (e.Agent.IsActive && sObj.IsActive)
+                    if (e.Agent.IsActive && sObj.Spawned)
                     {
                         float successfulEnemies = goals + activeEnemies;
                         float socialScore = (successfulEnemies + 1) / (totalEnemies + 1);
                         float healthRatio = e.Agent.HealthRatio;
-                        e.Reward = socialScore * healthRatio * game.GetProgression(e.Agent);
+                        e.Reward = healthRatio * game.GetProgression(e.Agent);
                     }
                     else if (sObj.GoalReached)
                     {

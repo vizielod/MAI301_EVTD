@@ -5,13 +5,13 @@
         void IAction.Apply(IStateObject stateObject)
         {
             stateObject.GoalReached = true;
-            stateObject.IsActive = false;
+            stateObject.IsEnabled = false;
         }
 
         void IAction.Undo(IStateObject stateObject)
         {
             stateObject.GoalReached = false;
-            stateObject.IsActive = true;
+            stateObject.IsEnabled = true;
         }
     }
 }

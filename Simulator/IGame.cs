@@ -18,8 +18,8 @@ namespace Simulator
         int CountActiveEnemies();
         int CountEnemiesSuccess();
         void Disable(IAgent agent);
-
         float GetProgression(IAgent agent);
         void DisablePerpetrators();
+        bool IsActive(IAgent agent);
     }
 }

@@ -30,8 +30,10 @@ public class GameManager : MonoBehaviour
 
     [Header("Variables")]
     public int tileSize = 5;
-    public int numberOfEnemies;
+    public int numberOfEnemies = 5;
+    public int numberOfGenerations = 50;
     public int numberOfTurrets = 0;
+    [Range(0f, 1f)] public float mutationRate = 0.5f;
     //public GameObject enemy;
 
     [Header("Grid Setup")]
@@ -314,7 +316,7 @@ public class GameManager : MonoBehaviour
                 sim.StepForward();
             }
         }*/
-        Evolutionary evolutionary = new Evolutionary(numberOfEnemies, 50);
+        Evolutionary evolutionary = new Evolutionary(numberOfEnemies, numberOfGenerations, mutationRate);
         await evolutionary.RunEvolutionAsync(grid, turretAgents, (score) => { Debug.Log("Score: " + score); });
         sim = evolutionary.NewestSimulation;
 

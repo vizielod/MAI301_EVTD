@@ -27,7 +27,6 @@ namespace Simulator.state
         public void AddAgent(IAgent agent, (int x, int y) gridLocation, IAgentType type)
         {
             agents.Add(agent, new StateObject(gridLocation) { 
-                IsActive = true,
                 Type = type
             });
         }
