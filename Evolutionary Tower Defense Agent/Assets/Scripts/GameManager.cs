@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 public enum GridType { 
     useGridWithTurretsSetup = 0, 
     useGridWithoutTurretsSetup = 1, 
-    useGridMultiLineWithoutTurretsSetup = 2 
+    useGridMultiLineWithoutTurretsSetup = 2,
+    useGridComplexWithoutTurretsSetup = 3
 }
 public class GameManager : MonoBehaviour
 {
@@ -130,6 +131,25 @@ public class GameManager : MonoBehaviour
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1},
 };
 
+    public int[,] gridComplexWithoutTurretsArray = new int[,]
+{
+            { 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1},
+            { 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1},
+            { 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1},
+            { 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+            { 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+            { 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            { 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
+            { 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
+            { 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 3, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1},
+};
+
     public TileType[,] tileTypeArray;
     IStateSequence sim;
 
@@ -185,6 +205,10 @@ public class GameManager : MonoBehaviour
         else if (/*useGridMultiLineWithoutTurretsSetup*/gridType == GridType.useGridMultiLineWithoutTurretsSetup)
         {
             SetTileTypeArray(gridMultiLineWithoutTurretsArray);
+        }
+        else if (gridType == GridType.useGridComplexWithoutTurretsSetup)
+        {
+            SetTileTypeArray(gridComplexWithoutTurretsArray);
         }
         else
         {
