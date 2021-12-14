@@ -1,4 +1,5 @@
-﻿using BehaviorTree.Agents;
+﻿using BehaviorTree;
+using BehaviorTree.Agents;
 using Simulator;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Evolution
         int generationLength;
         private readonly float mutationRate;
         SimulatorFactory factory;
-        Random rand;
+        Random rand = new Random();
 
         public Evolutionary(int populationSize, int generationLength, float mutationRate = 0.5f)
         {
@@ -26,14 +27,6 @@ namespace Evolution
             this.generationLength = generationLength;
             this.mutationRate = mutationRate;
             factory = new SimulatorFactory();
-            rand = new Random();
-        }
-
-        T Random<T>()
-        {
-            Array array = Enum.GetValues(typeof(T));
-            
-            return (T)array.GetValue(rand.Next(array.Length));
         }
 
         IEnumerable<IEnemyAgent> CreatePopulation(int size) 
@@ -43,14 +36,12 @@ namespace Evolution
                 yield return new AgentBuilder()
                     .SetInitialPosition(1, 1)
                     .SetSpawnRound(i)
-                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
-                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
-                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
-                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
-                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
-                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
-                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
-                    .AddRootNodes(Random<CompositeType>(), Random<ConditionType>(), Random<ActionType>())
+                    .AddRootNodes(RandEnum.Random<CompositeType>(), RandEnum.Random<ConditionType>(), RandEnum.Random<ActionType>())
+                    .AddRootNodes(RandEnum.Random<CompositeType>(), RandEnum.Random<ConditionType>(), RandEnum.Random<ActionType>())
+                    .AddRootNodes(RandEnum.Random<CompositeType>(), RandEnum.Random<ConditionType>(), RandEnum.Random<ActionType>())
+                    .AddRootNodes(RandEnum.Random<CompositeType>(), RandEnum.Random<ConditionType>(), RandEnum.Random<ActionType>())
+                    .AddRootNodes(RandEnum.Random<CompositeType>(), RandEnum.Random<ConditionType>(), RandEnum.Random<ActionType>())
+                    .AddRootNodes(RandEnum.Random<CompositeType>(), RandEnum.Random<ConditionType>(), RandEnum.Random<ActionType>())
                     .BuildAgent();
             }
         }

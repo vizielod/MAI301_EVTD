@@ -49,6 +49,7 @@ namespace BehaviorTree.Agents
         ParentNode currentNode;
         int spawnRound;
         (int x, int y)? initialPosition;
+        Random rand = new Random();
         public AgentBuilder()
         {
             blackboard = new EnemyBlackboard();
@@ -67,78 +68,77 @@ namespace BehaviorTree.Agents
 
         public AgentBuilder AddActionNode(ActionType type)
         {
-            IActionStrategy strategy = null;
-            switch (type)
-            {
-                case ActionType.Forward:
-                    strategy = new MoveForward();
-                    break;
-                case ActionType.GoNorth:
-                    strategy = new MoveNorth();
-                    break;
-                case ActionType.GoSouth:
-                    strategy = new MoveSouth();
-                    break;
-                case ActionType.GoEast:
-                    strategy = new MoveEast();
-                    break;
-                case ActionType.GoWest:
-                    strategy = new MoveWest();
-                    break;
-                case ActionType.GoNowhere:
-                    strategy = new Wait();
-                    break;
-                case ActionType.Score:
-                    strategy = new EnemyScore();
-                    break;
-                case ActionType.RepeatAction:
-                    strategy = new RepeatPreviousAction();
-                    break;
-            }
-            AddLeafNode(new ActionNode(strategy));
+            AddLeafNode(
+                new ActionNode(
+                    MakeActionStrategy(type)));
 
             return this;
         }
 
+        private IActionStrategy MakeActionStrategy(ActionType type)
+        {
+            switch (type)
+            {
+                case ActionType.Forward:
+                    return new MoveForward();
+                case ActionType.GoNorth:
+                    return new MoveNorth();
+                case ActionType.GoSouth:
+                    return new MoveSouth();
+                case ActionType.GoEast:
+                    return new MoveEast();
+                case ActionType.GoWest:
+                    return new MoveWest();
+                case ActionType.GoNowhere:
+                    return new Wait();
+                case ActionType.Score:
+                    return new EnemyScore();
+                case ActionType.RepeatAction:
+                    return new RepeatPreviousAction();
+            }
+            return null;
+        }
+
         public AgentBuilder AddConditionNode(ConditionType type)
         {
-            IConditionStrategy strategy = null;
+            AddLeafNode(
+                new ConditionalNode(
+                    MakeConditionStrategy(type)));
+
+            return this;
+        }
+
+        private IConditionStrategy MakeConditionStrategy(ConditionType type)
+        {
             switch (type)
             {
                 case ConditionType.CanGoSouth:
-                    strategy = new CanMoveSouth();
-                    break;
+                    return new CanMoveSouth();
                 case ConditionType.CanGoNorth:
-                    strategy = new CanMoveNorth();
-                    break;
+                    return new CanMoveNorth();
                 case ConditionType.CanGoWest:
-                    strategy = new CanMoveWest();
-                    break;
+                    return new CanMoveWest();
                 case ConditionType.CanGoEast:
-                    strategy = new CanMoveEast();
-                    break;
+                    return new CanMoveEast();
                 case ConditionType.CanRepeat:
-                    strategy = new CanRepeatLastMove();
-                    break;
-                /*case ConditionType.IsAttackingTurretEast:
-                    AddLeafNode(new IsAttackingTurretEast(blackboard));
-                    break;
-                case ConditionType.IsAttackingTurretWest:
-                    AddLeafNode(new IsAttackingTurretWest(blackboard));
-                    break;
-                case ConditionType.IsAttackingTurretSouth:
-                    AddLeafNode(new IsAttackingTurretSouth(blackboard));
-                    break;
-                case ConditionType.IsAttackingTurretNorth:
-                    AddLeafNode(new IsAttackingTurretNorth(blackboard));
-                    break;
-                case ConditionType.WithinShootingRange:
-                    AddLeafNode(new WithinShootingRange(blackboard));
-                    break;*/
+                    return new CanRepeatLastMove();
+                    /*case ConditionType.IsAttackingTurretEast:
+                        AddLeafNode(new IsAttackingTurretEast(blackboard));
+                        break;
+                    case ConditionType.IsAttackingTurretWest:
+                        AddLeafNode(new IsAttackingTurretWest(blackboard));
+                        break;
+                    case ConditionType.IsAttackingTurretSouth:
+                        AddLeafNode(new IsAttackingTurretSouth(blackboard));
+                        break;
+                    case ConditionType.IsAttackingTurretNorth:
+                        AddLeafNode(new IsAttackingTurretNorth(blackboard));
+                        break;
+                    case ConditionType.WithinShootingRange:
+                        AddLeafNode(new WithinShootingRange(blackboard));
+                        break;*/
             }
-            AddLeafNode(new ConditionalNode(strategy));
-
-            return this;
+            return null;
         }
 
         internal AgentBuilder SetRootNode(ParentNode rootNode)
@@ -186,8 +186,18 @@ namespace BehaviorTree.Agents
         public void Mutate()
         {
             var newRoot = (ParentNode) rootNode.DeepCopy();
-            var candidate = newRoot.GetAllLeafNodes().Where(n => n is ActionNode).Cast<ActionNode>().Random();
-            candidate.Strategy = new MoveEast();
+            
+            if (rand.Next(1)==1)
+            {
+                var candidate = newRoot.GetAllLeafNodes().Where(n => n is ActionNode).Cast<ActionNode>().Random();
+                candidate.Strategy = MakeActionStrategy(RandEnum.Random<ActionType>());
+            }
+            else
+            {
+                var candidate = newRoot.GetAllLeafNodes().Where(n => n is ConditionalNode).Cast<ConditionalNode>().Random();
+                candidate.Strategy = MakeConditionStrategy(RandEnum.Random<ConditionType>());
+            }
+
             rootNode = newRoot;
         }
 
@@ -198,16 +208,6 @@ namespace BehaviorTree.Agents
 
             AdaptiveAgent agent = new AdaptiveAgent(initialPosition.Value, spawnRound, blackboard, rootNode);
             return agent;
-        }
-    }
-
-    static class RandomHelper
-    {
-        public static Random rnd = new Random();
-
-        public static T Random<T>(this IEnumerable<T> list)
-        {
-            return list.ElementAt(rnd.Next(list.Count()));
         }
     }
 }
