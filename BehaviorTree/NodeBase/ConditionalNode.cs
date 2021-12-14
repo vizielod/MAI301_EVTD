@@ -39,10 +39,5 @@ namespace BehaviorTree.NodeBase
             else
                 controller.FinishWithFailure();
         }
-
-        public override IEnumerable<Node> Flatten()
-        {
-            yield return this;
-        }
     }
 }

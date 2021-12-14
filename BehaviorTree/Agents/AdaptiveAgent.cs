@@ -79,7 +79,7 @@ namespace BehaviorTree.Agents
         public AgentBuilder ReverseEngineer()
         {
             var (x, y) = InitialPosition;
-            return new AgentBuilder().SetInitialPosition(x,y).SetSpawnRound(SpawnRound).SetRootNode((ParentNode)rootNode);
+            return new AgentBuilder().SetInitialPosition(x,y).SetSpawnRound(SpawnRound).SetRootNode((ParentNode)rootNode.DeepCopy());
         }
     }
 }

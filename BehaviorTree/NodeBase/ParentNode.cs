@@ -32,12 +32,27 @@ namespace BehaviorTree.NodeBase
         */
         public abstract void ChildSucceeded();
 
+        internal void RemoveChild(Node child)
+        {
+            controller.subnodes.Remove(child);
+        }
+
+        internal int IndexOf(Node child)
+        {
+            return controller.subnodes.IndexOf(child);
+        }
+
         /**
         * Abstract to be overridden in child
         * classes. Called when a child finishes
         * with failure.
         */
         public abstract void ChildFailed();
+
+        internal void Insert(int index, Node child)
+        {
+            controller.subnodes.Insert(index, child);
+        }
 
         /**
         * Checks for the appropiate pre-state
@@ -138,19 +153,9 @@ namespace BehaviorTree.NodeBase
             }
         }
 
-        internal void SwapChild(Node newChild, int index)
+        public override int Count()
         {
-            controller.subnodes.Insert(index, newChild);
-        }
-
-        public override IEnumerable<Node> Flatten()
-        {
-            yield return this;
-
-            foreach (var child in controller.subnodes.Select(x => x.Flatten()).SelectMany(x => x))
-            {
-                yield return child;
-            }
+            return base.Count() + controller.subnodes.Sum(c => c.Count());
         }
     }
 }

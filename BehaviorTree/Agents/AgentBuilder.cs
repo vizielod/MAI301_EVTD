@@ -45,21 +45,23 @@ namespace BehaviorTree.Agents
     public class AgentBuilder
     {
         EnemyBlackboard blackboard;
-        ParentNode rootNode;
         ParentNode currentNode;
         int spawnRound;
         (int x, int y)? initialPosition;
         Random rand = new Random();
+
+        internal ParentNode RootNode { get; set; }
+
         public AgentBuilder()
         {
             blackboard = new EnemyBlackboard();
-            rootNode = currentNode = new Selector();
+            RootNode = currentNode = new Selector();
             spawnRound = 0;
         }
 
         public AgentBuilder AddNodesToRoot(CompositeType compositeType, ConditionType conditionType, ActionType actionType) 
         {
-            currentNode = rootNode;
+            currentNode = RootNode;
             AddCompositeNode(compositeType);
             AddConditionNode(conditionType);
             AddActionNode(actionType);
@@ -143,7 +145,7 @@ namespace BehaviorTree.Agents
 
         internal AgentBuilder SetRootNode(ParentNode rootNode)
         {
-            this.rootNode = rootNode;
+            this.RootNode = rootNode;
             return this;
         }
 
@@ -185,20 +187,24 @@ namespace BehaviorTree.Agents
 
         public void Mutate()
         {
-            var newRoot = (ParentNode) rootNode.DeepCopy();
-            
-            if (rand.Next(1)==1)
+            try
             {
-                var candidate = newRoot.GetAllLeafNodes().Where(n => n is ActionNode).Cast<ActionNode>().Random();
-                candidate.Strategy = MakeActionStrategy(RandomSelect.Random<ActionType>());
+                if (rand.Next(1) == 1)
+                {
+                    var candidate = RootNode.GetAllLeafNodes().Where(n => n is ActionNode).Cast<ActionNode>().ToList().Random();
+                    candidate.Strategy = MakeActionStrategy(RandomSelect.Random<ActionType>());
+                }
+                else
+                {
+                    var candidate = RootNode.GetAllLeafNodes().Where(n => n is ConditionalNode).Cast<ConditionalNode>().ToList().Random();
+                    candidate.Strategy = MakeConditionStrategy(RandomSelect.Random<ConditionType>());
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var candidate = newRoot.GetAllLeafNodes().Where(n => n is ConditionalNode).Cast<ConditionalNode>().Random();
-                candidate.Strategy = MakeConditionStrategy(RandomSelect.Random<ConditionType>());
-            }
 
-            rootNode = newRoot;
+            }
+            
         }
 
         public IAdaptiveEnemy BuildAgent()
@@ -206,16 +212,8 @@ namespace BehaviorTree.Agents
             if(initialPosition == null)
                 throw new ArgumentNullException(nameof(initialPosition));
 
-            AdaptiveAgent agent = new AdaptiveAgent(initialPosition.Value, spawnRound, blackboard, rootNode);
+            AdaptiveAgent agent = new AdaptiveAgent(initialPosition.Value, spawnRound, blackboard, RootNode);
             return agent;
-        }
-
-        public void Cross(AgentBuilder dad)
-        {
-            List<Node> flattenedMom = rootNode.Flatten().ToList();
-
-            IEnumerable<Node> flattenedDad = dad.rootNode.Flatten();
-
         }
     }
 }

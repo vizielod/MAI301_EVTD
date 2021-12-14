@@ -46,9 +46,9 @@ namespace BehaviorTree.NodeBase
             return GetControl().Finished();
         }
 
-        public override IEnumerable<Node> Flatten()
+        public override int Count()
         {
-            yield return this;
+            return base.Count() + this.node.Count();
         }
     }
 }

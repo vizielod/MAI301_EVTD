@@ -46,6 +46,6 @@ namespace BehaviorTree.NodeBase
 
         public abstract Node DeepCopy();
 
-        public abstract IEnumerable<Node> Flatten();
+        public virtual int Count() => 1;
     }
 }

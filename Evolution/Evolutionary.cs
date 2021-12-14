@@ -1,5 +1,6 @@
 ﻿using BehaviorTree;
 using BehaviorTree.Agents;
+using BehaviorTree.NodeBase;
 using Simulator;
 using System;
 using System.Collections.Generic;
@@ -166,7 +167,7 @@ namespace Evolution
                 var population = RoulettSelection(scores, configuration.Roulett);
                 
                 // Breed the selected candidates, one child per 2 parents, implies mutation
-                population = population.Concat(BreedPopulation(population));
+                population = BreedPopulation(population);
 
                 // Find out if there is a outstanding enemy in the population
                 var zinger = scores.First();
@@ -194,17 +195,38 @@ namespace Evolution
 
         private IEnumerable<IAgent> BreedPopulation(IEnumerable<IAgent> population)
         {
-            return population.Cast<IAdaptiveEnemy>().SelectTwo((mom, dad) =>
+            int i = 0;
+            AgentBuilder mom = null;
+
+            var factory = new NodeCrosserFactory();
+
+            foreach (var enemy in population.Cast<IAdaptiveEnemy>())
             {
-                AgentBuilder builder = mom.ReverseEngineer();
+                AgentBuilder builder = enemy.ReverseEngineer();
+                if (++i % 2 == 0)
+                {
+                    factory.Create(mom, builder).Cross();
+                    if (rand.NextDouble() < configuration.MutationRate)
+                        builder.Mutate();
+                    if (rand.NextDouble() < configuration.MutationRate)
+                        mom.Mutate();
 
-                builder.Cross(dad.ReverseEngineer());
-                
+                    yield return mom.BuildAgent();
+                    yield return builder.BuildAgent();
+                    mom = null;
+                }
+                else
+                {
+                    mom = builder;
+                }
+            }
+
+            if (mom != null)
+            {
                 if (rand.NextDouble() < configuration.MutationRate)
-                    builder.Mutate();
-
-                return builder.BuildAgent();
-            });
+                    mom.Mutate();
+                yield return mom.BuildAgent();
+            }
         }
 
         public async Task RunEvolutionAsync(IMapLayout map, IEnumerable<IAgent> turrets, Action<float> score_cb)
@@ -213,30 +235,6 @@ namespace Evolution
             {
                 score_cb.Invoke(item);
                 await Task.Yield();
-            }
-        }
-    }
-
-    static class IEnumerableHelper
-    {
-        public static IEnumerable<TResult> SelectTwo<TSource, TResult>(this IEnumerable<TSource> source,
-                                                               Func<TSource, TSource, TResult> selector)
-        {
-            using (var iterator = source.GetEnumerator())
-            {
-                var item1 = default(TSource);
-                var i = 0;
-                while (iterator.MoveNext())
-                {
-                    if (++i%2 == 0)
-                    {
-                        yield return selector(item1, iterator.Current);
-                    }
-                    else
-                    {
-                        item1 = iterator.Current;
-                    }
-                }
             }
         }
     }
