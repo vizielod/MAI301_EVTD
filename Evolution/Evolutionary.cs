@@ -33,16 +33,35 @@ namespace Evolution
         {
             for (int i = 0; i < size; i++)
             {
-                yield return new AgentBuilder()
+                var agentBuilder = new AgentBuilder()
                     .SetInitialPosition(1, 1)
                     .SetSpawnRound(i)
-                    .AddRootNodes(RandEnum.Random<CompositeType>(), RandEnum.Random<ConditionType>(), RandEnum.Random<ActionType>())
-                    .AddRootNodes(RandEnum.Random<CompositeType>(), RandEnum.Random<ConditionType>(), RandEnum.Random<ActionType>())
-                    .AddRootNodes(RandEnum.Random<CompositeType>(), RandEnum.Random<ConditionType>(), RandEnum.Random<ActionType>())
-                    .AddRootNodes(RandEnum.Random<CompositeType>(), RandEnum.Random<ConditionType>(), RandEnum.Random<ActionType>())
-                    .AddRootNodes(RandEnum.Random<CompositeType>(), RandEnum.Random<ConditionType>(), RandEnum.Random<ActionType>())
-                    .AddRootNodes(RandEnum.Random<CompositeType>(), RandEnum.Random<ConditionType>(), RandEnum.Random<ActionType>())
-                    .BuildAgent();
+                    .AddRootNodes(RandEnum.Random<CompositeType>(), RandEnum.Random<ConditionType>(), RandEnum.Random<ActionType>());
+
+                // Random complexity
+                int chance;
+                while ((chance = rand.Next(6)) != 0)
+                {
+                    switch (chance)
+                    {
+                        case 1:
+                            agentBuilder.AddConditionNode(RandEnum.Random<ConditionType>());
+                            agentBuilder.AddActionNode(RandEnum.Random<ActionType>());
+                            break;
+                        case 2:
+                        case 3:
+                            agentBuilder.AddActionNode(RandEnum.Random<ActionType>());
+                            break;
+                        case 4:
+                            agentBuilder.AddConditionNode(RandEnum.Random<ConditionType>());
+                            break;
+                        case 5:
+                            agentBuilder.AddRootNodes(RandEnum.Random<CompositeType>(), RandEnum.Random<ConditionType>(), RandEnum.Random<ActionType>());
+                            break;
+                    }
+                }
+
+                yield return agentBuilder.BuildAgent();
             }
         }
 

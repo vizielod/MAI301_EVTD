@@ -12,6 +12,7 @@
         public bool EngagedTarget { get; set; }
         public bool Spawned { get; set; }
         public bool IsEnabled { get; set; }
+        public bool HasMoved { get; set; }
 
         private int x;
         private int y;

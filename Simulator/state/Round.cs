@@ -19,8 +19,11 @@ namespace Simulator.state
         {
             game.NewRound();
             events.AsParallel().ForAll((evnt) => 
-            { 
-                evnt.Action.Apply(game.GetStateObject(evnt.Agent)); 
+            {
+                var state = game.GetStateObject(evnt.Agent);
+                var originalPosition = state.GridLocation;
+                evnt.Action.Apply(state);
+                state.HasMoved = originalPosition != state.GridLocation;
             });
         }
 
@@ -51,14 +54,15 @@ namespace Simulator.state
                         float successfulEnemies = goals + activeEnemies;
                         float socialScore = (successfulEnemies + 1) / (totalEnemies + 1);
                         float healthRatio = e.Agent.HealthRatio;
-                        e.Reward = healthRatio * game.GetProgression(e.Agent);
+                        float idlePenalty = sObj.HasMoved ? 1 : 0.5f;
+                        e.Reward = healthRatio * game.GetProgression(e.Agent) * idlePenalty;
                     }
                     else if (sObj.GoalReached)
                     {
                         e.Reward = 1;
                     }
 
-                    e.Reward *= degradation;
+                    //e.Reward *= degradation;
                 }
             });
         }

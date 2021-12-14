@@ -71,7 +71,7 @@ namespace Simulator.gamespecific
             agents[agent].IsEnabled = false;
         }
 
-        public void DisablePerpetrators()
+        public void ValidatePositions()
         {
             foreach (var agent in agents.Where(a => a.Key.IsEnemy && IsActive(a.Key)))
             {

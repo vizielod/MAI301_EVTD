@@ -60,7 +60,7 @@ namespace Simulator
             }
 
             rounds[roundIndex].ApplyAll(game);
-            game.DisablePerpetrators();
+            game.ValidatePositions();
 
             if (newRound)
             {

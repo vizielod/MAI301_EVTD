@@ -19,7 +19,7 @@ namespace Simulator
         int CountEnemiesSuccess();
         void Disable(IAgent agent);
         float GetProgression(IAgent agent);
-        void DisablePerpetrators();
+        void ValidatePositions();
         bool IsActive(IAgent agent);
     }
 }
