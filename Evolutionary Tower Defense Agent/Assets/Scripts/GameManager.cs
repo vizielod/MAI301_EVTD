@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
     public int numberOfGenerations = 50;
     public int numberOfTurrets = 0;
     [Range(0f, 1f)] public float mutationRate = 0.5f;
+    [Range(0f, 1f)] public float eliteRate = 0.02f;
+    [Range(0f, 1f)] public float roulettRate = 0.5f;
     //public GameObject enemy;
 
     [Header("Grid Setup")]
@@ -342,7 +344,16 @@ public class GameManager : MonoBehaviour
             }
         }*/
 
-        Evolutionary evolutionary = new Evolutionary(numberOfEnemies, numberOfGenerations, mutationRate);
+        EvolutionConfiguration config = new EvolutionConfiguration()
+        {
+            NumberOfGenerations = numberOfGenerations,
+            MutationRate = mutationRate,
+            PopulationSize = numberOfEnemies,
+            EliteRate = eliteRate,
+            RoulettRate = roulettRate
+        };
+
+        Evolutionary evolutionary = new Evolutionary(config);
         await evolutionary.RunEvolutionAsync(grid, turretAgents, (score) => 
         {
             Debug.Log($"Score: {score}");

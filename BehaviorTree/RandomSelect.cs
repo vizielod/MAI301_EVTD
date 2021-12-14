@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace BehaviorTree
 {
-    public static class RandEnum
+    public static class RandomSelect
     {
         static readonly Random rand = new Random();
 

@@ -57,7 +57,7 @@ namespace BehaviorTree.Agents
             spawnRound = 0;
         }
 
-        public AgentBuilder AddRootNodes(CompositeType compositeType, ConditionType conditionType, ActionType actionType) 
+        public AgentBuilder AddNodesToRoot(CompositeType compositeType, ConditionType conditionType, ActionType actionType) 
         {
             currentNode = rootNode;
             AddCompositeNode(compositeType);
@@ -159,7 +159,7 @@ namespace BehaviorTree.Agents
             return this;
         }
 
-        AgentBuilder AddCompositeNode(CompositeType compositeType) 
+        public AgentBuilder AddCompositeNode(CompositeType compositeType) 
         {
             ParentNode node;
             switch (compositeType)
@@ -190,12 +190,12 @@ namespace BehaviorTree.Agents
             if (rand.Next(1)==1)
             {
                 var candidate = newRoot.GetAllLeafNodes().Where(n => n is ActionNode).Cast<ActionNode>().Random();
-                candidate.Strategy = MakeActionStrategy(RandEnum.Random<ActionType>());
+                candidate.Strategy = MakeActionStrategy(RandomSelect.Random<ActionType>());
             }
             else
             {
                 var candidate = newRoot.GetAllLeafNodes().Where(n => n is ConditionalNode).Cast<ConditionalNode>().Random();
-                candidate.Strategy = MakeConditionStrategy(RandEnum.Random<ConditionType>());
+                candidate.Strategy = MakeConditionStrategy(RandomSelect.Random<ConditionType>());
             }
 
             rootNode = newRoot;

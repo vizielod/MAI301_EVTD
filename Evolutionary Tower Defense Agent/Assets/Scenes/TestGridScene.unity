@@ -6537,6 +6537,7 @@ MonoBehaviour:
   numberOfGenerations: 50
   numberOfTurrets: 0
   mutationRate: 0.5
+  eliteRate: 0.02
   gridType: 0
   maxTurretCount: 10
   turretCount: 0
@@ -16579,6 +16580,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: eliteRate
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: uiManager
       value: 
       objectReference: {fileID: 1131496972}
@@ -16588,7 +16593,7 @@ PrefabInstance:
       objectReference: {fileID: 604267539}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: mutationRate
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: maxTurretCount
