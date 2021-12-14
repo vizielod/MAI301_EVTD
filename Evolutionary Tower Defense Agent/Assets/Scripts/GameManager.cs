@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public UIManager uiManager;
     public PlayerStats playerStats;
     public bool gameOver = false;
+    public Graph graph;
 
     [Header("Prefabs")]
     public GameObject Wall;
@@ -316,8 +317,13 @@ public class GameManager : MonoBehaviour
                 sim.StepForward();
             }
         }*/
+
         Evolutionary evolutionary = new Evolutionary(numberOfEnemies, numberOfGenerations, mutationRate);
-        await evolutionary.RunEvolutionAsync(grid, turretAgents, (score) => { Debug.Log("Score: " + score); });
+        await evolutionary.RunEvolutionAsync(grid, turretAgents, (score) => 
+        {
+            Debug.Log($"Score: {score}");
+            graph.addValue(score);
+        });
         sim = evolutionary.NewestSimulation;
 
         enemyAgents = sim.AllEnemyAgents.ToList();
