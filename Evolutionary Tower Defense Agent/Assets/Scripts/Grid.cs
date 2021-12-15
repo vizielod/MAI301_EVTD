@@ -88,7 +88,11 @@ public class Grid : IMapLayout
             (1, 0) => Direction.South,
             (0, 1) => Direction.East,
             (0, -1) => Direction.West,
-            _ => Direction.North
+            (-1, -1) => Direction.North | Direction.West,
+            (-1, 1) => Direction.North | Direction.East,
+            (1, -1) => Direction.South | Direction.West,
+            (1, 1) => Direction.South | Direction.East,
+            _ => 0
         };
     }
 

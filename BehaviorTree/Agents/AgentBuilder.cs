@@ -36,11 +36,11 @@ namespace BehaviorTree.Agents
         CanGoWest,
         CanGoEast,
         CanRepeat,
-       /* IsAttackingTurretEast,
-        IsAttackingTurretWest,
-        IsAttackingTurretSouth,
-        IsAttackingTurretNorth,
-        WithinShootingRange*/
+        AttackedFromEast,
+        AttackedFromWest,
+        AttackedFromSouth,
+        AttackedFromNorth,
+        WithinShootingRange
     }
     public class AgentBuilder
     {
@@ -124,21 +124,16 @@ namespace BehaviorTree.Agents
                     return new CanMoveEast();
                 case ConditionType.CanRepeat:
                     return new CanRepeatLastMove();
-                    /*case ConditionType.IsAttackingTurretEast:
-                        AddLeafNode(new IsAttackingTurretEast(blackboard));
-                        break;
-                    case ConditionType.IsAttackingTurretWest:
-                        AddLeafNode(new IsAttackingTurretWest(blackboard));
-                        break;
-                    case ConditionType.IsAttackingTurretSouth:
-                        AddLeafNode(new IsAttackingTurretSouth(blackboard));
-                        break;
-                    case ConditionType.IsAttackingTurretNorth:
-                        AddLeafNode(new IsAttackingTurretNorth(blackboard));
-                        break;
-                    case ConditionType.WithinShootingRange:
-                        AddLeafNode(new WithinShootingRange(blackboard));
-                        break;*/
+                case ConditionType.AttackedFromEast:
+                    return new AttackedFromEast();
+                case ConditionType.AttackedFromWest:
+                    return new AttackedFromWest();
+                case ConditionType.AttackedFromSouth:
+                    return new AttackedFromSouth();
+                case ConditionType.AttackedFromNorth:
+                    return new AttackedFromNorth();
+                case ConditionType.WithinShootingRange:
+                    return new WithinShootingRange();
             }
             return null;
         }

@@ -6,15 +6,12 @@ namespace BehaviorTree.Conditionals
     {
         public bool HandleEnemy(EnemyBlackboard blackboard)
         {
-            if (blackboard.ClosestTurretPosition != null && blackboard.CurrentPosition != null)
+            foreach (var turret in blackboard.AttackingTurrets)
             {
-                int x = blackboard.ClosestTurretPosition.Value.x - blackboard.CurrentPosition.Value.x;
-
-                if (x == 1)
-                {
+                if (turret.Value.HasFlag(Simulator.Direction.South))
                     return true;
-                }
             }
+
             return false;
         }
 

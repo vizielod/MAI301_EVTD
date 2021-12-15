@@ -14,7 +14,7 @@ namespace BehaviorTree.NodeBase
         public (int x, int y)? ClosestTurretPosition { get; set; }
         public IAgent ClosestTurret { get; set; }
         public int Health { get; set; }
-        public IEnumerable<IAgent> AttackingTurrets { get; set; }
+        public Dictionary<IAgent, Direction> AttackingTurrets { get; set; }
 
         public EnemyBlackboard()
         {
@@ -30,7 +30,7 @@ namespace BehaviorTree.NodeBase
             CurrentPosition = null;
             ClosestTurret = null;
             ClosestTurretPosition = null;
-            AttackingTurrets = null;
+            AttackingTurrets = new Dictionary<IAgent, Direction>();
         }
 
         public override void AcceptVisitor(LeafNode visitor)

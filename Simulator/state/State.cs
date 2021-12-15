@@ -121,6 +121,14 @@ namespace Simulator.state
             return agents.Where(a => a.Value.Target == agent && a.Value.EngagedTarget).Select(a => a.Key);
         }
 
+        public Direction GetDirection(IAgent from, IAgent to)
+        {
+            var (fromX, fromY) = PositionOf(from);
+            var (toX, toY) = PositionOf(to);
+
+            return MapLayout.Translate(toX - fromX, toY - fromY);
+        }
+
         public IAction SuggestedAction(IAgent agent)
         {
             return SuggestPosition(agent).ApplyOrDefault(pos =>

@@ -22,5 +22,6 @@ namespace Simulator
         Alliances? Winner { get; set; }
         IEnumerable<IAgent> GetTurretsAttacking(IAgent agent);
         IAction SuggestedAction(IAgent agent);
+        Direction GetDirection(IAgent from, IAgent to);
     }
 }
