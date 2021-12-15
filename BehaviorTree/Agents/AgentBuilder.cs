@@ -40,7 +40,11 @@ namespace BehaviorTree.Agents
         AttackedFromWest,
         AttackedFromSouth,
         AttackedFromNorth,
-        WithinShootingRange
+        WithinShootingRange,
+        IsNorthOptimal,
+        IsSouthOptimal,
+        IsEastOptimal,
+        IsWestOptimal
     }
     public class AgentBuilder
     {
@@ -134,6 +138,14 @@ namespace BehaviorTree.Agents
                     return new AttackedFromNorth();
                 case ConditionType.WithinShootingRange:
                     return new WithinShootingRange();
+                case ConditionType.IsNorthOptimal:
+                    return new IsNorthOptimal();
+                case ConditionType.IsSouthOptimal:
+                    return new IsSouthOptimal();
+                case ConditionType.IsEastOptimal:
+                    return new IsEastOptimal();
+                case ConditionType.IsWestOptimal:
+                    return new IsWestOptimal();
             }
             return null;
         }
