@@ -13,7 +13,7 @@ namespace BehaviorTree.Agents
 
     public enum ActionType 
     {
-        Forward,
+        //Forward,
         GoNorth,
         GoSouth,
         GoEast,
@@ -85,8 +85,8 @@ namespace BehaviorTree.Agents
         {
             switch (type)
             {
-                case ActionType.Forward:
-                    return new MoveForward();
+                //case ActionType.Forward:
+                //    return new MoveForward();
                 case ActionType.GoNorth:
                     return new MoveNorth();
                 case ActionType.GoSouth:

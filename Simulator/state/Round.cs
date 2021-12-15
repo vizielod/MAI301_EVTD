@@ -55,7 +55,7 @@ namespace Simulator.state
                         float socialScore = (successfulEnemies + 1) / (totalEnemies + 1);
                         float healthRatio = e.Agent.HealthRatio;
                         float idlePenalty = sObj.HasMoved ? 1 : 0.5f;
-                        e.Reward = game.GetProgression(e.Agent);
+                        e.Reward = game.GetProgression(e.Agent) * idlePenalty;
                     }
                     else if (sObj.GoalReached)
                     {

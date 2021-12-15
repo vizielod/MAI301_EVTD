@@ -66,6 +66,12 @@ namespace BehaviorTree.NodeBase
 
         public override void DoAction(Blackboard blackboard)
         {
+            if (controller.subnodes.Count() == 0)
+            {
+                controller.FinishWithFailure();
+                return;
+            }
+
             if (controller.Finished())
             {
                 // If this parent task is finished
@@ -123,6 +129,9 @@ namespace BehaviorTree.NodeBase
         */
         public override void Start()
         {
+            if (controller.subnodes.Count() == 0)
+                return;
+
             controller.currentNode =
             controller.subnodes.First();
             if (controller.currentNode == null)

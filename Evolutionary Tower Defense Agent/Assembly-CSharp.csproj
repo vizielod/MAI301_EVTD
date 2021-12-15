@@ -64,8 +64,8 @@
     <Compile Include="Assets\Scripts\Test2.cs" />
     <Compile Include="Assets\Scripts\EnemyController.cs" />
     <Compile Include="Assets\Scripts\Test1.cs" />
-    <Compile Include="Assets\Scripts\WaypointController.cs" />
     <Compile Include="Assets\Scripts\Graph.cs" />
+    <Compile Include="Assets\Scripts\WaypointController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\libs\netstandard2.0\Evolution.dll" />

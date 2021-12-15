@@ -73,25 +73,23 @@ namespace Evolution
 
                 // Random complexity
                 int chance;
-                while ((chance = rand.Next(6)) != 0)
+                while ((chance = rand.Next(20)) != 0)
                 {
-                    switch (chance)
+                    if (chance < 5)
                     {
-                        case 1:
-                            agentBuilder.AddCompositeNode(RandomSelect.Random<CompositeType>());
-                            agentBuilder.AddConditionNode(RandomSelect.Random<ConditionType>());
-                            agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
-                            break;
-                        case 2:
-                        case 3:
-                            agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
-                            break;
-                        case 4:
-                            agentBuilder.AddConditionNode(RandomSelect.Random<ConditionType>());
-                            break;
-                        case 5:
-                            agentBuilder.AddNodesToRoot(RandomSelect.Random<CompositeType>(), RandomSelect.Random<ConditionType>(), RandomSelect.Random<ActionType>());
-                            break;
+                        agentBuilder.AddCompositeNode(RandomSelect.Random<CompositeType>());
+                    }
+                    else if (chance < 10)
+                    {
+                        agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
+                    }
+                    else if (chance < 15)
+                    {
+                        agentBuilder.AddConditionNode(RandomSelect.Random<ConditionType>());
+                    }
+                    else
+                    {
+                        agentBuilder.AddNodesToRoot(RandomSelect.Random<CompositeType>(), RandomSelect.Random<ConditionType>(), RandomSelect.Random<ActionType>());
                     }
                 }
 
