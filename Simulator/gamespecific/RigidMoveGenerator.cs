@@ -35,6 +35,16 @@ namespace Simulator.gamespecific
             }
         }
 
+        public IAction Translate(int x, int y)
+        {
+            var (posX, posY) = agentState.GridLocation;
+            int relX = Math.Sign(x - posX);
+            int relY = Math.Sign(y - posY);
+
+            return translations[map.Translate(relX, relY)];
+            
+        }
+
         private bool IsGround(TileType type) => groundTiles.Contains(type);
     }
 }

@@ -38,7 +38,7 @@ namespace BehaviorTree
             bb.LegalActions = actions;
             bb.ChoosenAction = null;
 
-            bb.ForwardPosition = state.SuggestPosition(this);
+            bb.ProgressiveAction = state.SuggestedAction(this);
             bb.CurrentPosition = state.PositionOf(this);
 
             Selector move = new Selector( );

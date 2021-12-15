@@ -15,9 +15,12 @@ namespace Simulator
         (int x, int y) PositionOf(IAgent agent);
         IActionGenerator GetLegalActionGenerator(IAgent agent);
         Maybe<IAgent> GetClosestEnemy(IAgent agent);
+        Maybe<IAgent> GetClosestTurret(IAgent agent);
         Maybe<IAgent> GetTargetOf(IAgent agent);
         bool EngagedTargetOf(IAgent agent);
-        (int x, int y)? SuggestPosition(IAgent agent);
+        Maybe<(int x, int y)> SuggestPosition(IAgent agent);
         Alliances? Winner { get; set; }
+        IEnumerable<IAgent> GetTurretsAttacking(IAgent agent);
+        IAction SuggestedAction(IAgent agent);
     }
 }

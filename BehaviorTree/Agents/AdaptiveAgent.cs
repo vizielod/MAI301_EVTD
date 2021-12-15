@@ -41,8 +41,16 @@ namespace BehaviorTree.Agents
             bb.LegalActions = actions;
             bb.ChoosenAction = new Idle();
 
-            bb.ForwardPosition = state.SuggestPosition(this);
+            bb.ProgressiveAction = state.SuggestedAction(this);
             bb.CurrentPosition = state.PositionOf(this);
+            state.GetClosestTurret(this).Apply(t =>
+            {
+                bb.ClosestTurret = t;
+                bb.ClosestTurretPosition = state.PositionOf(t);
+            });
+
+            bb.AttackingTurrets = state.GetTurretsAttacking(this);
+            state.SuggestedAction(this);
 
             rootNode.Start();
 
