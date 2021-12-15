@@ -287,6 +287,9 @@ public class GameManager : MonoBehaviour
             //WriteGridOnDebug();
         }
         uiManager.StartGamePressed();
+
+        //Instantiate(transform.gameObject, new Vector3(10, 0, 10), Quaternion.identity);
+
     }
 
     void WriteGridOnDebug()
@@ -357,7 +360,7 @@ public class GameManager : MonoBehaviour
         await evolutionary.RunEvolutionAsync(grid, turretAgents, (score) => 
         {
             Debug.Log($"Score: {score}");
-            graph.addValue(score);
+            //graph.addValue(score);
         });
         sim = evolutionary.NewestSimulation;
 
@@ -385,7 +388,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         if (!gameOver)
         {
@@ -403,7 +406,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-    }
+    }*/
 
     void EndGame()
     {
@@ -412,7 +415,7 @@ public class GameManager : MonoBehaviour
         gameOver = true;
     }
 
-    void StepForward()
+    public void StepForward(int offset_x, int offset_z)
     {
 
         sim.StepForward();
@@ -427,7 +430,7 @@ public class GameManager : MonoBehaviour
                 if (agent is IEnemyAgent && state.Agents.Contains(agent))
                 {
                     (int x, int y) = state.PositionOf(agent);
-                    agentGODictionary[agent].transform.position = new Vector3(x * 5, 2.75f, y * 5);
+                    agentGODictionary[agent].transform.position = new Vector3(offset_x + x * 5, 2.75f, offset_z + y * 5);
 
                     var enemyAgent = (IEnemyAgent)agent;
                     var enemyController = agentGODictionary[agent].GetComponent<EnemyController>();
