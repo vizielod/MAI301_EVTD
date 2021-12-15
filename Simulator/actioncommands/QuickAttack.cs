@@ -17,13 +17,15 @@
         {
             stateObject.Target = target;
             stateObject.Target.Damage(damage);
-            
+            stateObject.EngagedTarget = true;
         }
 
         void IAction.Undo(IStateObject stateObject)
         {
             stateObject.Target.Heal(damage);
             stateObject.Target = previousTarget;
+            if (previousTarget != null)
+                stateObject.EngagedTarget = true;
         }
     }
 }

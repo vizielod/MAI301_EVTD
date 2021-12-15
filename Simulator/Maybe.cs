@@ -28,6 +28,13 @@ namespace Simulator
                 action.Invoke(values.Single());
         }
 
+        public T ApplyOrDefault<T>(Func<ValueType, T> func, T defaultValue)
+        {
+            if (values.Any())
+                return func.Invoke(values.Single());
+            return defaultValue;
+        }
+
         public void IfEmpty(Action action)
         {
             if (!values.Any())
@@ -42,6 +49,13 @@ namespace Simulator
             if (value == null)
                 return new Maybe<T>();
             return new Maybe<T>(value);
+        }
+
+        public static Maybe<T> Create<T>(T? value) where T:struct
+        {
+            if (!value.HasValue)
+                return new Maybe<T>();
+            return new Maybe<T>(value.Value);
         }
     }
 }

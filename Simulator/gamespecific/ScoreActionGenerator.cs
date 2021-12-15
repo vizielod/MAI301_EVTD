@@ -17,7 +17,7 @@ namespace Simulator.gamespecific
         public IEnumerable<IAction> Generate()
         {
             (int x, int y) = agentState.GridLocation;
-            if (map.TypeAt(x, y) == TileType.Goal)
+            if (map.InBounds(x, y) && map.TypeAt(x, y) == TileType.Goal)
                 yield return new ScorePoints();
         }
     }

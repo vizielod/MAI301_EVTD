@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Simulator.state
@@ -16,37 +17,60 @@ namespace Simulator.state
 
         public void ApplyAll(IGame game)
         {
+            game.NewRound();
             events.AsParallel().ForAll((evnt) => 
-            { 
-                evnt.Action.Apply(game.GetStateObject(evnt.Agent)); 
+            {
+                var state = game.GetStateObject(evnt.Agent);
+                var originalPosition = state.GridLocation;
+                evnt.Action.Apply(state);
+                state.HasMoved = originalPosition != state.GridLocation;
             });
         }
 
         public void UndoAll(IGame game)
         {
+            game.NewRound();
             events.AsParallel().ForAll((evnt) => 
             { 
                 evnt.Action.Undo(game.GetStateObject(evnt.Agent)); 
             });
         }
 
-        public void ScoreAll(IGame game)
+        public void CalculateScores(IGame game)
         {
             var goals = game.CountEnemiesSuccess();
             var activeEnemies = game.CountActiveEnemies();
-            var enemies = game.CountEnemies();
+            var totalEnemies = game.CountEnemies();
             
             events.AsParallel().ForAll(e => 
             {
                 var sObj = game.GetStateObject(e.Agent);
-                if (sObj.IsEnemy)
+                if (e.Agent.IsEnemy)
                 {
-                    if (e.Agent.IsActive && sObj.IsActive)
-                        e.Reward = (goals + activeEnemies + 1) / (enemies + 1) * (1 / (roundNumber - e.Agent.SpawnRound + 1));
+                    float degradation = 1 - ((roundNumber - e.Agent.SpawnRound) * (1 / game.RoundLimit));
+
+                    if (e.Agent.IsActive && sObj.Spawned)
+                    {
+                        float successfulEnemies = goals + activeEnemies;
+                        float socialScore = (successfulEnemies + 1) / (totalEnemies + 1);
+                        float healthRatio = e.Agent.HealthRatio;
+                        float idlePenalty = sObj.HasMoved ? 1 : 0.5f;
+                        e.Reward = game.GetProgression(e.Agent);
+                    }
                     else if (sObj.GoalReached)
+                    {
                         e.Reward = 1;
+                    }
+
+                    //e.Reward *= degradation;
                 }
             });
+        }
+
+        public IEnumerable<(IAgent agent, float score)> GetScores()
+        {
+            foreach (var evnt in events)
+                yield return (evnt.Agent, evnt.Reward);
         }
     }
 }

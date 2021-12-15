@@ -1,6 +1,6 @@
-﻿using BehaviorTree.ActionNodes;
+﻿using BehaviorTree.Actions;
 using BehaviorTree.Agents;
-using BehaviorTree.ConditionalNodes;
+using BehaviorTree.Conditionals;
 using BehaviorTree.FlowControllNodes;
 using BehaviorTree.NodeBase;
 using Simulator;
@@ -15,16 +15,21 @@ namespace BehaviorTree
         public int SpawnRound { get; }
 
         EnemyBlackboard bb;
+        private readonly int maxHealth;
 
         public bool IsActive => Health > 0;
 
         public int Health { get; set; }
 
+        public bool IsEnemy => true;
+
+        public float HealthRatio => Health / maxHealth;
+
         public SimpleEnemyAgent((int x, int y) initialPosition, int spawnRound) 
         {
             this.InitialPosition = initialPosition;
             bb = new EnemyBlackboard();
-            Health = 10;
+            maxHealth = Health = 10;
             this.SpawnRound = spawnRound;
         }
 
@@ -35,42 +40,42 @@ namespace BehaviorTree
             bb.LegalActions = actions;
             bb.ChoosenAction = null;
 
-            bb.ForwardPosition = state.SuggestPosition(this);
+            bb.ProgressiveAction = state.SuggestedAction(this);
             bb.CurrentPosition = state.PositionOf(this);
             
             Selector move = new Selector();
 
             Sequence repeatSeq = new Sequence();
-            repeatSeq.AddChildren(new CanRepeatLastMove(bb));
-            repeatSeq.AddChildren(new RepeatPreviousAction( bb));
+            //repeatSeq.AddChildren(new CanRepeatLastMove());
+            //repeatSeq.AddChildren(new RepeatPreviousAction());
             move.AddChildren(repeatSeq);
 
             Sequence moveSouth = new Sequence();
-            moveSouth.AddChildren(new CanGoSouth(bb));
-            moveSouth.AddChildren(new MoveSouth(bb));
+            //moveSouth.AddChildren(new CanMoveSouth());
+            //moveSouth.AddChildren(new MoveSouth());
             move.AddChildren(moveSouth);
 
             Sequence moveEast = new Sequence();
-            moveEast.AddChildren(new CanMoveEast(bb));
-            moveEast.AddChildren(new MoveEast(bb));
+            //moveEast.AddChildren(new CanMoveEast());
+            //moveEast.AddChildren(new MoveEast());
             move.AddChildren(moveEast);
 
             Sequence moveWest = new Sequence();
-            moveWest.AddChildren(new CanMoveWest(bb));
-            moveWest.AddChildren(new MoveWest(bb));
+            //moveWest.AddChildren(new CanMoveWest());
+            //moveWest.AddChildren(new MoveWest());
             move.AddChildren(moveWest);
 
 
             Sequence moveNorth = new Sequence();
-            moveNorth.AddChildren(new CanMoveNorth(bb));
-            moveNorth.AddChildren(new MoveNorth(bb));
+            //moveNorth.AddChildren(new CanMoveNorth());
+            //moveNorth.AddChildren(new MoveNorth());
             move.AddChildren(moveNorth);
 
             move.Start();
 
             while (move.Running()) 
             {
-                move.DoAction();
+                move.DoAction(bb);
             }
 
             move.End();
@@ -88,11 +93,6 @@ namespace BehaviorTree
         public void Heal(int v)
         {
             Health += v;
-        }
-
-        public void Reset()
-        {
-            throw new NotImplementedException();
         }
     }
 }

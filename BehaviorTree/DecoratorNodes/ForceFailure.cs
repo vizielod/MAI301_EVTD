@@ -8,9 +8,14 @@ namespace BehaviorTree.DecoratorNodes
         {
         }
 
-        public override void DoAction()
+        public override Node DeepCopy()
         {
-            node.DoAction();
+            return new ForceFailure(node.DeepCopy());
+        }
+
+        public override void DoAction(Blackboard blackboard)
+        {
+            node.DoAction(blackboard);
 
             GetControl().FinishWithFailure();
         }

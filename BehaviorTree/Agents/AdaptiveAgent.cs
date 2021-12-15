@@ -1,12 +1,13 @@
 ﻿using BehaviorTree.NodeBase;
 using Simulator;
+using Simulator.actioncommands;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace BehaviorTree.Agents
 {
-    class AdaptiveAgent: IEnemyAgent
+    class AdaptiveAgent: IAdaptiveEnemy
     {
         public (int x, int y) InitialPosition { get; }
         public int SpawnRound { get; }
@@ -18,12 +19,18 @@ namespace BehaviorTree.Agents
 
         public int Health { get; set; }
 
+        public bool IsEnemy => true;
+
+        public float HealthRatio => Health / maxHealth;
+
+        private int maxHealth;
+
         public AdaptiveAgent((int x, int y) initialPosition, int spawnRound, EnemyBlackboard bb, Node rootNode)
         {
             this.InitialPosition = initialPosition;
             this.bb = bb;
             this.rootNode = rootNode;
-            Health = 10;
+            maxHealth = Health = 10;
             this.SpawnRound = spawnRound;
         }
 
@@ -32,16 +39,29 @@ namespace BehaviorTree.Agents
             IEnumerable<IAction> actions = state.GetLegalActionGenerator(this).Generate();
 
             bb.LegalActions = actions;
-            bb.ChoosenAction = null;
+            bb.ChoosenAction = new Idle();
+            bb.AttackingTurrets.Clear();
 
-            bb.ForwardPosition = state.SuggestPosition(this);
+            bb.ProgressiveAction = state.SuggestedAction(this);
             bb.CurrentPosition = state.PositionOf(this);
+            state.GetClosestTurret(this).Apply(t =>
+            {
+                bb.ClosestTurret = t;
+                bb.ClosestTurretPosition = state.PositionOf(t);
+            });
+
+            foreach (var turret in state.GetTurretsAttacking(this))
+            {
+                bb.AttackingTurrets.Add(turret, state.GetDirection(this, turret));
+            }
+
+            state.SuggestedAction(this);
 
             rootNode.Start();
 
             while (rootNode.Running())
             {
-                rootNode.DoAction();
+                rootNode.DoAction(bb);
             }
 
             rootNode.End();
@@ -62,6 +82,17 @@ namespace BehaviorTree.Agents
         public void Reset() 
         {
             bb.Reset();
+        }
+
+        public IEnemyAgent Clone()
+        {
+            return new AdaptiveAgent(InitialPosition, SpawnRound, new EnemyBlackboard(), rootNode);
+        }
+
+        public AgentBuilder ReverseEngineer()
+        {
+            var (x, y) = InitialPosition;
+            return new AgentBuilder().SetInitialPosition(x,y).SetSpawnRound(SpawnRound).SetRootNode((ParentNode)rootNode.DeepCopy());
         }
     }
 }

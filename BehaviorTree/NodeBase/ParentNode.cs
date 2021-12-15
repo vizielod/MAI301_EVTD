@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BehaviorTree.NodeBase
 {
-    public abstract class ParentNode:Node
+    abstract class ParentNode : Node
     {
         protected ParentNodeController controller;
 
@@ -31,12 +32,27 @@ namespace BehaviorTree.NodeBase
         */
         public abstract void ChildSucceeded();
 
+        internal void RemoveChild(Node child)
+        {
+            controller.subnodes.Remove(child);
+        }
+
+        internal int IndexOf(Node child)
+        {
+            return controller.subnodes.IndexOf(child);
+        }
+
         /**
         * Abstract to be overridden in child
         * classes. Called when a child finishes
         * with failure.
         */
         public abstract void ChildFailed();
+
+        internal void Insert(int index, Node child)
+        {
+            controller.subnodes.Insert(index, child);
+        }
 
         /**
         * Checks for the appropiate pre-state
@@ -48,7 +64,7 @@ namespace BehaviorTree.NodeBase
         }
 
 
-        public override void DoAction()
+        public override void DoAction(Blackboard blackboard)
         {
             if (controller.Finished())
             {
@@ -88,7 +104,7 @@ namespace BehaviorTree.NodeBase
             else
             {
                 // ... and it's ready, update it.
-                controller.currentNode.DoAction();
+                controller.currentNode.DoAction(blackboard);
             }
         }
 
@@ -120,6 +136,26 @@ namespace BehaviorTree.NodeBase
         public override bool Running()
         {
             return !controller.Finished();
+        }
+
+        internal IEnumerable<LeafNode> GetAllLeafNodes()
+        {
+            foreach (var child in controller.subnodes)
+            {
+                if (child is ParentNode composit)
+                {
+                    foreach (var leaf in composit.GetAllLeafNodes())
+                        yield return leaf;
+                }
+
+                if (child is LeafNode leafNode)
+                    yield return leafNode;
+            }
+        }
+
+        public override int Count()
+        {
+            return base.Count() + controller.subnodes.Sum(c => c.Count());
         }
     }
 }

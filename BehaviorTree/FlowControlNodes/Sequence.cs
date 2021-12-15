@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace BehaviorTree.FlowControllNodes
 {
-    public class Sequence:ParentNode
+    class Sequence : ParentNode
     {
         public Sequence()
         { }
@@ -38,6 +38,16 @@ namespace BehaviorTree.FlowControllNodes
                     controller.FinishWithFailure();
                 }
             }
+        }
+
+        public override Node DeepCopy()
+        {
+            var sequence = new Sequence();
+            foreach (var child in controller.subnodes)
+            {
+                sequence.AddChildren(child.DeepCopy());
+            }
+            return sequence;
         }
     }
 }

@@ -6,13 +6,21 @@ using System.Linq;
 using BehaviorTree;
 using BehaviorTree.Agents;
 using Evolution;
+using System.Threading.Tasks;
 
+public enum GridType { 
+    useGridWithTurretsSetup = 0, 
+    useGridWithoutTurretsSetup = 1, 
+    useGridMultiLineWithoutTurretsSetup = 2,
+    useGridComplexWithoutTurretsSetup = 3
+}
 public class GameManager : MonoBehaviour
 {
     [Header("Game State & UI")]
     public UIManager uiManager;
     public PlayerStats playerStats;
     public bool gameOver = false;
+    public Graph graph;
 
     [Header("Prefabs")]
     public GameObject Wall;
@@ -24,14 +32,16 @@ public class GameManager : MonoBehaviour
 
     [Header("Variables")]
     public int tileSize = 5;
-    public int numberOfEnemies;
+    public int numberOfEnemies = 5;
+    public int numberOfGenerations = 50;
     public int numberOfTurrets = 0;
+    [Range(0f, 1f)] public float mutationRate = 0.5f;
+    [Range(0f, 1f)] public float eliteRate = 0.02f;
+    [Range(0f, 1f)] public float roulettRate = 0.5f;
     //public GameObject enemy;
 
     [Header("Grid Setup")]
-    public bool useGridWithTurretsSetup;
-    public bool useGridWithoutTurretsSetup;
-    public bool useGridMultiLineWithoutTurretsSetup;
+    public GridType gridType;
     public Grid grid;
     public int maxTurretCount = 10;
     public int turretCount = 0;
@@ -123,6 +133,25 @@ public class GameManager : MonoBehaviour
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1},
 };
 
+    public int[,] gridComplexWithoutTurretsArray = new int[,]
+{
+            { 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1},
+            { 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1},
+            { 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1},
+            { 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+            { 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+            { 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            { 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
+            { 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
+            { 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 3, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1},
+};
+
     public TileType[,] tileTypeArray;
     IStateSequence sim;
 
@@ -151,7 +180,7 @@ public class GameManager : MonoBehaviour
     {
         agentGODictionary = new Dictionary<IAgent, GameObject>();
 
-        if(useGridWithTurretsSetup && useGridWithoutTurretsSetup && useGridMultiLineWithoutTurretsSetup ||
+        /*if(useGridWithTurretsSetup && useGridWithoutTurretsSetup && useGridMultiLineWithoutTurretsSetup ||
             useGridWithTurretsSetup && useGridWithoutTurretsSetup ||
             useGridWithTurretsSetup && useGridMultiLineWithoutTurretsSetup ||
             useGridWithoutTurretsSetup && useGridMultiLineWithoutTurretsSetup)
@@ -163,18 +192,25 @@ public class GameManager : MonoBehaviour
             Application.Quit();
             #endif
             return;
-        }
-        else if (useGridWithTurretsSetup)
+        }*/
+        if (/*useGridWithTurretsSetup*/gridType == GridType.useGridWithTurretsSetup)
         {
+            uiManager.HintText.SetActive(false);
+            uiManager.RemainingTurrets.SetActive(false);
+            uiManager.RemainingTurretCount.SetActive(false);
             SetTileTypeArray(gridWithTurretsArray);
         }
-        else if (useGridWithoutTurretsSetup)
+        else if (/*useGridWithoutTurretsSetup*/gridType == GridType.useGridWithoutTurretsSetup)
         {
             SetTileTypeArray(gridWithoutTurretsArray);
         }
-        else if (useGridMultiLineWithoutTurretsSetup)
+        else if (/*useGridMultiLineWithoutTurretsSetup*/gridType == GridType.useGridMultiLineWithoutTurretsSetup)
         {
             SetTileTypeArray(gridMultiLineWithoutTurretsArray);
+        }
+        else if (gridType == GridType.useGridComplexWithoutTurretsSetup)
+        {
+            SetTileTypeArray(gridComplexWithoutTurretsArray);
         }
         else
         {
@@ -205,19 +241,18 @@ public class GameManager : MonoBehaviour
         turretCount = 0;
         numberOfTurrets = 0;
 
-        useGridWithTurretsSetup = false;
-        useGridWithoutTurretsSetup = true;
-        //RemoveGameObjects();
-
-        if (useGridWithTurretsSetup)
+        if (gridType == GridType.useGridWithTurretsSetup)
         {
+            uiManager.HintText.SetActive(false);
+            uiManager.RemainingTurrets.SetActive(false);
+            uiManager.RemainingTurretCount.SetActive(false);
             SetTileTypeArray(gridWithTurretsArray);
         }
-        else if (useGridWithoutTurretsSetup)
+        else if (gridType == GridType.useGridWithoutTurretsSetup)
         {
             SetTileTypeArray(gridWithoutTurretsArray);
         }
-        else if (useGridMultiLineWithoutTurretsSetup)
+        else if (gridType == GridType.useGridMultiLineWithoutTurretsSetup)
         {
             SetTileTypeArray(gridMultiLineWithoutTurretsArray);
         }
@@ -231,12 +266,13 @@ public class GameManager : MonoBehaviour
 
         gameOver = false;
     }
-    public void StartGame()
+    public async void StartGame()
     {
-        if (useGridWithTurretsSetup)
+        if (gridType == GridType.useGridWithTurretsSetup)
         {
+           
             turrets = GameObject.FindGameObjectsWithTag(turretTag);
-            InitializeAgents();
+            await InitializeAgents();
             return;
         }
         else if(turretCount < maxTurretCount)
@@ -247,7 +283,7 @@ public class GameManager : MonoBehaviour
         else
         {
             //turrets = GameObject.FindGameObjectsWithTag(turretTag);
-            InitializeAgents();
+            await InitializeAgents();
             //WriteGridOnDebug();
         }
         uiManager.StartGamePressed();
@@ -273,13 +309,11 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    void InitializeAgents()
+    async Task InitializeAgents()
     {
         Vector3 spawnPosition = new Vector3(5, 2.75f, 5);
-        //List<IAgent> enemyAgents = new List<IAgent>();
-        //List<IAgent> turretAgents = new List<IAgent>();
 
-        if (useGridWithTurretsSetup)
+        if (gridType == GridType.useGridWithTurretsSetup)
         {
             for (int i = 0; i < grid.Height; i++)
             {
@@ -301,7 +335,31 @@ public class GameManager : MonoBehaviour
         }
 
         //sim = new SimulatorFactory().CreateSimulator(grid, enemyAgents, turretAgents); // Parse enemies and tower agents
-        sim = new Evolutionary(numberOfEnemies).RunEvolution(grid, turretAgents).First();
+
+        /*foreach (var sim in new Evolutionary(numberOfEnemies).RunEvolution(grid, turretAgents))
+        {
+            while (!sim.IsGameOver)
+            {
+                sim.StepForward();
+            }
+        }*/
+
+        EvolutionConfiguration config = new EvolutionConfiguration()
+        {
+            NumberOfGenerations = numberOfGenerations,
+            MutationRate = mutationRate,
+            PopulationSize = numberOfEnemies,
+            EliteRate = eliteRate,
+            RoulettRate = roulettRate
+        };
+
+        Evolutionary evolutionary = new Evolutionary(config);
+        await evolutionary.RunEvolutionAsync(grid, turretAgents, (score) => 
+        {
+            Debug.Log($"Score: {score}");
+            graph.addValue(score);
+        });
+        sim = evolutionary.NewestSimulation;
 
         enemyAgents = sim.AllEnemyAgents.ToList();
 
@@ -315,7 +373,6 @@ public class GameManager : MonoBehaviour
 
             agentGODictionary.Add(enemyAgents[i], newEnemyGO);
         }
-
     }
 
     public void InitializeTurretAgent(int i, int j, GameObject turretGO)
@@ -385,20 +442,24 @@ public class GameManager : MonoBehaviour
                 {
 
                     var turretAgent = (TurretAgent)agent;
-                    var target = turretAgent.Target;
-                    Debug.Log(target);
-
                     //Debug.Log(targetGO);
                     agentGODictionary[agent].GetComponent<TurretController>().state = state;
+                    Maybe<IAgent> maybeTarget = state.GetTargetOf(turretAgent);
+                    maybeTarget.Apply(target =>
+                    {
+                        Debug.Log(target);
+                        if (state.EngagedTargetOf(agent))
+                        {
+                            agentGODictionary[agent].GetComponent<TurretController>().LookTowardsTarget(target);
+                        }
+                        else
+                        {
+                            agentGODictionary[agent].GetComponent<TurretController>().DisableLaser();
+                        }
 
-                    if (target != null && state.Agents.Contains(target))
-                    {
-                        agentGODictionary[agent].GetComponent<TurretController>().LookTowardsTarget(target);
-                    }
-                    else
-                    {
-                        agentGODictionary[agent].GetComponent<TurretController>().DisableLaser();
-                    }
+                    });
+                    maybeTarget.IfEmpty(agentGODictionary[agent].GetComponent<TurretController>().DisableLaser);
+
                 }
             }
             if (!agent.IsActive)

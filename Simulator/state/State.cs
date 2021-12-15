@@ -1,4 +1,5 @@
-﻿using Simulator.gamespecific;
+﻿using Simulator.actioncommands;
+using Simulator.gamespecific;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,6 @@ namespace Simulator.state
         public void AddAgent(IAgent agent, (int x, int y) gridLocation, IAgentType type)
         {
             agents.Add(agent, new StateObject(gridLocation) { 
-                IsActive = true,
                 Type = type
             });
         }
@@ -75,10 +75,71 @@ namespace Simulator.state
         {
             return Maybe.Create(agents[agent].Target);
         }
-
-        public (int x, int y) SuggestPosition(IAgent agent)
+        public bool EngagedTargetOf(IAgent agent)
         {
-            return bfs.Next(agents[agent].GridLocation);
+            return agents[agent].Target != null && agents[agent].EngagedTarget;
+        }
+
+        public Maybe<(int x, int y)> SuggestPosition(IAgent agent)
+        {
+            return Maybe.Create(bfs.Next(agents[agent].GridLocation));
+        }
+
+        internal void SetTarget(IAgent agent, IAgent target, bool engaged = true)
+        {
+            if (target != null && agents.ContainsKey(target))
+            {
+                agents[agent].Target = target;
+                agents[agent].EngagedTarget = engaged;
+            }
+        }
+
+        public Maybe<IAgent> GetClosestTurret(IAgent agent)
+        {
+            if (!agents.ContainsKey(agent))
+                return new Maybe<IAgent>();
+
+            double closestSQDistance = double.MaxValue;
+            IAgent closest = null;
+
+            foreach (var turret in agents.Where(a => (a.Key.IsActive && !a.Value.Type.IsEnemy)))
+            {
+                var squaredDistance = Math.Pow(turret.Value.GridLocation.x - agents[agent].GridLocation.x, 2) + Math.Pow(turret.Value.GridLocation.y - agents[agent].GridLocation.y, 2);
+
+                if (squaredDistance < closestSQDistance)
+                {
+                    closest = turret.Key;
+                    closestSQDistance = squaredDistance;
+                }
+            }
+
+            return Maybe.Create(closest);
+        }
+
+        public IEnumerable<IAgent> GetTurretsAttacking(IAgent agent)
+        {
+            return agents.Where(a => a.Value.Target == agent && a.Value.EngagedTarget).Select(a => a.Key);
+        }
+
+        public Direction GetDirection(IAgent from, IAgent to)
+        {
+            var (fromX, fromY) = PositionOf(from);
+            var (toX, toY) = PositionOf(to);
+
+            return MapLayout.Translate(toX - fromX, toY - fromY);
+        }
+
+        public IAction SuggestedAction(IAgent agent)
+        {
+            return SuggestPosition(agent).ApplyOrDefault(pos =>
+            {
+                var (x, y) = pos;
+                if (x == -1 && y == -1)
+                {
+                    return new ScorePoints();
+                }
+                return new RigidMoveGenerator(MapLayout, agents[agent]).Translate(x,y);
+            }, new Idle());
         }
     }
 }

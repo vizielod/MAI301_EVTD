@@ -1,19 +1,12 @@
-﻿using BehaviorTree.ActionNodes;
+﻿using BehaviorTree.Actions;
 using BehaviorTree.FlowControllNodes;
 using BehaviorTree.NodeBase;
 using Simulator;
+using Simulator.actioncommands;
 using System;
 
 namespace BehaviorTree
 {
-    class TurretIdle : IAction
-    {
-        public void Apply(IStateObject stateObject)
-        { }
-        public void Undo(IStateObject stateObject)
-        { }
-    }
-
     public class TurretAgent : IAgent
     {
         TurretBlackboard bb;
@@ -27,6 +20,10 @@ namespace BehaviorTree
         public bool IsActive => true;
 
         public float Range { get; set; }
+
+        public bool IsEnemy => false;
+
+        public float HealthRatio => 1;
 
         public TurretAgent((int x, int y) InitialPosition)
         {
@@ -56,13 +53,13 @@ namespace BehaviorTree
                 }
 
                 Selector move = new Selector();
-                move.AddChildren(new Fire( bb));
+                move.AddChildren(new ActionNode(new Fire()));
 
                 move.Start();
 
                 while (move.Running())
                 {
-                    move.DoAction();
+                    move.DoAction(bb);
                 }
 
                 move.End();
@@ -71,7 +68,7 @@ namespace BehaviorTree
             });
             if (bb.ChoosenAction == null)
             {
-                return new TurretIdle();
+                return new Idle();
             }
             return bb.ChoosenAction;
         }

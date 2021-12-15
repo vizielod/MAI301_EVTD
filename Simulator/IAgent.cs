@@ -8,5 +8,7 @@
         void Damage(int v);
         void Heal(int v);
         bool IsActive { get; }
+        bool IsEnemy { get; }
+        float HealthRatio { get; }
     }
 }

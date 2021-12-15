@@ -12,11 +12,13 @@
         void IAction.Apply(IStateObject stateObject)
         {
             stateObject.Target.Damage(damage);
+            stateObject.EngagedTarget = true;
         }
 
         void IAction.Undo(IStateObject stateObject)
         {
             stateObject.Target.Heal(damage);
+            stateObject.EngagedTarget = true;
         }
     }
 }

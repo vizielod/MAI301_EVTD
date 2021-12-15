@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace BehaviorTree.NodeBase
 {
-    public abstract class DecoratorNode:Node
+    abstract class DecoratorNode:Node
     {
         /**
          * Reference to the decorated node
@@ -42,6 +44,11 @@ namespace BehaviorTree.NodeBase
         public override bool Running()
         {
             return GetControl().Finished();
+        }
+
+        public override int Count()
+        {
+            return base.Count() + this.node.Count();
         }
     }
 }

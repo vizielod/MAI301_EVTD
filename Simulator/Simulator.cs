@@ -10,72 +10,93 @@ namespace Simulator
         private readonly List<Round> rounds;
         private readonly IGame game;
         private readonly IWinCondition winCondition;
-        int round;
+        private readonly IDictionary<IAgent, float> scoreboard;
+        int roundIndex;
 
         public IEnumerable<IAgent> AllAgents => game.AllAgents;
 
         public IEnumerable<IAgent> AllEnemyAgents => game.AllEnemyAgents;
 
-        public bool IsGameOver => winCondition.GetWinner(round).HasValue;
+        public bool IsGameOver => winCondition.GetWinner(roundIndex).HasValue;
 
         internal Simulator(IGame game)
         {
             this.game = game;
             rounds = new List<Round>();
-            round = -1;
-            winCondition = new WinConditionChain(new EnemiesDefeatedWinCondition(game), new EnemiesGoalReachedWinCondition(game));
+            roundIndex = -1;
+            scoreboard = new Dictionary<IAgent, float>();
+            winCondition = new WinConditionChain(new EnemiesDefeatedWinCondition(game), new WinConditionChain(new EnemiesGoalReachedWinCondition(game), new TimeoutWinCondition(game.RoundLimit)));
         }
 
         public void StepForward()
         {
-            round++;
-            game.SpawnAgents(round);
-
             if (IsGameOver)
             {
-                round--;
                 return;
             }
 
-            var newRound = round >= rounds.Count;
+            roundIndex++;
+            game.SpawnAgents(roundIndex);
+
+            var newRound = roundIndex >= rounds.Count;
             
             if (newRound)
             {
                 IState state = game.GenerateState();
                 rounds.Add(
                     new Round(
-                        game.ActiveAgents.Select(a => new Event(a, a.PickAction(state))).ToList(),
-                        round
+                        game.ActiveAgents.Select(agent => {
+                            var action = agent.PickAction(state);
+                            if (action == null)
+                            {
+                                game.Disable(agent);
+                                return null;
+                            }
+                            return new Event(agent, action);
+                            }).Where(e => e != null).ToList(),
+                        roundIndex
                         )
                     );
             }
 
-            rounds[round].ApplyAll(game);
+            rounds[roundIndex].ApplyAll(game);
+            game.ValidatePositions();
 
             if (newRound)
-                rounds[round].ScoreAll(game);
+            {
+                rounds[roundIndex].CalculateScores(game);
+
+                foreach (var score in rounds[roundIndex].GetScores())
+                {
+                    if (scoreboard.ContainsKey(score.agent))
+                        scoreboard[score.agent] += score.score;
+                    else
+                        scoreboard[score.agent] = score.score;
+                }
+            }
+                
         }
 
         public void StepBackward()
         {
-            if (round < 0)
+            if (roundIndex < 0)
                 return;
 
-            game.DespawnAgents(round);
-            rounds[round].UndoAll(game);
-            round--;
+            game.DespawnAgents(roundIndex);
+            rounds[roundIndex].UndoAll(game);
+            roundIndex--;
         }
 
         public IState GetCurrentStep()
         {
             var state = game.GenerateState();
-            state.Winner = winCondition.GetWinner(round);
+            state.Winner = winCondition.GetWinner(roundIndex);
             return state;
         }
 
         public int CurrentStep()
         {
-            return round;
+            return roundIndex;
         }
 
         public int CountSteps()
@@ -86,6 +107,19 @@ namespace Simulator
         public IEnumerable<IAgent> GetAgents()
         {
             return game.ActiveAgents;
+        }
+
+        public void ReWind()
+        {
+            while(roundIndex >= 0)
+            {
+                StepBackward();
+            }
+        }
+
+        public IReadOnlyDictionary<IAgent, float> GetScores()
+        {
+            return (IReadOnlyDictionary<IAgent, float>)scoreboard;
         }
     }
 }

@@ -2,11 +2,13 @@
 {
     public interface IStateObject
     {
-        bool IsActive { get; set; }
+        bool Spawned { get; set; }
+        bool IsEnabled { get; set; }
         (int x, int y) GridLocation { get; }
         IAgent Target { get; set; }
+        bool EngagedTarget { get; set; }
         void Move(int xref, int yref);
         bool GoalReached { get; set; }
-        bool IsEnemy { get; }
+        bool HasMoved { get; set; }
     }
 }

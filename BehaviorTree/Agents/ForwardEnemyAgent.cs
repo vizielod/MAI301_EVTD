@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using BehaviorTree.ActionNodes;
+using BehaviorTree.Actions;
 using BehaviorTree.Agents;
 using BehaviorTree.FlowControllNodes;
 using BehaviorTree.NodeBase;
@@ -13,15 +13,21 @@ namespace BehaviorTree
         public int SpawnRound { get; }
 
         EnemyBlackboard bb;
+        private int maxHealth;
+
         public int Health { get; set; }
 
         public bool IsActive => Health > 0;
+
+        public bool IsEnemy => true;
+
+        public float HealthRatio => Health / maxHealth;
 
         public ForwardEnemyAgent((int x, int y) initialPosition, int spawnRound)
         {
             this.InitialPosition = initialPosition;
             bb = new EnemyBlackboard();
-            Health = 10;
+            maxHealth = Health = 10;
             this.SpawnRound = spawnRound;
         }
 
@@ -32,17 +38,17 @@ namespace BehaviorTree
             bb.LegalActions = actions;
             bb.ChoosenAction = null;
 
-            bb.ForwardPosition = state.SuggestPosition(this);
+            bb.ProgressiveAction = state.SuggestedAction(this);
             bb.CurrentPosition = state.PositionOf(this);
 
             Selector move = new Selector( );
-            move.AddChildren(new MoveForward( bb));
+            move.AddChildren(new ActionNode(new MoveForward()));
 
             move.Start();
 
             while (move.Running())
             {
-                move.DoAction();
+                move.DoAction(bb);
             }
 
             move.End();
@@ -60,11 +66,6 @@ namespace BehaviorTree
         public void Heal(int v)
         {
             Health += v;
-        }
-
-        public void Reset()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

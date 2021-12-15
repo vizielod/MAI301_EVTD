@@ -5,9 +5,8 @@ using System.Text;
 
 namespace BehaviorTree.Agents
 {
-    public interface IEnemyAgent:IAgent
+    public interface IEnemyAgent : IAgent
     {
         int Health { get; }
-        void Reset();
     }
 }
