@@ -23,7 +23,7 @@ public class ParallelSimManager : MonoBehaviour
             {
                 int offset_x = i / (levelCount / 2);
                 int offset_z = i % (levelCount / 2);
-                levels[i].GetComponent<GameManager>().StepForward(offset_x * 100, offset_z * 100);
+                levels[i].GetComponent<GameManager>().StepForward(/*offset_x * 100, offset_z * 100*/);
             }
         }
     }
