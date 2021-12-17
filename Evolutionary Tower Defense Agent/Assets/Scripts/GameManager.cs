@@ -381,14 +381,10 @@ public class GameManager : MonoBehaviour
         evolutionary.RunEvolutionAsync(grid, turretAgents, (result) => 
         {
             Debug.Log($"Score: {result.Score}");
-            graph.addValue(result.Score);
+            //graph.addValue(result.Score);
         });
         
-        await new Task(() =>
-        {
-            while (evolutionary.NewestSimulation == null) ;
-        });
-
+        while (evolutionary.NewestSimulation == null) ;
         sim = evolutionary.NewestSimulation;
 
         //enemyAgents.Add(new SimpleEnemyAgent((1,1), 0));
