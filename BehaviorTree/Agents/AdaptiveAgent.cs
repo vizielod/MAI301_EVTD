@@ -21,7 +21,7 @@ namespace BehaviorTree.Agents
 
         public bool IsEnemy => true;
 
-        public float HealthRatio => Health / maxHealth;
+        public float HealthRatio => (float)Health / maxHealth;
 
         private int maxHealth;
 
@@ -44,6 +44,7 @@ namespace BehaviorTree.Agents
 
             bb.ProgressiveAction = state.SuggestedAction(this);
             bb.CurrentPosition = state.PositionOf(this);
+            bb.WallDistances = state.GetWallDistances(this);
             state.GetClosestTurret(this).Apply(t =>
             {
                 bb.ClosestTurret = t;

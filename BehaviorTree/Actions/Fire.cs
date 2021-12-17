@@ -5,22 +5,24 @@ namespace BehaviorTree.Actions
 {
     class Fire : IActionStrategy
     {
-        public bool HandleEnemy(EnemyBlackboard blackboard)
+        public ResultEnum Result { get; set; }
+
+        public void HandleEnemy(EnemyBlackboard blackboard)
         {
-            return false;
+            Result = ResultEnum.Failed;
         }
 
-        public bool HandleTurret(TurretBlackboard blackboard)
+        public void HandleTurret(TurretBlackboard blackboard)
         {
             if (blackboard.ClosestEnemy != null && blackboard.IsEnemyInRange)
             {
                 blackboard.ChoosenAction = new QuickAttack(blackboard.Damage, blackboard.ClosestEnemy, blackboard.PreviousTargetEnemy);
                 blackboard.PreviousTargetEnemy = blackboard.ClosestEnemy;
-                return true;
+                Result = ResultEnum.Succeeded;
             }
             else
             {
-                return false;
+                Result = ResultEnum.Failed;
             }
         }
     }

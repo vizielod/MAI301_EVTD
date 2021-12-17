@@ -71,12 +71,18 @@ namespace Simulator.gamespecific
             agents[agent].IsEnabled = false;
         }
 
-        public void ValidatePositions()
+        public void VerifyPositions()
         {
             foreach (var agent in agents.Where(a => a.Key.IsEnemy && IsActive(a.Key)))
             {
                 if (!bfsMap.HasNext(agent.Value.GridLocation))
-                    Disable(agent.Key); 
+                    Disable(agent.Key);
+                (int x, int y) = agent.Value.GridLocation;
+                if (map.InBounds(x, y) && map.TypeAt(x, y) == TileType.Goal)
+                {
+                    agent.Value.GoalReached = true;
+                    agent.Value.IsEnabled = false;
+                }
             }
         }
 
