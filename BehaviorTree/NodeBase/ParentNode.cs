@@ -35,6 +35,8 @@ namespace BehaviorTree.NodeBase
         */
         public abstract void ChildSucceeded();
 
+        public abstract void ChildIsRunning();
+
         internal void RemoveChild(Node child)
         {
             controller.subnodes.Remove(child);
@@ -91,17 +93,25 @@ namespace BehaviorTree.NodeBase
             else if (controller.currentNode.
             GetControl().Finished())
             {
-                // ... and it's finished, end it properly.
-                controller.currentNode.End();
+                
                 if (controller.currentNode.
                 GetControl().Succeeded())
                 {
+                    // ... and it's finished, end it properly.
+                    controller.currentNode.End();
                     this.ChildSucceeded();
+                    
                 }
                 if (controller.currentNode.
                 GetControl().Failed())
                 {
+                    // ... and it's finished, end it properly.
+                    controller.currentNode.End();
                     this.ChildFailed();
+                }
+                if (controller.currentNode.GetControl().Running())
+                {
+                    this.ChildIsRunning();
                 }
             }
             else
@@ -126,8 +136,11 @@ namespace BehaviorTree.NodeBase
         */
         public override void Start()
         {
-            controller.currentNode =
+            if (!controller.Running())
+            {
+                controller.currentNode =
             controller.subnodes.First();
+            }
             if (controller.currentNode == null)
             {
                 Console.Error.Write("Current task has a null action");
