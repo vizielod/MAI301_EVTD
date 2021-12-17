@@ -21,7 +21,7 @@ namespace BehaviorTree.Agents
 
         public bool IsEnemy => true;
 
-        public float HealthRatio => Health / maxHealth;
+        public float HealthRatio => (float)Health / maxHealth;
 
         private int maxHealth;
 
