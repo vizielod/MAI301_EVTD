@@ -8,6 +8,7 @@ public class Graph : MonoBehaviour
 {
     [SerializeField] private Sprite circleSprite;
     [SerializeField] private RectTransform graphContainer;
+    public int maxDatapointsShown = 10;
     private List<float> valueList;
 
     /*private void Awake()
@@ -49,6 +50,19 @@ public class Graph : MonoBehaviour
         rectTransform.sizeDelta = new Vector2(8, 8);
         rectTransform.anchorMin = new Vector2(0, 0);
         rectTransform.anchorMax = new Vector2(0, 0);
+        return circleGO;
+    }
+
+    private GameObject CreateCircleWithText(Vector2 anchoredPosition, float scoreValue)
+    {
+        GameObject circleGO = new GameObject("circle", typeof(Image));
+        circleGO.transform.SetParent(graphContainer, false);
+        circleGO.GetComponent<Image>().sprite = circleSprite;
+        RectTransform rectTransform = circleGO.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = anchoredPosition;
+        rectTransform.sizeDelta = new Vector2(8, 8);
+        rectTransform.anchorMin = new Vector2(0, 0);
+        rectTransform.anchorMax = new Vector2(0, 0);
         CreateText(circleGO, scoreValue);
         return circleGO;
     }
@@ -73,7 +87,38 @@ public class Graph : MonoBehaviour
 
     }
 
-    private void ShowGraph(List<float> valueList)
+    public void ShowFinalGraph()
+    {
+        int a = (int)(valueList.Count / maxDatapointsShown);
+        List<float> tempList = new List<float>();
+        tempList.Add(valueList[0]);
+
+        float sum = 0;
+        for (int i = 1; i < valueList.Count-1; i++)
+        {
+            if (i % a != 0)
+            {
+                sum += valueList[i];
+            }
+            if(i % a == 0)
+            {
+                sum += valueList[i];
+                int avg = (int)(sum / a);
+                tempList.Add(/*valueList[i]*/avg);
+                sum = 0;
+            }
+        }
+        tempList.Add(valueList[valueList.Count - 1]);
+
+        for (int i = 0; i < tempList.Count; i++)
+        {
+            Debug.Log(tempList[i]);
+        }
+
+        ShowGraph(tempList, true);
+    }
+
+    private void ShowGraph(List<float> valueList, bool showGraphWithScore = false)
     {
         Clean();
 
@@ -85,15 +130,24 @@ public class Graph : MonoBehaviour
         float yMargin = 5;
         //float yMaximum = valueList.Max();
         float yMaximum = 20000f;
-        float xSize = graphWidth / valueList.Count;
+        float xSize = graphWidth / valueList.Count; //size distance between each point on X axis
         float xMargin = xSize / 2;
 
         GameObject lastCircleGO = null;
         for (int i = 0; i < valueList.Count; i++)
         {
+
             float xPosition = i * xSize + xMargin;
             float yPosition = (valueList[i] / yMaximum) * (graphHeight - 2 * yMargin) + yMargin;
-            GameObject circleGO = CreateCircle(new Vector2(xPosition, yPosition), valueList[i]);
+            GameObject circleGO;
+            if (!showGraphWithScore)
+            {
+                circleGO = CreateCircle(new Vector2(xPosition, yPosition), valueList[i]);
+            }
+            else
+            {
+                circleGO = CreateCircleWithText(new Vector2(xPosition, yPosition), valueList[i]);
+            }
             if(lastCircleGO != null)
             {
                 /*CreateDotConnection(lastCircleGO.GetComponent<RectTransform>().anchoredPosition,

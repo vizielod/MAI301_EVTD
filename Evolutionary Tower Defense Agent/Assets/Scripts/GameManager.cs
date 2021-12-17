@@ -361,7 +361,16 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"Score: {score}");
             graph.addValue(score);
+
         });
+
+        /*if (sim.IsGameOver)
+        {
+            Debug.Log("Game Over!");
+        }*/
+        Debug.Log("Evolutions Over!");
+        graph.ShowFinalGraph();
+
         sim = evolutionary.NewestSimulation;
 
         enemyAgents = sim.AllEnemyAgents.ToList();
