@@ -71,6 +71,12 @@ namespace BehaviorTree.NodeBase
 
         public override void DoAction(Blackboard blackboard)
         {
+            if (controller.subnodes.Count() == 0)
+            {
+                controller.FinishWithFailure();
+                return;
+            }
+
             if (controller.Finished())
             {
                 // If this parent task is finished

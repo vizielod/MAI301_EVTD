@@ -55,10 +55,14 @@ namespace BehaviorTree.Agents
 
         internal ParentNode RootNode { get; set; }
 
-        public AgentBuilder()
+        public AgentBuilder(CompositeType rootType) : this(MakeCompositeNode(rootType))
+        {
+        }
+
+        internal AgentBuilder(ParentNode root)
         {
             blackboard = new EnemyBlackboard();
-            RootNode = currentNode = new Selector();
+            RootNode = currentNode = root;
             spawnRound = 0;
         }
 
@@ -80,7 +84,7 @@ namespace BehaviorTree.Agents
             return this;
         }
 
-        private IActionStrategy MakeActionStrategy(ActionType type)
+        private static IActionStrategy MakeActionStrategy(ActionType type)
         {
             switch (type)
             {
@@ -117,7 +121,7 @@ namespace BehaviorTree.Agents
             return this;
         }
 
-        private IConditionStrategy MakeConditionStrategy(ConditionType type)
+        private static IConditionStrategy MakeConditionStrategy(ConditionType type)
         {
             switch (type)
             {
@@ -147,12 +151,6 @@ namespace BehaviorTree.Agents
             return null;
         }
 
-        internal AgentBuilder SetRootNode(ParentNode rootNode)
-        {
-            this.RootNode = rootNode;
-            return this;
-        }
-
         public AgentBuilder SetInitialPosition(int x, int y)
         {
             initialPosition = (x,y);
@@ -165,19 +163,20 @@ namespace BehaviorTree.Agents
             return this;
         }
 
-        public AgentBuilder AddCompositeNode(CompositeType compositeType) 
+        private static ParentNode MakeCompositeNode(CompositeType compositeType)
         {
-            ParentNode node;
             switch (compositeType)
             {
                 case CompositeType.Sequence:
-                    node = new Sequence();
-                    break;
+                    return new Sequence();
                 default:
-                    node = new Selector();
-                    break;
+                    return new Selector();
             }
+        }
 
+        public AgentBuilder AddCompositeNode(CompositeType compositeType) 
+        {
+            ParentNode node = MakeCompositeNode(compositeType);
             currentNode.AddChildren(node);
             currentNode = node;
             return this;
