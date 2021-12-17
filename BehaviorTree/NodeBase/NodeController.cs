@@ -40,7 +40,7 @@ namespace BehaviorTree.NodeBase
             this.started = false;
             this.done = false;
             this.running = false;
-            this.sucess = true;
+            this.sucess = false;
         }
 
         /**
@@ -57,7 +57,7 @@ namespace BehaviorTree.NodeBase
         public void SafeStart()
         {
             this.started = true;
-
+            this.running = false;
           //  node.Start();
         }
 
@@ -68,7 +68,6 @@ namespace BehaviorTree.NodeBase
         {
             this.started = false;
             this.done = false;
-            this.running = false;
             
          //   node.End();
         }

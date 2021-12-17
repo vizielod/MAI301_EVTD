@@ -99,8 +99,11 @@ namespace BehaviorTree.NodeBase
             else if (controller.currentNode.
             GetControl().Finished())
             {
-                
-                if (controller.currentNode.
+                if (controller.currentNode.GetControl().Running())
+                {
+                    this.ChildIsRunning();
+                }
+                else if(controller.currentNode.
                 GetControl().Succeeded())
                 {
                     // ... and it's finished, end it properly.
@@ -114,11 +117,7 @@ namespace BehaviorTree.NodeBase
                     // ... and it's finished, end it properly.
                     controller.currentNode.End();
                     this.ChildFailed();
-                }
-                else if (controller.currentNode.GetControl().Running())
-                {
-                    this.ChildIsRunning();
-                }
+                } 
             }
             else
             {
@@ -147,6 +146,11 @@ namespace BehaviorTree.NodeBase
                 controller.currentNode =
             controller.subnodes.First();
             }
+            else
+            {
+                controller.currentNode.GetControl().Reset();
+            }
+
             if (controller.currentNode == null)
             {
                 Console.Error.Write("Current task has a null action");

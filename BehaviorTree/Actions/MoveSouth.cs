@@ -17,7 +17,10 @@ namespace BehaviorTree.Actions
                 blackboard.ChoosenAction = action;
                 Result = ResultEnum.Succeeded;
             }
-            Result = ResultEnum.Failed;
+            else{
+                Result = ResultEnum.Failed;
+            }
+            
         }
 
         public void HandleTurret(TurretBlackboard blackboard)
