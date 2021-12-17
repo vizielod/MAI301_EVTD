@@ -16,6 +16,7 @@ namespace BehaviorTree.NodeBase
         public int Health { get; set; }
         public Dictionary<IAgent, Direction> AttackingTurrets { get; set; }
         public IReadOnlyDictionary<Direction, int> WallDistances { get; set; }
+        public float HealthRatio { get; set; }
 
         public EnemyBlackboard()
         {
@@ -33,6 +34,7 @@ namespace BehaviorTree.NodeBase
             ClosestTurretPosition = null;
             AttackingTurrets = new Dictionary<IAgent, Direction>();
             WallDistances = new Dictionary<Direction, int>();
+            HealthRatio = 1;
         }
 
         public override void AcceptVisitor(LeafNode visitor)

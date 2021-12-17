@@ -17,25 +17,18 @@ namespace Evolution
 
         public float MutationRate { 
             get { return mutationRate; }
-            set { mutationRate = Clamp(value, 0, 1); }
+            set { mutationRate = value.Clamp(0, 1); }
         }
         public int PopulationSize { get; set; }
         public int NumberOfGenerations { get; set; }
         public float EliteRate {
             get { return eliteRate; }
-            set { eliteRate = Clamp(value, 0, 1); }
+            set { eliteRate = value.Clamp(0, 1); }
         }
         public float RoulettRate
         {
             get { return roulettRate; }
-            set { roulettRate = Clamp(value, 0, 1); }
-        }
-
-        private float Clamp(float value, float min, float max)
-        {
-            return value > max ? max :
-                   value < min ? min : 
-                   value;
+            set { roulettRate = value.Clamp(0, 1); }
         }
 
         internal int Elites => (int)Math.Floor(PopulationSize * EliteRate);

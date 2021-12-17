@@ -48,7 +48,8 @@ namespace BehaviorTree.Agents
         IsNorthOptimal,
         IsSouthOptimal,
         IsEastOptimal,
-        IsWestOptimal
+        IsWestOptimal,
+        Hurt
     }
     public class AgentBuilder
     {
@@ -130,14 +131,6 @@ namespace BehaviorTree.Agents
         {
             switch (type)
             {
-                case ConditionType.CanGoSouth:
-                    return new CanMoveSouth();
-                case ConditionType.CanGoNorth:
-                    return new CanMoveNorth();
-                case ConditionType.CanGoWest:
-                    return new CanMoveWest();
-                case ConditionType.CanGoEast:
-                    return new CanMoveEast();
                 case ConditionType.CanRepeat:
                     return new CanRepeatLastMove();
                 case ConditionType.AttackedFromEast:
@@ -158,6 +151,8 @@ namespace BehaviorTree.Agents
                     return new IsEastOptimal();
                 case ConditionType.IsWestOptimal:
                     return new IsWestOptimal();
+                case ConditionType.Hurt:
+                    return new HealthBelow(0.5f);
             }
             return null;
         }
