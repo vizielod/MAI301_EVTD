@@ -59,7 +59,7 @@ namespace Evolution
         {
             for (int i = 0; i < size; i++)
             {
-                var agentBuilder = new AgentBuilder()
+                var agentBuilder = new AgentBuilder(RandomSelect.Random<CompositeType>())
                     .SetInitialPosition(1, 1)
                     .SetSpawnRound(i)
                     .AddNodesToRoot(RandomSelect.Random<CompositeType>(), RandomSelect.Random<ConditionType>(), RandomSelect.Random<ActionType>());
@@ -71,6 +71,22 @@ namespace Evolution
                     if (chance < 5)
                     {
                         agentBuilder.AddCompositeNode(RandomSelect.Random<CompositeType>());
+                        
+                        // Populate right away
+                        switch(rand.Next(3))
+                        {
+                            case 0:
+                                agentBuilder.AddConditionNode(RandomSelect.Random<ConditionType>());
+                                agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
+                                break;
+                            case 1:
+                                agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
+                                agentBuilder.AddConditionNode(RandomSelect.Random<ConditionType>());
+                                break;
+                            case 2:
+                                agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
+                                break;
+                        }
                     }
                     else if (chance < 10)
                     {

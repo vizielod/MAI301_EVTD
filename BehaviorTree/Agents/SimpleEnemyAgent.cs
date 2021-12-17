@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace BehaviorTree
 {
-    class SimpleEnemyAgent : IEnemyAgent
+    public class SimpleEnemyAgent : IEnemyAgent
     {
         public (int x, int y) InitialPosition { get; }
         public int SpawnRound { get; }
@@ -42,34 +42,13 @@ namespace BehaviorTree
 
             bb.ProgressiveAction = state.SuggestedAction(this);
             bb.CurrentPosition = state.PositionOf(this);
-            
+            bb.WallDistances = state.GetWallDistances(this);
+
             Selector move = new Selector();
 
-            Sequence repeatSeq = new Sequence();
-            //repeatSeq.AddChildren(new CanRepeatLastMove());
-            //repeatSeq.AddChildren(new RepeatPreviousAction());
-            move.AddChildren(repeatSeq);
-
-            Sequence moveSouth = new Sequence();
-            //moveSouth.AddChildren(new CanMoveSouth());
-            //moveSouth.AddChildren(new MoveSouth());
-            move.AddChildren(moveSouth);
-
-            Sequence moveEast = new Sequence();
-            //moveEast.AddChildren(new CanMoveEast());
-            //moveEast.AddChildren(new MoveEast());
-            move.AddChildren(moveEast);
-
-            Sequence moveWest = new Sequence();
-            //moveWest.AddChildren(new CanMoveWest());
-            //moveWest.AddChildren(new MoveWest());
-            move.AddChildren(moveWest);
-
-
-            Sequence moveNorth = new Sequence();
-            //moveNorth.AddChildren(new CanMoveNorth());
-            //moveNorth.AddChildren(new MoveNorth());
-            move.AddChildren(moveNorth);
+            move.AddChildren(new ConditionalNode(new CanMoveSouth()));
+            move.AddChildren(new ActionNode(new ContinuousMovement(new MoveSouth(), Direction.South)));
+            move.AddChildren(new ActionNode(new ContinuousMovement(new MoveEast(), Direction.East)));
 
             move.Start();
 
