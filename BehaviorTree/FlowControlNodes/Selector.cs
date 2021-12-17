@@ -63,5 +63,10 @@ namespace BehaviorTree.FlowControllNodes
             }
             return selector;
         }
+
+        public override void ChildIsRunning()
+        {
+            controller.FinishWithRunning();
+        }
     }
 }

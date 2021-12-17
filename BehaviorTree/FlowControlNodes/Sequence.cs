@@ -13,6 +13,11 @@ namespace BehaviorTree.FlowControllNodes
             controller.FinishWithFailure();
         }
 
+        public override void ChildIsRunning()
+        {
+            controller.FinishWithRunning();
+        }
+
         public override void ChildSucceeded()
         {
             int curPos =

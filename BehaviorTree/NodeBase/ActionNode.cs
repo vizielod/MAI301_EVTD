@@ -27,8 +27,10 @@ namespace BehaviorTree.NodeBase
             Strategy.HandleEnemy(blackboard);
             if (Strategy.Result == ResultEnum.Succeeded)
                 controller.FinishWithSuccess();
-            else if(Strategy.Result == ResultEnum.Failed)
+            else if (Strategy.Result == ResultEnum.Failed)
                 controller.FinishWithFailure();
+            else
+                controller.FinishWithRunning();
         }
 
         public override void HandleTurret(TurretBlackboard blackboard)
@@ -38,6 +40,8 @@ namespace BehaviorTree.NodeBase
                 controller.FinishWithSuccess();
             else if (Strategy.Result == ResultEnum.Failed)
                 controller.FinishWithFailure();
+            else
+                controller.FinishWithRunning();
         }
     }
 }
