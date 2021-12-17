@@ -5,6 +5,7 @@ using Simulator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Evolution
@@ -236,13 +237,35 @@ namespace Evolution
             }
         }
 
-        public async Task RunEvolutionAsync(IMapLayout map, IEnumerable<IAgent> turrets, Action<float> score_cb)
+        public void RunEvolutionAsync(IMapLayout map, IEnumerable<IAgent> turrets, Action<GenerationInfo> callback)
         {
-            foreach (float item in RunEvolution(map, turrets))
+            Thread thread = new Thread(new ThreadStart(new EvolutionThread(this, map, turrets, callback).Run));
+            thread.Start();
+        }
+    }
+
+    class EvolutionThread
+    {
+        private readonly Evolutionary evolution;
+        private readonly IMapLayout map;
+        private readonly IEnumerable<IAgent> turrets;
+        private readonly Action<GenerationInfo> callback;
+
+        public EvolutionThread(Evolutionary evolution, IMapLayout map, IEnumerable<IAgent> turrets, Action<GenerationInfo> callback)
+        {
+            this.evolution = evolution;
+            this.map = map;
+            this.turrets = turrets;
+            this.callback = callback;
+        }
+
+        public void Run()
+        {
+            foreach (float score in evolution.RunEvolution(map, turrets))
             {
-                score_cb.Invoke(item);
-                await Task.Yield();
+                callback.Invoke(new GenerationInfo(evolution.CurrentGeneration, score, evolution.NewestSimulation));
             }
         }
     }
+
 }
