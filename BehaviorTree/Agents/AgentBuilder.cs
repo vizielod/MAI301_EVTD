@@ -21,7 +21,10 @@ namespace BehaviorTree.Agents
         GoNowhere,
         RepeatAction,
         Score,*/
-        ContinueEast
+        ContinueEast,
+        ContinueWest,
+        ContinueNorth,
+        ContinueSouth
     }
 
     public enum CompositeType
@@ -103,7 +106,13 @@ namespace BehaviorTree.Agents
                 case ActionType.RepeatAction:
                     return new RepeatPreviousAction();*/
                 case ActionType.ContinueEast:
-                    return new ContinueEast();
+                    return new ContinousMovement(new MoveEast(), Simulator.Direction.East);
+                case ActionType.ContinueWest:
+                    return new ContinousMovement(new MoveWest(), Simulator.Direction.West);
+                case ActionType.ContinueNorth:
+                    return new ContinousMovement(new MoveNorth(), Simulator.Direction.North);
+                case ActionType.ContinueSouth:
+                    return new ContinousMovement(new MoveSouth(), Simulator.Direction.South);
             }
             return null;
         }
