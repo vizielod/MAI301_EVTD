@@ -13,14 +13,12 @@ namespace BehaviorTree.Agents
 
     public enum ActionType 
     {
-        /*Forward,
         GoNorth,
         GoSouth,
         GoEast,
         GoWest,
         GoNowhere,
         RepeatAction,
-        Score,*/
         ContinueEast,
         ContinueWest,
         ContinueNorth,
@@ -35,10 +33,6 @@ namespace BehaviorTree.Agents
 
     public enum ConditionType
     {
-        CanGoSouth,
-        CanGoNorth,
-        CanGoWest,
-        CanGoEast,
         CanRepeat,
         AttackedFromEast,
         AttackedFromWest,
@@ -90,8 +84,6 @@ namespace BehaviorTree.Agents
         {
             switch (type)
             {
-                /*case ActionType.Forward:
-                    return new MoveForward();
                 case ActionType.GoNorth:
                     return new MoveNorth();
                 case ActionType.GoSouth:
@@ -102,10 +94,8 @@ namespace BehaviorTree.Agents
                     return new MoveWest();
                 case ActionType.GoNowhere:
                     return new Wait();
-                case ActionType.Score:
-                    return new EnemyScore();
                 case ActionType.RepeatAction:
-                    return new RepeatPreviousAction();*/
+                    return new RepeatPreviousAction();
                 case ActionType.ContinueEast:
                     return new ContinuousMovement(new MoveEast(), Simulator.Direction.East);
                 case ActionType.ContinueWest:

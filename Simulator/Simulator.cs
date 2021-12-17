@@ -62,7 +62,7 @@ namespace Simulator
             }
 
             rounds[roundIndex].ApplyAll(game);
-            game.ValidatePositions();
+            game.VerifyPositions();
 
             if (newRound)
             {
