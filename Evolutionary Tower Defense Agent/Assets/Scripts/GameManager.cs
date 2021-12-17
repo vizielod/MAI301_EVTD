@@ -378,13 +378,11 @@ public class GameManager : MonoBehaviour
         };
 
         Evolutionary evolutionary = new Evolutionary(config);
-        evolutionary.RunEvolutionAsync(grid, turretAgents, (result) => 
+        await evolutionary.RunEvolutionAsync(grid, turretAgents, (result) => 
         {
             Debug.Log($"Score: {result.Score}");
             //graph.addValue(result.Score);
         });
-        
-        while (evolutionary.NewestSimulation == null) ;
         sim = evolutionary.NewestSimulation;
 
         //enemyAgents.Add(new SimpleEnemyAgent((1,1), 0));

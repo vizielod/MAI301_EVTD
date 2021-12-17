@@ -40,6 +40,7 @@ namespace Evolution
     {
         public IStateSequence NewestSimulation { get; private set; }
         public int CurrentGeneration { get; private set; }
+        public bool AsyncIsRunning { get; internal set; }
 
         private readonly EvolutionConfiguration configuration;
         private SimulatorFactory factory;
@@ -237,10 +238,18 @@ namespace Evolution
             }
         }
 
-        public void RunEvolutionAsync(IMapLayout map, IEnumerable<IAgent> turrets, Action<GenerationInfo> callback)
+        public async Task RunEvolutionAsync(IMapLayout map, IEnumerable<IAgent> turrets, Action<GenerationInfo> callback)
         {
-            Thread thread = new Thread(new ThreadStart(new EvolutionThread(this, map, turrets, callback).Run));
+            Thread thread = new Thread(new ThreadStart(new EvolutionThread(this, map, turrets, callback).Run))
+            {
+                IsBackground = true
+            };
             thread.Start();
+            
+            AsyncIsRunning = true;
+            while (thread.IsAlive)
+                await Task.Yield();
+            AsyncIsRunning = false;
         }
     }
 
