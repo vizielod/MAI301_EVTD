@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
     public GameObject HintText;
     public GameObject RemainingTurrets;
     public GameObject RemainingTurretCount;
+    public GameObject CurrentGenerationText;
+    public GameObject CurrentGenerationCount;
 
     public Text hintText;
     // Start is called before the first frame update
@@ -38,6 +40,8 @@ public class UIManager : MonoBehaviour
         HintText.SetActive(false);
         RemainingTurrets.SetActive(false);
         RemainingTurretCount.SetActive(false);
+        CurrentGenerationText.SetActive(false);
+        CurrentGenerationCount.SetActive(false);
     }
 
     public void Restart()
@@ -51,6 +55,8 @@ public class UIManager : MonoBehaviour
         HintText.SetActive(true);
         RemainingTurrets.SetActive(true);
         RemainingTurretCount.SetActive(true);
+        CurrentGenerationText.SetActive(true);
+        CurrentGenerationCount.SetActive(true);
 
         hintText.text = "Place Turrets Before you start!";
     }

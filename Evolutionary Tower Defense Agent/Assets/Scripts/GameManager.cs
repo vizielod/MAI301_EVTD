@@ -7,6 +7,7 @@ using BehaviorTree;
 using BehaviorTree.Agents;
 using Evolution;
 using System.Threading.Tasks;
+using UnityEngine.UI;
 
 public enum GridType { 
     useGridWithTurretsSetup = 0, 
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
     //public GameObject enemy;
 
     [Header("Grid Setup")]
+    public Vector3 spawnPosition = new Vector3(5, 2.75f, 5);
     public GridType gridType;
     public Grid grid;
     public int maxTurretCount = 10;
@@ -56,6 +58,9 @@ public class GameManager : MonoBehaviour
     private string turretTag = "Turret";
     private List<IAgent> turretAgents;
     private List<IAgent> enemyAgents;
+
+    private bool agentsInitialized = false;
+    private bool runSimulation = false;
 
     public int[,] defaultGridArray = new int[,]
     {
@@ -156,6 +161,8 @@ public class GameManager : MonoBehaviour
     IStateSequence sim;
 
     public int stepCount = 0;
+    public float stepTimer = 0f;
+    public float maxStepTime = 0.05f;
 
 
     void SetTileTypeArray(int[,] gridArray)
@@ -314,7 +321,7 @@ public class GameManager : MonoBehaviour
     }
     async Task InitializeAgents()
     {
-        Vector3 spawnPosition = new Vector3(5, 2.75f, 5);
+        //Vector3 spawnPosition = new Vector3(5, 2.75f, 5);
 
         if (gridType == GridType.useGridWithTurretsSetup)
         {
@@ -362,17 +369,33 @@ public class GameManager : MonoBehaviour
             Debug.Log($"Score: {score}");
             graph.addValue(score);
 
+            if(!runSimulation && evolutionary.NewestSimulation != null)
+            {
+                Debug.Log("CurrentGeneration: " + evolutionary.CurrentGeneration);
+                uiManager.CurrentGenerationCount.transform.GetComponent<Text>().text = evolutionary.CurrentGeneration.ToString();
+                sim = evolutionary.NewestSimulation;
+
+                StartCoroutine(AutoSimulateCoroutine(sim));
+                //AutoSimulate(sim);
+            }
         });
 
-        /*if (sim.IsGameOver)
-        {
-            Debug.Log("Game Over!");
-        }*/
         Debug.Log("Evolutions Over!");
         graph.ShowFinalGraph();
 
+        RemoveEnemyObjects();
+        runSimulation = false;
+        agentsInitialized = false;
+        uiManager.CurrentGenerationCount.transform.GetComponent<Text>().text = evolutionary.CurrentGeneration.ToString();
         sim = evolutionary.NewestSimulation;
 
+        StartCoroutine(AutoSimulateCoroutine(sim));
+        //AutoSimulate(sim);
+
+    }
+
+    private void InstantiateEnemyAgents(IStateSequence sim)
+    {
         enemyAgents = sim.AllEnemyAgents.ToList();
 
         for (int i = 0; i < enemyAgents.Count; i++)
@@ -385,6 +408,34 @@ public class GameManager : MonoBehaviour
 
             agentGODictionary.Add(enemyAgents[i], newEnemyGO);
         }
+    }
+    private IEnumerator AutoSimulateCoroutine(IStateSequence sim)
+    {
+        InstantiateEnemyAgents(sim);
+
+        runSimulation = true;
+        while (!sim.IsGameOver)
+        {
+            stepTimer += Time.deltaTime;
+            if (stepTimer > maxStepTime)
+            {
+                StepForward();
+                stepTimer = 0f;
+                Debug.Log("Game is not over yet");
+            }
+            yield return null;
+        }
+        RemoveEnemyObjects();
+        runSimulation = false;
+        Debug.Log("Game over");
+        yield return true;
+    }
+
+    public void AutoSimulate(IStateSequence sim)
+    {
+        InstantiateEnemyAgents(sim);
+        agentsInitialized = true;
+        runSimulation = true;
     }
 
     public void InitializeTurretAgent(int i, int j, GameObject turretGO)
@@ -413,6 +464,26 @@ public class GameManager : MonoBehaviour
             {
                 EndGame();
             }
+            /*if (runSimulation)
+            {
+                stepTimer += Time.deltaTime;
+                if(stepTimer > maxStepTime)
+                {
+                    if (!sim.IsGameOver)
+                    {
+                        StepForward();
+                        stepTimer = 0f;
+                        Debug.Log("Game is not over yet");
+                    }
+                    else
+                    {
+                        RemoveEnemyObjects();
+                        runSimulation = false;
+                        agentsInitialized = false;
+                        Debug.Log("Game over");
+                    }
+                }
+            }*/
         }
 
     }
@@ -565,6 +636,14 @@ public class GameManager : MonoBehaviour
         return newTurret;
     }
 
+    public void RemoveEnemyObjects()
+    {
+        Transform enemies = transform.Find("Enemies");
+        for (int i = 0; i < enemies.childCount; i++)
+        {
+            Destroy(enemies.GetChild(i).gameObject);
+        }
+    }
     public void RemoveGameObjects()
     {
         Transform turrets = transform.Find("Turrets");
