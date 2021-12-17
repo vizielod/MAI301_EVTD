@@ -108,14 +108,14 @@ namespace BehaviorTree.NodeBase
                     this.ChildSucceeded();
                     
                 }
-                if (controller.currentNode.
+                else if (controller.currentNode.
                 GetControl().Failed())
                 {
                     // ... and it's finished, end it properly.
                     controller.currentNode.End();
                     this.ChildFailed();
                 }
-                if (controller.currentNode.GetControl().Running())
+                else if (controller.currentNode.GetControl().Running())
                 {
                     this.ChildIsRunning();
                 }

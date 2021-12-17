@@ -68,6 +68,7 @@ namespace BehaviorTree.NodeBase
         {
             this.started = false;
             this.done = false;
+            this.running = false;
             
          //   node.End();
         }
