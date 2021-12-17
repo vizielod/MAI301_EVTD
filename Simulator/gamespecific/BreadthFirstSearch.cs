@@ -25,7 +25,7 @@ namespace Simulator.gamespecific
             if (!goalDistance.ContainsKey(pos))
                 return 1; // Max distance
 
-            return goalDistance[pos] / maxDistance;
+            return (float)goalDistance[pos] / maxDistance;
         }
 
         public (int x, int y)? Next((int x, int y) pos)

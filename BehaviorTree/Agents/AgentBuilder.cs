@@ -106,13 +106,13 @@ namespace BehaviorTree.Agents
                 case ActionType.RepeatAction:
                     return new RepeatPreviousAction();*/
                 case ActionType.ContinueEast:
-                    return new ContinousMovement(new MoveEast(), Simulator.Direction.East);
+                    return new ContinuousMovement(new MoveEast(), Simulator.Direction.East);
                 case ActionType.ContinueWest:
-                    return new ContinousMovement(new MoveWest(), Simulator.Direction.West);
+                    return new ContinuousMovement(new MoveWest(), Simulator.Direction.West);
                 case ActionType.ContinueNorth:
-                    return new ContinousMovement(new MoveNorth(), Simulator.Direction.North);
+                    return new ContinuousMovement(new MoveNorth(), Simulator.Direction.North);
                 case ActionType.ContinueSouth:
-                    return new ContinousMovement(new MoveSouth(), Simulator.Direction.South);
+                    return new ContinuousMovement(new MoveSouth(), Simulator.Direction.South);
             }
             return null;
         }
