@@ -25,8 +25,17 @@ namespace BehaviorTree
 
         public float HealthRatio => Health / maxHealth;
 
+        Selector move;
+
+        //move.AddChildren(new ConditionalNode(new CanMoveSouth()));
+        
+
         public SimpleEnemyAgent((int x, int y) initialPosition, int spawnRound) 
         {
+            move = new Selector();
+            move.AddChildren(new ActionNode(new ContinuousMovement(new MoveSouth(), Direction.South)));
+            move.AddChildren(new ActionNode(new ContinuousMovement(new MoveEast(), Direction.East)));
+
             this.InitialPosition = initialPosition;
             bb = new EnemyBlackboard();
             maxHealth = Health = 10;
@@ -43,12 +52,6 @@ namespace BehaviorTree
             bb.ProgressiveAction = state.SuggestedAction(this);
             bb.CurrentPosition = state.PositionOf(this);
             bb.WallDistances = state.GetWallDistances(this);
-
-            Selector move = new Selector();
-
-            move.AddChildren(new ConditionalNode(new CanMoveSouth()));
-            move.AddChildren(new ActionNode(new ContinuousMovement(new MoveSouth(), Direction.South)));
-            move.AddChildren(new ActionNode(new ContinuousMovement(new MoveEast(), Direction.East)));
 
             move.Start();
 
