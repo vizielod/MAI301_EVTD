@@ -5,15 +5,17 @@ namespace BehaviorTree.Actions
 {
     class Rotate : IActionStrategy
     {
-        public bool HandleEnemy(EnemyBlackboard blackboard)
+        public ResultEnum Result { get; set; }
+
+        public void HandleEnemy(EnemyBlackboard blackboard)
         {
-            return false;
+            Result = ResultEnum.Failed;
         }
 
-        public bool HandleTurret(TurretBlackboard blackboard)
+        public void HandleTurret(TurretBlackboard blackboard)
         {
             blackboard.ChoosenAction = new Turn();
-            return true;
+            Result = ResultEnum.Succeeded;
         }
     }
 }

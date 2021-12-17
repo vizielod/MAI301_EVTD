@@ -141,5 +141,29 @@ namespace Simulator.state
                 return new RigidMoveGenerator(MapLayout, agents[agent]).Translate(x,y);
             }, new Idle());
         }
+
+        public IReadOnlyDictionary<Direction, int> GetWallDistances(IAgent agent)
+        {
+            var result = new Dictionary<Direction, int>();
+
+            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                int counter = -1;
+
+                var (xRel,yRel) = MapLayout.Translate(direction);
+                var (x, y) = PositionOf(agent);
+
+                do
+                {
+                    x += xRel;
+                    y += yRel;
+                    counter++;
+                }
+                while (MapLayout.InBounds(x, y) && MapLayout.TypeAt(x,y) != TileType.Wall);
+
+                result.Add(direction, counter);
+            }
+            return result;
+        }
     }
 }

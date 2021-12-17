@@ -23,5 +23,6 @@ namespace Simulator
         IEnumerable<IAgent> GetTurretsAttacking(IAgent agent);
         IAction SuggestedAction(IAgent agent);
         Direction GetDirection(IAgent from, IAgent to);
+        IReadOnlyDictionary<Direction, int> GetWallDistances(IAgent agent);
     }
 }

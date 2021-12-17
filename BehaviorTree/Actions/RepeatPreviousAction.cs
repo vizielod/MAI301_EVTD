@@ -4,15 +4,17 @@ namespace BehaviorTree.Actions
 {
     class RepeatPreviousAction : IActionStrategy
     {
-        public bool HandleEnemy(EnemyBlackboard blackboard)
+        public ResultEnum Result { get; set; }
+
+        public void HandleEnemy(EnemyBlackboard blackboard)
         {
             blackboard.ChoosenAction = blackboard.PreviousAction;
-            return true;
+            Result = ResultEnum.Succeeded;
         }
 
-        public bool HandleTurret(TurretBlackboard blackboard)
+        public void HandleTurret(TurretBlackboard blackboard)
         {
-            return false;
+            Result = ResultEnum.Failed;
         }
     }
 }

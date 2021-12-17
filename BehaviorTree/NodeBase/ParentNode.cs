@@ -23,7 +23,10 @@ namespace BehaviorTree.NodeBase
             return this.controller;
         }
 
-        public abstract void AddChildren(Node node);
+        public void AddChildren(Node node)
+        {
+            controller.AddNode(node);
+        }
 
         /**
         * Abstract to be overridden in child

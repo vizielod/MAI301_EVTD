@@ -6,22 +6,24 @@ namespace BehaviorTree.Actions
 {
     class EnemyScore : IActionStrategy
     {
-        public bool HandleEnemy(EnemyBlackboard blackboard)
+        public ResultEnum Result { get; set; }
+
+        public void HandleEnemy(EnemyBlackboard blackboard)
         {
             if(blackboard.LegalActions.Any(a => a is ScorePoints))
             {
                 blackboard.ChoosenAction = blackboard.LegalActions.First(a => a is ScorePoints);
-                return true;
+                Result = ResultEnum.Succeeded;
             }
             else
             {
-                return false;
+                Result = ResultEnum.Failed;
             }
         }
 
-        public bool HandleTurret(TurretBlackboard blackboard)
+        public void HandleTurret(TurretBlackboard blackboard)
         {
-            return false;
+            Result = ResultEnum.Failed;
         }
     }
 }

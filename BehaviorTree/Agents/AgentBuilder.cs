@@ -13,14 +13,15 @@ namespace BehaviorTree.Agents
 
     public enum ActionType 
     {
-        Forward,
+        /*Forward,
         GoNorth,
         GoSouth,
         GoEast,
         GoWest,
         GoNowhere,
         RepeatAction,
-        Score
+        Score,*/
+        ContinueEast
     }
 
     public enum CompositeType
@@ -85,7 +86,7 @@ namespace BehaviorTree.Agents
         {
             switch (type)
             {
-                case ActionType.Forward:
+                /*case ActionType.Forward:
                     return new MoveForward();
                 case ActionType.GoNorth:
                     return new MoveNorth();
@@ -100,7 +101,9 @@ namespace BehaviorTree.Agents
                 case ActionType.Score:
                     return new EnemyScore();
                 case ActionType.RepeatAction:
-                    return new RepeatPreviousAction();
+                    return new RepeatPreviousAction();*/
+                case ActionType.ContinueEast:
+                    return new ContinueEast();
             }
             return null;
         }

@@ -24,17 +24,19 @@ namespace BehaviorTree.NodeBase
 
         public override void HandleEnemy(EnemyBlackboard blackboard)
         {
-            if (Strategy.HandleEnemy(blackboard))
+            Strategy.HandleEnemy(blackboard);
+            if (Strategy.Result == ResultEnum.Succeeded)
                 controller.FinishWithSuccess();
-            else
+            else if(Strategy.Result == ResultEnum.Failed)
                 controller.FinishWithFailure();
         }
 
         public override void HandleTurret(TurretBlackboard blackboard)
         {
-            if (Strategy.HandleTurret(blackboard))
+            Strategy.HandleTurret(blackboard);
+            if (Strategy.Result == ResultEnum.Succeeded)
                 controller.FinishWithSuccess();
-            else
+            else if (Strategy.Result == ResultEnum.Failed)
                 controller.FinishWithFailure();
         }
     }
