@@ -57,6 +57,24 @@ namespace Evolution
             this.configuration = configuration;
         }
 
+        void AddNodes(AgentBuilder agentBuilder)
+        {
+            switch (rand.Next(3))
+            {
+                case 0:
+                    agentBuilder.AddConditionNode(RandomSelect.Random<ConditionType>());
+                    agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
+                    break;
+                case 1:
+                    agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
+                    agentBuilder.AddConditionNode(RandomSelect.Random<ConditionType>());
+                    break;
+                case 2:
+                    agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
+                    break;
+            }
+        }
+
         IEnumerable<IEnemyAgent> CreatePopulation(int size) 
         {
             for (int i = 0; i < size; i++)
@@ -64,7 +82,9 @@ namespace Evolution
                 var agentBuilder = new AgentBuilder(RandomSelect.Random<CompositeType>())
                     .SetInitialPosition(1, 1)
                     .SetSpawnRound(i)
-                    .AddNodesToRoot(RandomSelect.Random<CompositeType>(), RandomSelect.Random<ConditionType>(), RandomSelect.Random<ActionType>());
+                    .AddAlternateCompositeToRoot();
+                
+                AddNodes(agentBuilder);
 
                 // Random complexity
                 int chance;
@@ -72,23 +92,8 @@ namespace Evolution
                 {
                     if (chance < 5)
                     {
-                        agentBuilder.AddCompositeNode(RandomSelect.Random<CompositeType>());
-                        
-                        // Populate right away
-                        switch(rand.Next(3))
-                        {
-                            case 0:
-                                agentBuilder.AddConditionNode(RandomSelect.Random<ConditionType>());
-                                agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
-                                break;
-                            case 1:
-                                agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
-                                agentBuilder.AddConditionNode(RandomSelect.Random<ConditionType>());
-                                break;
-                            case 2:
-                                agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
-                                break;
-                        }
+                        agentBuilder.AddAlternateComposite();
+                        AddNodes(agentBuilder);
                     }
                     else if (chance < 10)
                     {
@@ -100,7 +105,8 @@ namespace Evolution
                     }
                     else
                     {
-                        agentBuilder.AddNodesToRoot(RandomSelect.Random<CompositeType>(), RandomSelect.Random<ConditionType>(), RandomSelect.Random<ActionType>());
+                        agentBuilder.AddAlternateCompositeToRoot();
+                        AddNodes(agentBuilder);
                     }
                 }
 
@@ -120,7 +126,8 @@ namespace Evolution
         IEnumerable<IAgent> ElitistSelection(IReadOnlyDictionary<IAgent, float> scores, int size)
         {
             var result = scores.Keys.ToList();
-            return result.Take(size).Cast<IAdaptiveEnemy>().Select(e=>e.Clone());
+            var elites = result.Take(size).Cast<IAdaptiveEnemy>().Select(e=>e.Clone()).ToList();
+            return elites;
         }
 
         IEnumerable<IAgent> RoulettSelection(IReadOnlyDictionary<IAgent, float> scores, int size)

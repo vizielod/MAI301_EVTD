@@ -5,6 +5,8 @@ namespace BehaviorTree.NodeBase
 {
     abstract class DecoratorNode:Node
     {
+        public override NodeType Type => NodeType.Decorator;
+
         /**
          * Reference to the decorated node
          */

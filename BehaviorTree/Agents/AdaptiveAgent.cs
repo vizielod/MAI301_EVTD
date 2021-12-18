@@ -95,5 +95,10 @@ namespace BehaviorTree.Agents
             var (x, y) = InitialPosition;
             return new AgentBuilder((ParentNode)rootNode.DeepCopy()).SetInitialPosition(x,y).SetSpawnRound(SpawnRound);
         }
+
+        public ITraverser GetTree()
+        {
+            return new Traverser((ParentNode)rootNode);
+        }
     }
 }

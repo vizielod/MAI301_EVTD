@@ -7,6 +7,7 @@ namespace BehaviorTree.NodeBase
     abstract class ParentNode : Node
     {
         protected ParentNodeController controller;
+        public override NodeType Type => NodeType.Composite;
 
         public ParentNode()
         {

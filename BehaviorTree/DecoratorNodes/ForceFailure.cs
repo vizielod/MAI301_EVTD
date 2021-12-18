@@ -19,5 +19,11 @@ namespace BehaviorTree.DecoratorNodes
 
             GetControl().FinishWithFailure();
         }
+
+        public override string ToString()
+        {
+            return GetType().Name;
+        }
+
     }
 }

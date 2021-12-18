@@ -23,12 +23,16 @@ namespace BehaviorTree
 
         public float HealthRatio => Health / maxHealth;
 
+        private ParentNode root;
+
         public ForwardEnemyAgent((int x, int y) initialPosition, int spawnRound)
         {
             this.InitialPosition = initialPosition;
             bb = new EnemyBlackboard();
             maxHealth = Health = 10;
             this.SpawnRound = spawnRound;
+            root = new Selector();
+            root.AddChildren(new ActionNode(new MoveForward()));
         }
 
         public IAction PickAction(IState state)
@@ -41,17 +45,14 @@ namespace BehaviorTree
             bb.ProgressiveAction = state.SuggestedAction(this);
             bb.CurrentPosition = state.PositionOf(this);
 
-            Selector move = new Selector( );
-            move.AddChildren(new ActionNode(new MoveForward()));
+            root.Start();
 
-            move.Start();
-
-            while (move.Running())
+            while (root.Running())
             {
-                move.DoAction(bb);
+                root.DoAction(bb);
             }
 
-            move.End();
+            root.End();
 
             bb.PreviousAction = bb.ChoosenAction;
 
@@ -66,6 +67,11 @@ namespace BehaviorTree
         public void Heal(int v)
         {
             Health += v;
+        }
+
+        public ITraverser GetTree()
+        {
+            return new Traverser(root);
         }
     }
 }

@@ -13,7 +13,8 @@ public enum GridType {
     useGridWithoutTurretsSetup = 1, 
     useGridMultiLineWithoutTurretsSetup = 2,
     useGridComplexWithoutTurretsSetup = 3,
-    userSplitlaneWithoutTurretsSetup = 4
+    useSplitlaneWithoutTurretsSetup = 4,
+    useSimpleWithoutTurretsSetup = 5
 }
 public class GameManager : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
     public PlayerStats playerStats;
     public bool gameOver = false;
     public Graph graph;
+    public TreeVisualizer treeVisualizer;
 
     [Header("Prefabs")]
     public GameObject Wall;
@@ -172,6 +174,25 @@ public class GameManager : MonoBehaviour
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 };
 
+public int[,] gridSimpleWithoutTurretsArray = new int[,]
+{
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            { 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 3, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+};
+
     public TileType[,] tileTypeArray;
     IStateSequence sim;
 
@@ -232,9 +253,13 @@ public class GameManager : MonoBehaviour
         {
             SetTileTypeArray(gridComplexWithoutTurretsArray);
         }
-        else if (gridType == GridType.userSplitlaneWithoutTurretsSetup)
+        else if (gridType == GridType.useSplitlaneWithoutTurretsSetup)
         {
             SetTileTypeArray(gridSplitlaneWithoutTurretsArray);
+        }
+        else if (gridType == GridType.useSimpleWithoutTurretsSetup)
+        {
+            SetTileTypeArray(gridSimpleWithoutTurretsArray);
         }
         else
         {
@@ -388,6 +413,7 @@ public class GameManager : MonoBehaviour
         //enemyAgents.Add(new SimpleEnemyAgent((1,1), 0));
         //sim = new SimulatorFactory().CreateSimulator(grid, enemyAgents, turretAgents);
         enemyAgents = sim.AllEnemyAgents.ToList();
+        treeVisualizer.Visualize(((IEnemyAgent)enemyAgents.First()).GetTree());
 
         for (int i = 0; i < enemyAgents.Count; i++)
         {

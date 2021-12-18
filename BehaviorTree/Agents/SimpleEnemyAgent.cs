@@ -25,16 +25,16 @@ namespace BehaviorTree
 
         public float HealthRatio => Health / maxHealth;
 
-        Selector move;
+        Selector root;
 
         //move.AddChildren(new ConditionalNode(new CanMoveSouth()));
         
 
         public SimpleEnemyAgent((int x, int y) initialPosition, int spawnRound) 
         {
-            move = new Selector();
-            move.AddChildren(new ActionNode(new ContinuousMovement(new MoveSouth(), Direction.South)));
-            move.AddChildren(new ActionNode(new ContinuousMovement(new MoveEast(), Direction.East)));
+            root = new Selector();
+            root.AddChildren(new ActionNode(new ContinuousMovement(new MoveSouth(), Direction.South)));
+            root.AddChildren(new ActionNode(new ContinuousMovement(new MoveEast(), Direction.East)));
 
             this.InitialPosition = initialPosition;
             bb = new EnemyBlackboard();
@@ -53,14 +53,14 @@ namespace BehaviorTree
             bb.CurrentPosition = state.PositionOf(this);
             bb.WallDistances = state.GetWallDistances(this);
 
-            move.Start();
+            root.Start();
 
-            while (move.Running()) 
+            while (root.Running()) 
             {
-                move.DoAction(bb);
+                root.DoAction(bb);
             }
 
-            move.End();
+            root.End();
 
             bb.PreviousAction = bb.ChoosenAction;
 
@@ -75,6 +75,11 @@ namespace BehaviorTree
         public void Heal(int v)
         {
             Health += v;
+        }
+
+        public ITraverser GetTree()
+        {
+            return new Traverser(root);
         }
     }
 }

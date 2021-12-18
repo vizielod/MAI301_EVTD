@@ -8,6 +8,11 @@ namespace BehaviorTree.FlowControllNodes
         public Sequence()
         { }
 
+        public override string ToString()
+        {
+            return GetType().Name;
+        }
+
         public override void ChildFailed()
         {
             controller.FinishWithFailure();

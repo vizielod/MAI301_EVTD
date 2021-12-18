@@ -66,6 +66,25 @@ namespace BehaviorTree.Agents
             spawnRound = 0;
         }
 
+        public AgentBuilder AddAlternateCompositeToRoot()
+        {
+            currentNode = RootNode;
+            return AddAlternateComposite();
+        }
+
+        public AgentBuilder AddAlternateComposite()
+        {
+            return AddCompositeNode(GetAlternative(currentNode));
+        }
+
+        private CompositeType GetAlternative(ParentNode parent)
+        {
+            if (parent is Selector)
+                return CompositeType.Sequence;
+            else
+                return CompositeType.Selector;
+        }
+
         public AgentBuilder AddNodesToRoot(CompositeType compositeType, ConditionType conditionType, ActionType actionType) 
         {
             currentNode = RootNode;
