@@ -12,6 +12,7 @@ public class EnemyController : MonoBehaviour
     public float newHealthPoints;
     //public SimpleEnemyAgent simpleEnemyAgent;
     public IEnemyAgent enemyAgent;
+    public GameManager gameManager;
     public Enemy enemy;
     //public int enemyAgentIndex;
 
@@ -35,7 +36,7 @@ public class EnemyController : MonoBehaviour
 
     public void UpdateHealthBar()
     {
-        if(currentHealthPoints != newHealthPoints)
+        if (currentHealthPoints != newHealthPoints)
         {
             healthBar.fillAmount = enemyAgent.Health / startHealthPoints;
             currentHealthPoints = newHealthPoints;
@@ -44,11 +45,16 @@ public class EnemyController : MonoBehaviour
 
     public void CheckIfGoalIsreached((int i, int j) goalPosition)
     {
-        if(this.transform.position.x == goalPosition.i && this.transform.position.z == goalPosition.j)
+        if (this.transform.position.x == goalPosition.i && this.transform.position.z == goalPosition.j)
         {
             Debug.Log("Reached Goal");
             PlayerStats.Lives--;
             //transform.gameObject.SetActive(false); //Here would be better to Set the Agent IsActive to false on the backend.
         }
+    }
+
+    private void OnMouseDown()
+    {
+        gameManager.treeVisualizer.Visualize(enemyAgent.GetTree());
     }
 }

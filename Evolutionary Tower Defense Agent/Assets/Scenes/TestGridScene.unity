@@ -1207,7 +1207,7 @@ RectTransform:
   - {fileID: 2110096949}
   - {fileID: 1988090697}
   m_Father: {fileID: 1131496971}
-  m_RootOrder: 10
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.35}
@@ -2537,7 +2537,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 10, y: 0}
-  m_SizeDelta: {x: 300, y: 300}
+  m_SizeDelta: {x: 1000, y: 300}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &591343214
 MonoBehaviour:
@@ -5092,9 +5092,10 @@ RectTransform:
   - {fileID: 822066794}
   - {fileID: 1875173446}
   - {fileID: 1154209567}
-  - {fileID: 287208889}
+  - {fileID: 591343213}
   - {fileID: 1128303627}
   - {fileID: 156291782}
+  - {fileID: 287208889}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11679,6 +11680,7 @@ MonoBehaviour:
   startHealthPoints: 0
   currentHealthPoints: 0
   newHealthPoints: 0
+  gameManager: {fileID: 0}
 --- !u!1001 &1583157919637418448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17171,7 +17173,7 @@ PrefabInstance:
       objectReference: {fileID: 287208888}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: gridType
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: eliteRate
@@ -17203,11 +17205,11 @@ PrefabInstance:
       objectReference: {fileID: 591343216}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: numberOfEnemies
-      value: 10
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: numberOfGenerations
-      value: 30
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: generationToVisualize

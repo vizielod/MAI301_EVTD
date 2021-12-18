@@ -31,10 +31,10 @@ namespace BehaviorTree
 
         public int CountHeight()
         {
-            return Dive(root, 0);
+            return Dive(root) + 1;
         }
 
-        private int Dive(ParentNode parent, int depth = 0)
+        private int Dive(ParentNode parent, int depth = 1)
         {
             int highest = depth;
             foreach (ParentNode children in ((ParentNodeController)parent.GetControl()).subnodes.Where(c => c is ParentNode))

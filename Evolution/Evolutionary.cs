@@ -32,6 +32,9 @@ namespace Evolution
             set { roulettRate = value.Clamp(0, 1); }
         }
 
+        public bool UseZinger { get; set; }
+        public int TreeGeneratorIterations { get; set; }
+
         internal int Elites => (int)Math.Floor(PopulationSize * EliteRate);
         internal int Roulett => (int)Math.Floor(PopulationSize * RoulettRate);
     }
@@ -88,18 +91,19 @@ namespace Evolution
 
                 // Random complexity
                 int chance;
-                while ((chance = rand.Next(20)) != 0)
+                int iterationsLeft = configuration.TreeGeneratorIterations;
+                while ((chance = rand.Next(6)) != 0 && iterationsLeft-- > 0)
                 {
-                    if (chance < 5)
+                    if (chance < 2)
                     {
                         agentBuilder.AddAlternateComposite();
                         AddNodes(agentBuilder);
                     }
-                    else if (chance < 10)
+                    else if (chance < 4)
                     {
                         agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
                     }
-                    else if (chance < 15)
+                    else if (chance < 5)
                     {
                         agentBuilder.AddConditionNode(RandomSelect.Random<ConditionType>());
                     }
@@ -185,12 +189,15 @@ namespace Evolution
                 // Breed the selected candidates, one child per 2 parents, implies mutation
                 population = BreedPopulation(population);
 
-                // Find out if there is a outstanding enemy in the population
-                var zinger = scores.First();
-                if (zinger.Value > zingerScore)
-                    this.zinger = ((IAdaptiveEnemy)zinger.Key).Clone();
+                if (configuration.UseZinger)
+                {
+                    // Find out if there is a outstanding enemy in the population
+                    var zinger = scores.First();
+                    if (zinger.Value > zingerScore)
+                        this.zinger = ((IAdaptiveEnemy)zinger.Key).Clone();
 
-                population = population.Concat(ToList(this.zinger));
+                    population = population.Concat(ToList(this.zinger));
+                }
 
                 // Take elites, no breeding or altering
                 population = population.Concat(ElitistSelection(scores, configuration.Elites));

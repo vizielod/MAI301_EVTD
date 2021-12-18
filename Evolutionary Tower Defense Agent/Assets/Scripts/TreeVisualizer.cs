@@ -11,13 +11,30 @@ public class TreeVisualizer : MonoBehaviour
 
     public void Visualize(ITraverser traverser)
     {
+        Clean();
+
         var width = traverser.CountWidth();
         var height = traverser.CountHeight();
         size = parent.sizeDelta / new Vector2(width, height);
         foreach (var level in traverser.GenerateTreeNodes())
         {
-            var pos = size * new Vector2(1, -level.Item1);
-            CreateNode(pos, level.Item2.First());
+            var nNodes = level.Item2.Count();
+            var xSpacing = parent.sizeDelta.x / nNodes;
+            int i = 0;
+            foreach (var node in level.Item2)
+            {
+                var pos = new Vector2(xSpacing * i , size.y * -level.Item1);
+                CreateNode(pos, node);
+                i++;
+            }
+        }
+    }
+
+    private void Clean()
+    {
+        foreach (Transform child in parent.transform)
+        {
+            Destroy(child.gameObject);
         }
     }
 
@@ -27,10 +44,7 @@ public class TreeVisualizer : MonoBehaviour
         go.GetComponent<Node>().SetText(node.Type.ToString(), node.Name);
         go.transform.SetParent(parent, false);
         RectTransform rect = go.GetComponent<RectTransform>();
-        rect.pivot = new Vector2(0, 0);
         rect.anchoredPosition = position;
         rect.sizeDelta = size;
-        rect.anchorMin = new Vector2(0.5f, 1);
-        rect.anchorMax = new Vector2(0.5f, 1);
     }
 }

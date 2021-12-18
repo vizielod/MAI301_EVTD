@@ -17,7 +17,7 @@ namespace BehaviorTree.Agents
         GoSouth,
         GoEast,
         GoWest,
-        GoNowhere,
+        //GoNowhere,
         RepeatAction,
         ContinueEast,
         ContinueWest,
@@ -115,8 +115,8 @@ namespace BehaviorTree.Agents
                     return new MoveEast();
                 case ActionType.GoWest:
                     return new MoveWest();
-                case ActionType.GoNowhere:
-                    return new Wait();
+                //case ActionType.GoNowhere:
+                //    return new Wait();
                 case ActionType.RepeatAction:
                     return new RepeatPreviousAction();
                 case ActionType.ContinueEast:
