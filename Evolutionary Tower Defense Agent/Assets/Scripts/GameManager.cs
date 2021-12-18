@@ -437,7 +437,6 @@ public int[,] gridSimpleWithoutTurretsArray = new int[,]
     private void InstantiateEnemyAgents(IStateSequence sim)
     {
         enemyAgents = sim.AllEnemyAgents.ToList();
-        treeVisualizer.Visualize(((IEnemyAgent)enemyAgents.First()).GetTree());
 
         for (int i = 0; i < enemyAgents.Count; i++)
         {

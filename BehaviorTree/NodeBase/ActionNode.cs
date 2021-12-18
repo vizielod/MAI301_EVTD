@@ -8,7 +8,7 @@ namespace BehaviorTree.NodeBase
         public override NodeType Type => NodeType.Action;
         public override string ToString()
         {
-            return Strategy.GetType().Name;
+            return Strategy.ToString();
         }
 
         public ActionNode(IActionStrategy strategy)

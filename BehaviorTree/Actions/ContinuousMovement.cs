@@ -1,13 +1,10 @@
-﻿using System;
-using BehaviorTree.Conditionals;
-using BehaviorTree.NodeBase;
+﻿using BehaviorTree.NodeBase;
 using Simulator;
 
 namespace BehaviorTree.Actions
 {
     class ContinuousMovement : IActionStrategy
     {
-
         public ResultEnum Result { get; set; }
         private readonly IActionStrategy strategy;
         private readonly Direction direction;
@@ -35,6 +32,11 @@ namespace BehaviorTree.Actions
         public void HandleTurret(TurretBlackboard blackboard)
         {
             Result = ResultEnum.Failed;
+        }
+
+        public override string ToString()
+        {
+            return $"Continue{strategy}";
         }
     }
 }
