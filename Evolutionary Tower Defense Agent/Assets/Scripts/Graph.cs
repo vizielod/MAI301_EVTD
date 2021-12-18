@@ -36,7 +36,7 @@ public class Graph : MonoBehaviour
         graphContainer.position = new Vector3(this.transform.GetComponent<RectTransform>().rect.width / 2, this.transform.GetComponent<RectTransform>().rect.height / 2, 0);*/
         if (newValueAdded)
         {
-            ShowGraph(valueList);
+            ShowGraph(valueList, false);
             newValueAdded = false;
         }
         if (lastValueAdded)
@@ -58,7 +58,7 @@ public class Graph : MonoBehaviour
         lastValueAdded = true;
     }
 
-    private GameObject CreateCircle(Vector2 anchoredPosition, float scoreValue)
+    private GameObject CreateCircle(Vector2 anchoredPosition)
     {
         GameObject circleGO = new GameObject("circle", typeof(Image));
         circleGO.transform.SetParent(graphContainer, false);
@@ -146,7 +146,7 @@ public class Graph : MonoBehaviour
         float graphHeight = graphContainer.sizeDelta.y;
         float graphWidth = graphContainer.sizeDelta.x;
         float yMargin = 15+15;
-        float yMaximum = valueList.Max()-15;
+        float yMaximum = valueList.Max()+15;
         //float yMaximum = 20000f;
         float xSize = graphWidth / valueList.Count; //size distance between each point on X axis
         float xMargin = xSize / 2;
@@ -160,7 +160,7 @@ public class Graph : MonoBehaviour
             GameObject circleGO;
             if (!showGraphWithScore)
             {
-                circleGO = CreateCircle(new Vector2(xPosition, yPosition), valueList[i]);
+                circleGO = CreateCircle(new Vector2(xPosition, yPosition));
             }
             else
             {

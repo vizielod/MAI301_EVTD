@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public PlayerStats playerStats;
     public bool gameOver = false;
     public Graph graph;
+    public loadingtext loading;
 
     [Header("Prefabs")]
     public GameObject Wall;
@@ -423,6 +424,10 @@ public class GameManager : MonoBehaviour
     {
         InstantiateEnemyAgents(sim);
 
+        //loading.numberOfSteps = sim.NumberOfRounds;
+        Debug.Log("NumberOfRounds: " + sim.NumberOfRounds);
+        loading.InitializeLoadingAnimation(sim.NumberOfRounds);
+
         runSimulation = true;
         while (!sim.IsGameOver)
         {
@@ -430,6 +435,7 @@ public class GameManager : MonoBehaviour
             if (stepTimer > maxStepTime)
             {
                 StepForward();
+                loading.AnimateLoading();
                 stepTimer = 0f;
                 Debug.Log("Game is not over yet");
             }
