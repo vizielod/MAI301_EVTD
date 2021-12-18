@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     public GameObject RemainingTurretCount;
     public GameObject CurrentGenerationText;
     public GameObject CurrentGenerationCount;
+    public GameObject LoadingAnimation;
 
     public Text hintText;
     // Start is called before the first frame update
@@ -72,5 +73,8 @@ public class UIManager : MonoBehaviour
         HintText.SetActive(false);
         RemainingTurrets.SetActive(false);
         RemainingTurretCount.SetActive(false);
+        CurrentGenerationText.SetActive(true);
+        CurrentGenerationCount.SetActive(true);
+        LoadingAnimation.SetActive(true);
     }
 }

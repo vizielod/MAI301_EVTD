@@ -19,6 +19,8 @@ namespace Simulator
 
         public bool IsGameOver => winCondition.GetWinner(roundIndex).HasValue;
 
+        public int NumberOfRounds => rounds.Count;
+
         internal Simulator(IGame game)
         {
             this.game = game;

@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public bool gameOver = false;
     public Graph graph;
     public TreeVisualizer treeVisualizer;
+    public loadingtext loading;
 
     [Header("Prefabs")]
     public GameObject Wall;
@@ -63,9 +64,11 @@ public class GameManager : MonoBehaviour
     private string turretTag = "Turret";
     private List<IAgent> turretAgents;
     private List<IAgent> enemyAgents;
+    private Evolutionary evolutionary;
 
     private bool agentsInitialized = false;
     private bool runSimulation = false;
+    private bool lastGenerationReached = false;
 
     public int[,] defaultGridArray = new int[,]
     {
@@ -416,23 +419,18 @@ public int[,] gridSimpleWithoutTurretsArray = new int[,]
             TreeGeneratorIterations = treeGeneratorRandomizationIterations
         };
 
-        Evolutionary evolutionary = new Evolutionary(config);
-        await evolutionary.RunEvolutionAsync(grid, turretAgents, (result) => 
+        evolutionary = new Evolutionary(config);
+        var _= evolutionary.RunEvolutionAsync(grid, turretAgents, (result) => 
         {
             Debug.Log($"Score: {result.Score}");
-            //graph.addValue(result.Score);
+            graph.addValue(result.Score);
 
+            if(evolutionary.CurrentGeneration == numberOfGenerations)
+            {
+                lastGenerationReached = true;
+                graph.LastValueAdded();
+            }
         });
-
-        Debug.Log("Evolutions Over!");
-        //graph.ShowFinalGraph();
-        RemoveEnemyObjects();
-        runSimulation = false;
-        agentsInitialized = false;
-        uiManager.CurrentGenerationCount.transform.GetComponent<Text>().text = evolutionary.CurrentGeneration.ToString();
-        sim = evolutionary.NewestSimulation;
-        StartCoroutine(AutoSimulateCoroutine(sim));
-        //AutoSimulate(sim);
 
     }
 
@@ -453,11 +451,15 @@ public int[,] gridSimpleWithoutTurretsArray = new int[,]
             agentGODictionary.Add(enemyAgents[i], newEnemyGO);
         }
     }
-    private IEnumerator AutoSimulateCoroutine(IStateSequence sim)
+    private IEnumerator AutoSimulateCoroutine(IStateSequence sim, int currentGeneration)
     {
         RemoveEnemyObjects();
         InstantiateEnemyAgents(sim);
-        
+
+        //loading.numberOfSteps = sim.NumberOfRounds;
+        Debug.Log("NumberOfRounds: " + sim.NumberOfRounds);
+        loading.InitializeLoadingAnimation(sim.NumberOfRounds);
+
         runSimulation = true;
         while (!sim.IsGameOver)
         {
@@ -465,12 +467,17 @@ public int[,] gridSimpleWithoutTurretsArray = new int[,]
             if (stepTimer > maxStepTime)
             {
                 StepForward();
+                loading.AnimateLoading();
                 stepTimer = 0f;
                 Debug.Log("Game is not over yet");
             }
             yield return null;
         }
-        runSimulation = false;
+        if (currentGeneration != numberOfGenerations)
+        {
+            RemoveEnemyObjects();
+            runSimulation = false;
+        }
         Debug.Log("Game over");
         yield return true;
     }
@@ -508,26 +515,15 @@ public int[,] gridSimpleWithoutTurretsArray = new int[,]
             {
                 EndGame();
             }
-            /*if (runSimulation)
+            if(evolutionary != null)
             {
-                stepTimer += Time.deltaTime;
-                if(stepTimer > maxStepTime)
+                if (evolutionary.NewestSimulation != null && !runSimulation)
                 {
-                    if (!sim.IsGameOver)
-                    {
-                        StepForward();
-                        stepTimer = 0f;
-                        Debug.Log("Game is not over yet");
-                    }
-                    else
-                    {
-                        RemoveEnemyObjects();
-                        runSimulation = false;
-                        agentsInitialized = false;
-                        Debug.Log("Game over");
-                    }
+                    sim = evolutionary.NewestSimulation;
+                    uiManager.CurrentGenerationCount.transform.GetComponent<Text>().text = evolutionary.CurrentGeneration.ToString();
+                    StartCoroutine(AutoSimulateCoroutine(sim, evolutionary.CurrentGeneration));
                 }
-            }*/
+            }
         }
 
     }

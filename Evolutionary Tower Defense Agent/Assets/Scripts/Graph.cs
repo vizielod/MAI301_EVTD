@@ -9,14 +9,17 @@ public class Graph : MonoBehaviour
     [SerializeField] private Sprite circleSprite;
     [SerializeField] private RectTransform graphContainer;
     public int maxDatapointsShown = 10;
+    public int numberOfHorizontalLines = 8;
     private List<float> valueList;
+    private bool newValueAdded = false;
+    private bool lastValueAdded = false;
+    private int showEveryXthGeneration;
 
-    /*private void Awake()
-    {
-        graphContainer = transform.Find("GraphContainer").GetComponent<RectTransform>();
-    }*/
+    private List<int> genIndexList;
+
     private void Start()
     {
+        genIndexList = new List<int>();
         valueList = new List<float>();
         Debug.Log(this.transform.GetComponent<RectTransform>().rect.width);
         Debug.Log(this.transform.GetComponent<RectTransform>().rect.height);
@@ -26,21 +29,37 @@ public class Graph : MonoBehaviour
         graphContainer.position = new Vector3(0, 0, 0);
     }
 
-    /*private void Update()
+    private void Update()
     {
         //TODO: Instead of Update, just make a last adjustment when the Start Button is clicked
-        graphContainer.sizeDelta = new Vector2(this.transform.GetComponent<RectTransform>().rect.width,
+        /*graphContainer.sizeDelta = new Vector2(this.transform.GetComponent<RectTransform>().rect.width,
             this.transform.GetComponent<RectTransform>().rect.height);
-        graphContainer.position = new Vector3(this.transform.GetComponent<RectTransform>().rect.width / 2, this.transform.GetComponent<RectTransform>().rect.height / 2, 0);
-    }*/
+        graphContainer.position = new Vector3(this.transform.GetComponent<RectTransform>().rect.width / 2, this.transform.GetComponent<RectTransform>().rect.height / 2, 0);*/
+        if (newValueAdded)
+        {
+            ShowGraph(valueList, false);
+            newValueAdded = false;
+        }
+        if (lastValueAdded)
+        {
+            ShowFinalGraph();
+            lastValueAdded = false;
+        }
+    }
 
     public void addValue(float value)
     {
         valueList.Add(value);
-        ShowGraph(valueList);
+        newValueAdded = true;
+        //ShowGraph(valueList);
     }
 
-    private GameObject CreateCircle(Vector2 anchoredPosition, float scoreValue)
+    public void LastValueAdded()
+    {
+        lastValueAdded = true;
+    }
+
+    private GameObject CreateCircle(Vector2 anchoredPosition)
     {
         GameObject circleGO = new GameObject("circle", typeof(Image));
         circleGO.transform.SetParent(graphContainer, false);
@@ -87,23 +106,52 @@ public class Graph : MonoBehaviour
 
     }
 
+    private void CreateTextForXAxis(GameObject verticalLineGO, int index)
+    {
+        GameObject scoreTextGO = new GameObject("scoreText", typeof(Text));
+        scoreTextGO.transform.SetParent(verticalLineGO.transform, false);
+
+        Text textComponent = scoreTextGO.GetComponent<Text>();
+        if(index == 0)
+        {
+            textComponent.text = "Gen. " + index.ToString();
+        }
+        else
+        {
+            textComponent.text = "Gen. " + ((index * showEveryXthGeneration)-2).ToString() + "-" + (index * showEveryXthGeneration).ToString();
+        }
+
+        Font ArialFont = (Font)Resources.GetBuiltinResource(typeof(Font), "Arial.ttf");
+        textComponent.font = ArialFont;
+        textComponent.material = ArialFont.material;
+        textComponent.fontSize = 10;
+        textComponent.alignment = TextAnchor.MiddleCenter;
+
+        RectTransform rectTransform = scoreTextGO.GetComponent<RectTransform>();
+        rectTransform.localRotation = Quaternion.Euler(0, 0, -90);
+        rectTransform.localPosition = new Vector3(6, 0, 0);
+        rectTransform.sizeDelta = new Vector2(60, 20);
+        rectTransform.anchorMin = new Vector2(0, 0);
+        rectTransform.anchorMax = new Vector2(0, 0);
+    }
+
     public void ShowFinalGraph()
     {
-        int a = (int)(valueList.Count / maxDatapointsShown);
+        showEveryXthGeneration = (int)(valueList.Count / maxDatapointsShown);
         List<float> tempList = new List<float>();
         tempList.Add(valueList[0]);
 
         float sum = 0;
         for (int i = 1; i < valueList.Count-1; i++)
         {
-            if (i % a != 0)
+            if (i % showEveryXthGeneration != 0)
             {
                 sum += valueList[i];
             }
-            if(i % a == 0)
+            if(i % showEveryXthGeneration == 0)
             {
                 sum += valueList[i];
-                int avg = (int)(sum / a);
+                int avg = (int)(sum / showEveryXthGeneration);
                 tempList.Add(/*valueList[i]*/avg);
                 sum = 0;
             }
@@ -114,8 +162,8 @@ public class Graph : MonoBehaviour
         {
             Debug.Log(tempList[i]);
         }
-
         ShowGraph(tempList, true);
+        CreateHorizontalLines();
     }
 
     private void ShowGraph(List<float> valueList, bool showGraphWithScore = false)
@@ -127,9 +175,9 @@ public class Graph : MonoBehaviour
 
         float graphHeight = graphContainer.sizeDelta.y;
         float graphWidth = graphContainer.sizeDelta.x;
-        float yMargin = 5;
-        //float yMaximum = valueList.Max();
-        float yMaximum = 20000f;
+        float yMargin = 15+15;
+        float yMaximum = valueList.Max()+15;
+        //float yMaximum = 20000f;
         float xSize = graphWidth / valueList.Count; //size distance between each point on X axis
         float xMargin = xSize / 2;
 
@@ -137,25 +185,67 @@ public class Graph : MonoBehaviour
         for (int i = 0; i < valueList.Count; i++)
         {
 
-            float xPosition = i * xSize + xMargin;
+            float xPosition = (i * xSize) + xMargin;
             float yPosition = (valueList[i] / yMaximum) * (graphHeight - 2 * yMargin) + yMargin;
             GameObject circleGO;
             if (!showGraphWithScore)
             {
-                circleGO = CreateCircle(new Vector2(xPosition, yPosition), valueList[i]);
+                circleGO = CreateCircle(new Vector2(xPosition, yPosition));
             }
             else
             {
                 circleGO = CreateCircleWithText(new Vector2(xPosition, yPosition), valueList[i]);
+                CreateVerticalLines(new Vector2(circleGO.transform.position.x, circleGO.transform.position.y), i);
             }
             if(lastCircleGO != null)
             {
-                /*CreateDotConnection(lastCircleGO.GetComponent<RectTransform>().anchoredPosition,
-                    circleGO.GetComponent<RectTransform>().anchoredPosition);*/
                 CreateDotConnection(lastCircleGO.GetComponent<RectTransform>().position, 
                     circleGO.GetComponent<RectTransform>().position);
             }
             lastCircleGO = circleGO;
+        }
+    }
+
+    private void CreateVerticalLines(Vector2 dotPosition, int index)
+    {
+        GameObject verticalLineGO = new GameObject("verticalLine", typeof(Image));
+        verticalLineGO.transform.SetParent(graphContainer, false);
+        verticalLineGO.GetComponent<Image>().color = new Color(1, 1, 1, .2f);
+        RectTransform rectTransform = verticalLineGO.GetComponent<RectTransform>();
+        float height = graphContainer.sizeDelta.y;
+        Vector2 lineStartPoint = new Vector2(dotPosition.x, 15);
+        Vector2 lineEndPoint = new Vector2(dotPosition.x, height-15);
+        float distance = Vector2.Distance(lineStartPoint, lineEndPoint);
+        Vector2 dir = (lineEndPoint - lineStartPoint).normalized;
+        rectTransform.anchorMin = new Vector2(0, 0);
+        rectTransform.anchorMax = new Vector2(0, 0);
+        rectTransform.sizeDelta = new Vector2(distance, 1f);
+        rectTransform.anchoredPosition = lineStartPoint + dir * distance * .5f;
+        rectTransform.rotation = Quaternion.Euler(0, 0, UtilsClass.GetAngleFromVectorFloat(dir));
+
+        CreateTextForXAxis(verticalLineGO, index);
+    }
+
+    private void CreateHorizontalLines()
+    {
+        float width = graphContainer.sizeDelta.x;
+        float height = graphContainer.sizeDelta.y;
+
+        for (int i = 0; i < numberOfHorizontalLines; i++)
+        {
+            GameObject horizontalLineGO = new GameObject("verticalLine", typeof(Image));
+            horizontalLineGO.transform.SetParent(graphContainer, false);
+            horizontalLineGO.GetComponent<Image>().color = new Color(1, 1, 1, .2f);
+            RectTransform rectTransform = horizontalLineGO.GetComponent<RectTransform>();
+            Vector2 lineStartPoint = new Vector2(15, 30 + i * (height - 30) / numberOfHorizontalLines);
+            Vector2 lineEndPoint = new Vector2(width - 15, 30 + i * (height - 30) / numberOfHorizontalLines);
+            float distance = Vector2.Distance(lineStartPoint, lineEndPoint);
+            Vector2 dir = (lineEndPoint - lineStartPoint).normalized;
+            rectTransform.anchorMin = new Vector2(0, 0);
+            rectTransform.anchorMax = new Vector2(0, 0);
+            rectTransform.sizeDelta = new Vector2(distance, 1f);
+            rectTransform.anchoredPosition = lineStartPoint + dir * distance * .5f;
+            rectTransform.rotation = Quaternion.Euler(0, 0, UtilsClass.GetAngleFromVectorFloat(dir));
         }
     }
 
@@ -172,9 +262,6 @@ public class Graph : MonoBehaviour
         rectTransform.sizeDelta = new Vector2(distance, 3f);
         rectTransform.anchoredPosition = dotPositionA + dir * distance * .5f;
         rectTransform.rotation = Quaternion.Euler(0, 0, UtilsClass.GetAngleFromVectorFloat(dir));
-
-        //rectTransform.rotation = 
-        //rectTransform.localEulerAngles = new Vector3(0, 0, UtilsClass.GetAngleFromVectorFloat(dir));
     }
     private void Clean()
     {
