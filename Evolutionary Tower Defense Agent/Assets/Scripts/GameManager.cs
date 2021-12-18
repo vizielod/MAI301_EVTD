@@ -59,9 +59,11 @@ public class GameManager : MonoBehaviour
     private string turretTag = "Turret";
     private List<IAgent> turretAgents;
     private List<IAgent> enemyAgents;
+    private Evolutionary evolutionary;
 
     private bool agentsInitialized = false;
     private bool runSimulation = false;
+    private bool lastGenerationReached = false;
 
     public int[,] defaultGridArray = new int[,]
     {
@@ -387,7 +389,7 @@ public class GameManager : MonoBehaviour
             RoulettRate = roulettRate
         };
 
-        Evolutionary evolutionary = new Evolutionary(config);
+        evolutionary = new Evolutionary(config);
         var _= evolutionary.RunEvolutionAsync(grid, turretAgents, (result) => 
         {
             Debug.Log($"Score: {result.Score}");
@@ -395,35 +397,10 @@ public class GameManager : MonoBehaviour
 
             if(evolutionary.CurrentGeneration == numberOfGenerations)
             {
+                lastGenerationReached = true;
                 graph.LastValueAdded();
             }
-            /*if(!runSimulation && evolutionary.NewestSimulation != null)
-            {
-                Debug.Log("CurrentGeneration: " + evolutionary.CurrentGeneration);
-                uiManager.CurrentGenerationCount.transform.GetComponent<Text>().text = evolutionary.CurrentGeneration.ToString();
-                sim = evolutionary.NewestSimulation;
-
-                StartCoroutine(AutoSimulateCoroutine(sim));
-                //AutoSimulate(sim);
-            }*/
         });
-
-        while (evolutionary.NewestSimulation == null);
-
-        /*Debug.Log("CurrentGeneration: " + evolutionary.CurrentGeneration);
-        if(evolutionary.CurrentGeneration == numberOfGenerations-1)
-            graph.ShowFinalGraph();*/
-        //graph.ShowFinalGraph();
-
-        /*RemoveEnemyObjects();
-        runSimulation = false;
-        agentsInitialized = false;
-        uiManager.CurrentGenerationCount.transform.GetComponent<Text>().text = evolutionary.CurrentGeneration.ToString();
-        sim = evolutionary.NewestSimulation;
-
-        StartCoroutine(AutoSimulateCoroutine(sim));*/
-
-        //AutoSimulate(sim);
 
     }
 
@@ -442,7 +419,7 @@ public class GameManager : MonoBehaviour
             agentGODictionary.Add(enemyAgents[i], newEnemyGO);
         }
     }
-    private IEnumerator AutoSimulateCoroutine(IStateSequence sim)
+    private IEnumerator AutoSimulateCoroutine(IStateSequence sim, int currentGeneration)
     {
         InstantiateEnemyAgents(sim);
 
@@ -458,8 +435,11 @@ public class GameManager : MonoBehaviour
             }
             yield return null;
         }
-        RemoveEnemyObjects();
-        runSimulation = false;
+        if (currentGeneration != numberOfGenerations)
+        {
+            RemoveEnemyObjects();
+            runSimulation = false;
+        }
         Debug.Log("Game over");
         yield return true;
     }
@@ -497,26 +477,15 @@ public class GameManager : MonoBehaviour
             {
                 EndGame();
             }
-            /*if (runSimulation)
+            if(evolutionary != null)
             {
-                stepTimer += Time.deltaTime;
-                if(stepTimer > maxStepTime)
+                if (evolutionary.NewestSimulation != null && !runSimulation)
                 {
-                    if (!sim.IsGameOver)
-                    {
-                        StepForward();
-                        stepTimer = 0f;
-                        Debug.Log("Game is not over yet");
-                    }
-                    else
-                    {
-                        RemoveEnemyObjects();
-                        runSimulation = false;
-                        agentsInitialized = false;
-                        Debug.Log("Game over");
-                    }
+                    sim = evolutionary.NewestSimulation;
+                    uiManager.CurrentGenerationCount.transform.GetComponent<Text>().text = evolutionary.CurrentGeneration.ToString();
+                    StartCoroutine(AutoSimulateCoroutine(sim, evolutionary.CurrentGeneration));
                 }
-            }*/
+            }
         }
 
     }
