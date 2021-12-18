@@ -120,7 +120,6 @@ public class Graph : MonoBehaviour
         {
             textComponent.text = "Gen. " + ((index * showEveryXthGeneration)-2).ToString() + "-" + (index * showEveryXthGeneration).ToString();
         }
-        //textComponent.text = "Gen. " + index.ToString();
 
         Font ArialFont = (Font)Resources.GetBuiltinResource(typeof(Font), "Arial.ttf");
         textComponent.font = ArialFont;
@@ -129,7 +128,6 @@ public class Graph : MonoBehaviour
         textComponent.alignment = TextAnchor.MiddleCenter;
 
         RectTransform rectTransform = scoreTextGO.GetComponent<RectTransform>();
-        //rectTransform.localPosition = new Vector3(0, 20, 0);
         rectTransform.localRotation = Quaternion.Euler(0, 0, -90);
         rectTransform.localPosition = new Vector3(6, 0, 0);
         rectTransform.sizeDelta = new Vector2(60, 20);
@@ -201,8 +199,6 @@ public class Graph : MonoBehaviour
             }
             if(lastCircleGO != null)
             {
-                /*CreateDotConnection(lastCircleGO.GetComponent<RectTransform>().anchoredPosition,
-                    circleGO.GetComponent<RectTransform>().anchoredPosition);*/
                 CreateDotConnection(lastCircleGO.GetComponent<RectTransform>().position, 
                     circleGO.GetComponent<RectTransform>().position);
             }
@@ -234,7 +230,6 @@ public class Graph : MonoBehaviour
     {
         float width = graphContainer.sizeDelta.x;
         float height = graphContainer.sizeDelta.y;
-        //float gap = 
 
         for (int i = 0; i < numberOfHorizontalLines; i++)
         {
@@ -267,9 +262,6 @@ public class Graph : MonoBehaviour
         rectTransform.sizeDelta = new Vector2(distance, 3f);
         rectTransform.anchoredPosition = dotPositionA + dir * distance * .5f;
         rectTransform.rotation = Quaternion.Euler(0, 0, UtilsClass.GetAngleFromVectorFloat(dir));
-
-        //rectTransform.rotation = 
-        //rectTransform.localEulerAngles = new Vector3(0, 0, UtilsClass.GetAngleFromVectorFloat(dir));
     }
     private void Clean()
     {
