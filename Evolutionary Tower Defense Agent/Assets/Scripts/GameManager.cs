@@ -388,12 +388,16 @@ public class GameManager : MonoBehaviour
         };
 
         Evolutionary evolutionary = new Evolutionary(config);
-        await evolutionary.RunEvolutionAsync(grid, turretAgents, (result) => 
+        var _= evolutionary.RunEvolutionAsync(grid, turretAgents, (result) => 
         {
-            Debug.Log($"Score: {score}");
-            graph.addValue(score);
+            Debug.Log($"Score: {result.Score}");
+            graph.addValue(result.Score);
 
-            if(!runSimulation && evolutionary.NewestSimulation != null)
+            if(evolutionary.CurrentGeneration == numberOfGenerations)
+            {
+                graph.LastValueAdded();
+            }
+            /*if(!runSimulation && evolutionary.NewestSimulation != null)
             {
                 Debug.Log("CurrentGeneration: " + evolutionary.CurrentGeneration);
                 uiManager.CurrentGenerationCount.transform.GetComponent<Text>().text = evolutionary.CurrentGeneration.ToString();
@@ -401,19 +405,24 @@ public class GameManager : MonoBehaviour
 
                 StartCoroutine(AutoSimulateCoroutine(sim));
                 //AutoSimulate(sim);
-            }
+            }*/
         });
 
-        Debug.Log("Evolutions Over!");
-        graph.ShowFinalGraph();
+        while (evolutionary.NewestSimulation == null);
 
-        RemoveEnemyObjects();
+        /*Debug.Log("CurrentGeneration: " + evolutionary.CurrentGeneration);
+        if(evolutionary.CurrentGeneration == numberOfGenerations-1)
+            graph.ShowFinalGraph();*/
+        //graph.ShowFinalGraph();
+
+        /*RemoveEnemyObjects();
         runSimulation = false;
         agentsInitialized = false;
         uiManager.CurrentGenerationCount.transform.GetComponent<Text>().text = evolutionary.CurrentGeneration.ToString();
         sim = evolutionary.NewestSimulation;
 
-        StartCoroutine(AutoSimulateCoroutine(sim));
+        StartCoroutine(AutoSimulateCoroutine(sim));*/
+
         //AutoSimulate(sim);
 
     }
