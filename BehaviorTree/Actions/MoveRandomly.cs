@@ -6,23 +6,25 @@ namespace BehaviorTree.Actions
 {
     class MoveRandomly : IActionStrategy
     {
-        public bool HandleEnemy(EnemyBlackboard blackboard)
+        public ResultEnum Result { get; set; }
+
+        public void HandleEnemy(EnemyBlackboard blackboard)
         {
             if (blackboard.LegalActions != null)
             {
                 var rand = new Random();
                 blackboard.ChoosenAction = blackboard.LegalActions.ElementAt(rand.Next(blackboard.LegalActions.Count()));
-                return true;
+                Result = ResultEnum.Succeeded;
             }
             else
             {
-                return false;
+                Result = ResultEnum.Failed;
             }
         }
 
-        public bool HandleTurret(TurretBlackboard blackboard)
+        public void HandleTurret(TurretBlackboard blackboard)
         {
-            return false;
+            Result = ResultEnum.Failed;
         }
     }
 }

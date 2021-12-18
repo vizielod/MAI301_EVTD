@@ -13,14 +13,16 @@ namespace BehaviorTree.Agents
 
     public enum ActionType 
     {
-        Forward,
         GoNorth,
         GoSouth,
         GoEast,
         GoWest,
         GoNowhere,
         RepeatAction,
-        Score
+        ContinueEast,
+        ContinueWest,
+        ContinueNorth,
+        ContinueSouth
     }
 
     public enum CompositeType
@@ -31,10 +33,6 @@ namespace BehaviorTree.Agents
 
     public enum ConditionType
     {
-        CanGoSouth,
-        CanGoNorth,
-        CanGoWest,
-        CanGoEast,
         CanRepeat,
         AttackedFromEast,
         AttackedFromWest,
@@ -44,7 +42,8 @@ namespace BehaviorTree.Agents
         IsNorthOptimal,
         IsSouthOptimal,
         IsEastOptimal,
-        IsWestOptimal
+        IsWestOptimal,
+        Hurt
     }
     public class AgentBuilder
     {
@@ -56,10 +55,14 @@ namespace BehaviorTree.Agents
 
         internal ParentNode RootNode { get; set; }
 
-        public AgentBuilder()
+        public AgentBuilder(CompositeType rootType) : this(MakeCompositeNode(rootType))
+        {
+        }
+
+        internal AgentBuilder(ParentNode root)
         {
             blackboard = new EnemyBlackboard();
-            RootNode = currentNode = new Selector();
+            RootNode = currentNode = root;
             spawnRound = 0;
         }
 
@@ -81,12 +84,10 @@ namespace BehaviorTree.Agents
             return this;
         }
 
-        private IActionStrategy MakeActionStrategy(ActionType type)
+        private static IActionStrategy MakeActionStrategy(ActionType type)
         {
             switch (type)
             {
-                case ActionType.Forward:
-                    return new MoveForward();
                 case ActionType.GoNorth:
                     return new MoveNorth();
                 case ActionType.GoSouth:
@@ -97,10 +98,16 @@ namespace BehaviorTree.Agents
                     return new MoveWest();
                 case ActionType.GoNowhere:
                     return new Wait();
-                case ActionType.Score:
-                    return new EnemyScore();
                 case ActionType.RepeatAction:
                     return new RepeatPreviousAction();
+                case ActionType.ContinueEast:
+                    return new ContinuousMovement(new MoveEast(), Simulator.Direction.East);
+                case ActionType.ContinueWest:
+                    return new ContinuousMovement(new MoveWest(), Simulator.Direction.West);
+                case ActionType.ContinueNorth:
+                    return new ContinuousMovement(new MoveNorth(), Simulator.Direction.North);
+                case ActionType.ContinueSouth:
+                    return new ContinuousMovement(new MoveSouth(), Simulator.Direction.South);
             }
             return null;
         }
@@ -114,18 +121,10 @@ namespace BehaviorTree.Agents
             return this;
         }
 
-        private IConditionStrategy MakeConditionStrategy(ConditionType type)
+        private static IConditionStrategy MakeConditionStrategy(ConditionType type)
         {
             switch (type)
             {
-                case ConditionType.CanGoSouth:
-                    return new CanMoveSouth();
-                case ConditionType.CanGoNorth:
-                    return new CanMoveNorth();
-                case ConditionType.CanGoWest:
-                    return new CanMoveWest();
-                case ConditionType.CanGoEast:
-                    return new CanMoveEast();
                 case ConditionType.CanRepeat:
                     return new CanRepeatLastMove();
                 case ConditionType.AttackedFromEast:
@@ -146,14 +145,10 @@ namespace BehaviorTree.Agents
                     return new IsEastOptimal();
                 case ConditionType.IsWestOptimal:
                     return new IsWestOptimal();
+                case ConditionType.Hurt:
+                    return new HealthBelow(0.5f);
             }
             return null;
-        }
-
-        internal AgentBuilder SetRootNode(ParentNode rootNode)
-        {
-            this.RootNode = rootNode;
-            return this;
         }
 
         public AgentBuilder SetInitialPosition(int x, int y)
@@ -168,19 +163,20 @@ namespace BehaviorTree.Agents
             return this;
         }
 
-        public AgentBuilder AddCompositeNode(CompositeType compositeType) 
+        private static ParentNode MakeCompositeNode(CompositeType compositeType)
         {
-            ParentNode node;
             switch (compositeType)
             {
                 case CompositeType.Sequence:
-                    node = new Sequence();
-                    break;
+                    return new Sequence();
                 default:
-                    node = new Selector();
-                    break;
+                    return new Selector();
             }
+        }
 
+        public AgentBuilder AddCompositeNode(CompositeType compositeType) 
+        {
+            ParentNode node = MakeCompositeNode(compositeType);
             currentNode.AddChildren(node);
             currentNode = node;
             return this;

@@ -23,7 +23,10 @@ namespace BehaviorTree.NodeBase
             return this.controller;
         }
 
-        public abstract void AddChildren(Node node);
+        public void AddChildren(Node node)
+        {
+            controller.AddNode(node);
+        }
 
         /**
         * Abstract to be overridden in child
@@ -31,6 +34,8 @@ namespace BehaviorTree.NodeBase
         * with success.
         */
         public abstract void ChildSucceeded();
+
+        public abstract void ChildIsRunning();
 
         internal void RemoveChild(Node child)
         {
@@ -66,6 +71,12 @@ namespace BehaviorTree.NodeBase
 
         public override void DoAction(Blackboard blackboard)
         {
+            if (controller.subnodes.Count() == 0)
+            {
+                controller.FinishWithFailure();
+                return;
+            }
+
             if (controller.Finished())
             {
                 // If this parent task is finished
@@ -88,18 +99,25 @@ namespace BehaviorTree.NodeBase
             else if (controller.currentNode.
             GetControl().Finished())
             {
-                // ... and it's finished, end it properly.
-                controller.currentNode.End();
-                if (controller.currentNode.
+                if (controller.currentNode.GetControl().Running())
+                {
+                    this.ChildIsRunning();
+                }
+                else if(controller.currentNode.
                 GetControl().Succeeded())
                 {
+                    // ... and it's finished, end it properly.
+                    controller.currentNode.End();
                     this.ChildSucceeded();
+                    
                 }
-                if (controller.currentNode.
+                else if (controller.currentNode.
                 GetControl().Failed())
                 {
+                    // ... and it's finished, end it properly.
+                    controller.currentNode.End();
                     this.ChildFailed();
-                }
+                } 
             }
             else
             {
@@ -123,8 +141,16 @@ namespace BehaviorTree.NodeBase
         */
         public override void Start()
         {
-            controller.currentNode =
+            if (!controller.Running())
+            {
+                controller.currentNode =
             controller.subnodes.First();
+            }
+            else
+            {
+                controller.currentNode.GetControl().Reset();
+            }
+
             if (controller.currentNode == null)
             {
                 Console.Error.Write("Current task has a null action");

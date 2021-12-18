@@ -15,6 +15,8 @@ namespace BehaviorTree.NodeBase
         */
         private bool done;
 
+        private bool running;
+
         /**
         * If finished, it indicates if it has
         * finished with success or not
@@ -37,7 +39,8 @@ namespace BehaviorTree.NodeBase
         {
             this.started = false;
             this.done = false;
-            this.sucess = true;
+            this.running = false;
+            this.sucess = false;
         }
 
         /**
@@ -54,7 +57,7 @@ namespace BehaviorTree.NodeBase
         public void SafeStart()
         {
             this.started = true;
-
+            this.running = false;
           //  node.Start();
         }
 
@@ -76,7 +79,14 @@ namespace BehaviorTree.NodeBase
         {
             this.sucess = true;
             this.done = true;
+            this.running = false;
             //node.LogTask("Finished with success");
+        }
+
+        public void FinishWithRunning()
+        {
+            this.running = true;
+            this.done = true;
         }
 
         /**
@@ -86,6 +96,7 @@ namespace BehaviorTree.NodeBase
         {
             this.sucess = false;
             this.done = true;
+            this.running = false;
            // node.LogTask("Finished with failure");
         }
 
@@ -119,6 +130,11 @@ namespace BehaviorTree.NodeBase
         public bool Failed()
         {
             return !this.sucess;
+        }
+
+        public bool Running()
+        {
+            return this.running;
         }
 
     }

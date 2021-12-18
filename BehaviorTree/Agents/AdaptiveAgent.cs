@@ -21,7 +21,7 @@ namespace BehaviorTree.Agents
 
         public bool IsEnemy => true;
 
-        public float HealthRatio => Health / maxHealth;
+        public float HealthRatio => (float)Health / maxHealth;
 
         private int maxHealth;
 
@@ -44,6 +44,7 @@ namespace BehaviorTree.Agents
 
             bb.ProgressiveAction = state.SuggestedAction(this);
             bb.CurrentPosition = state.PositionOf(this);
+            bb.WallDistances = state.GetWallDistances(this);
             state.GetClosestTurret(this).Apply(t =>
             {
                 bb.ClosestTurret = t;
@@ -92,7 +93,7 @@ namespace BehaviorTree.Agents
         public AgentBuilder ReverseEngineer()
         {
             var (x, y) = InitialPosition;
-            return new AgentBuilder().SetInitialPosition(x,y).SetSpawnRound(SpawnRound).SetRootNode((ParentNode)rootNode.DeepCopy());
+            return new AgentBuilder((ParentNode)rootNode.DeepCopy()).SetInitialPosition(x,y).SetSpawnRound(SpawnRound);
         }
     }
 }

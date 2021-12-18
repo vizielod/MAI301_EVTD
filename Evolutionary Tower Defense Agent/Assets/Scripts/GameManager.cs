@@ -13,7 +13,8 @@ public enum GridType {
     useGridWithTurretsSetup = 0, 
     useGridWithoutTurretsSetup = 1, 
     useGridMultiLineWithoutTurretsSetup = 2,
-    useGridComplexWithoutTurretsSetup = 3
+    useGridComplexWithoutTurretsSetup = 3,
+    userSplitlaneWithoutTurretsSetup = 4
 }
 public class GameManager : MonoBehaviour
 {
@@ -157,6 +158,25 @@ public class GameManager : MonoBehaviour
             { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1},
 };
 
+    public int[,] gridSplitlaneWithoutTurretsArray = new int[,]
+{
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            { 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 3, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+};
+
     public TileType[,] tileTypeArray;
     IStateSequence sim;
 
@@ -218,6 +238,10 @@ public class GameManager : MonoBehaviour
         else if (gridType == GridType.useGridComplexWithoutTurretsSetup)
         {
             SetTileTypeArray(gridComplexWithoutTurretsArray);
+        }
+        else if (gridType == GridType.userSplitlaneWithoutTurretsSetup)
+        {
+            SetTileTypeArray(gridSplitlaneWithoutTurretsArray);
         }
         else
         {
@@ -353,7 +377,7 @@ public class GameManager : MonoBehaviour
                 sim.StepForward();
             }
         }*/
-
+        
         EvolutionConfiguration config = new EvolutionConfiguration()
         {
             NumberOfGenerations = numberOfGenerations,
@@ -364,7 +388,7 @@ public class GameManager : MonoBehaviour
         };
 
         Evolutionary evolutionary = new Evolutionary(config);
-        await evolutionary.RunEvolutionAsync(grid, turretAgents, (score) => 
+        await evolutionary.RunEvolutionAsync(grid, turretAgents, (result) => 
         {
             Debug.Log($"Score: {score}");
             graph.addValue(score);

@@ -6,21 +6,26 @@ namespace BehaviorTree.Actions
 {
     class MoveNorth : IActionStrategy
     {
-        public bool HandleEnemy(EnemyBlackboard blackboard)
+        public ResultEnum Result { get; set; }
+
+        public void HandleEnemy(EnemyBlackboard blackboard)
         {
             var action = blackboard.LegalActions.FirstOrDefault(a => a is GoNorth);
 
             if (action != null)
             {
                 blackboard.ChoosenAction = action;
-                return true;
+                Result = ResultEnum.Succeeded;
             }
-            return false;
+            else
+            {
+                Result = ResultEnum.Failed;
+            }
         }
 
-        public bool HandleTurret(TurretBlackboard blackboard)
+        public void HandleTurret(TurretBlackboard blackboard)
         {
-            return false;
+            Result = ResultEnum.Failed;
         }
     }
 }

@@ -54,11 +54,6 @@ namespace BehaviorTree.FlowControllNodes
             controller.FinishWithSuccess();
         }
 
-        public override void AddChildren(Node node)
-        {
-            controller.AddNode(node);
-        }
-
         public override Node DeepCopy()
         {
             var selector = new Selector();
@@ -67,6 +62,11 @@ namespace BehaviorTree.FlowControllNodes
                 selector.AddChildren(child.DeepCopy());
             }
             return selector;
+        }
+
+        public override void ChildIsRunning()
+        {
+            controller.FinishWithRunning();
         }
     }
 }

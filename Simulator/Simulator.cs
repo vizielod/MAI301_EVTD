@@ -25,7 +25,9 @@ namespace Simulator
             rounds = new List<Round>();
             roundIndex = -1;
             scoreboard = new Dictionary<IAgent, float>();
-            winCondition = new WinConditionChain(new EnemiesDefeatedWinCondition(game), new WinConditionChain(new EnemiesGoalReachedWinCondition(game), new TimeoutWinCondition(game.RoundLimit)));
+            winCondition = new WinConditionChain(new EnemiesDefeatedWinCondition(game),
+                new WinConditionChain(new EnemiesGoalReachedWinCondition(game),
+                new TimeoutWinCondition(game.RoundLimit)));
         }
 
         public void StepForward()
@@ -60,7 +62,7 @@ namespace Simulator
             }
 
             rounds[roundIndex].ApplyAll(game);
-            game.ValidatePositions();
+            game.VerifyPositions();
 
             if (newRound)
             {

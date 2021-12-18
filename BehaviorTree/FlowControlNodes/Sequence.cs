@@ -8,14 +8,14 @@ namespace BehaviorTree.FlowControllNodes
         public Sequence()
         { }
 
-        public override void AddChildren(Node node)
-        {
-            controller.AddNode(node);
-        }
-
         public override void ChildFailed()
         {
             controller.FinishWithFailure();
+        }
+
+        public override void ChildIsRunning()
+        {
+            controller.FinishWithRunning();
         }
 
         public override void ChildSucceeded()
