@@ -21,6 +21,8 @@ namespace Simulator
 
         public int NumberOfRounds => rounds.Count;
 
+        public Alliances? Winner { get; set; }
+
         internal Simulator(IGame game)
         {
             this.game = game;
@@ -124,6 +126,7 @@ namespace Simulator
 
         public void ReWind()
         {
+            Winner = winCondition.GetWinner(roundIndex); // Keep a record of who won
             roundIndex = 0;
             game.Reset();
         }
