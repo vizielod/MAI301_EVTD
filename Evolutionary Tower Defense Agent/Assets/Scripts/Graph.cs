@@ -178,14 +178,14 @@ public class Graph : MonoBehaviour
         float yMargin = 15+15;
         float yMaximum = valueList.Max()+15;
         //float yMaximum = 20000f;
-        float xSize = graphWidth / valueList.Count; //size distance between each point on X axis
+        float xSize = (graphWidth-30) / valueList.Count; //size distance between each point on X axis
         float xMargin = xSize / 2;
 
         GameObject lastCircleGO = null;
         for (int i = 0; i < valueList.Count; i++)
         {
 
-            float xPosition = (i * xSize) + xMargin;
+            float xPosition = (i * xSize) + xMargin + 15;
             float yPosition = (valueList[i] / yMaximum) * (graphHeight - 2 * yMargin) + yMargin;
             GameObject circleGO;
             if (!showGraphWithScore)
