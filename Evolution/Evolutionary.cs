@@ -164,8 +164,11 @@ namespace Evolution
 
         public IEnumerable<float> RunEvolution()
         {
-            IEnumerable<IAgent> enemies = CreatePopulation(configuration.PopulationSize).Cast<IAgent>();
+            return RunEvolution(CreatePopulation(configuration.PopulationSize).Cast<IAdaptiveEnemy>());
+        }
 
+        public IEnumerable<float> RunEvolution(IEnumerable<IAdaptiveEnemy> enemies)
+        {
             IReadOnlyDictionary<IAgent, float> scores = RunSimulation(enemies);
             yield return scores.Sum(s => s.Value);
 

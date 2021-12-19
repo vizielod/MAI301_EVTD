@@ -30,7 +30,7 @@ namespace BehaviorTree.Agents
             this.InitialPosition = initialPosition;
             this.bb = bb;
             this.rootNode = rootNode;
-            maxHealth = Health = 10;
+            maxHealth = Health = 20;
             this.SpawnRound = spawnRound;
         }
 
