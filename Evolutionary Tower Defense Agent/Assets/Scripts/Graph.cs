@@ -118,7 +118,8 @@ public class Graph : MonoBehaviour
         }
         else
         {
-            textComponent.text = "Gen. " + ((index * showEveryXthGeneration)-2).ToString() + "-" + (index * showEveryXthGeneration).ToString();
+            textComponent.text = "Gen. " + ((index * showEveryXthGeneration)- (showEveryXthGeneration-1)).ToString() 
+                + "-" + (index * showEveryXthGeneration).ToString();
         }
 
         Font ArialFont = (Font)Resources.GetBuiltinResource(typeof(Font), "Arial.ttf");
@@ -130,7 +131,7 @@ public class Graph : MonoBehaviour
         RectTransform rectTransform = scoreTextGO.GetComponent<RectTransform>();
         rectTransform.localRotation = Quaternion.Euler(0, 0, -90);
         rectTransform.localPosition = new Vector3(6, 0, 0);
-        rectTransform.sizeDelta = new Vector2(60, 20);
+        rectTransform.sizeDelta = new Vector2(75, 20);
         rectTransform.anchorMin = new Vector2(0, 0);
         rectTransform.anchorMax = new Vector2(0, 0);
     }
@@ -233,7 +234,7 @@ public class Graph : MonoBehaviour
 
         for (int i = 0; i < numberOfHorizontalLines; i++)
         {
-            GameObject horizontalLineGO = new GameObject("verticalLine", typeof(Image));
+            GameObject horizontalLineGO = new GameObject("horizontalLine", typeof(Image));
             horizontalLineGO.transform.SetParent(graphContainer, false);
             horizontalLineGO.GetComponent<Image>().color = new Color(1, 1, 1, .2f);
             RectTransform rectTransform = horizontalLineGO.GetComponent<RectTransform>();
