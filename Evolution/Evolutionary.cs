@@ -175,6 +175,10 @@ namespace Evolution
             // Set termination condition here
             for (int i = 0; i < configuration.NumberOfGenerations; i++)
             {
+                // Terminating if the enemies won
+                if (NewestSimulation.Winner == Alliances.Enemies)
+                    break;
+
                 CurrentGeneration = i + 1;
 
                 // Randomly select candidates, fitness score as probability

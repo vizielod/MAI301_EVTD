@@ -76,6 +76,7 @@ public class GameManager : MonoBehaviour
     private bool agentsInitialized = false;
     private bool runSimulation = false;
     private bool lastGenerationReached = false;
+    private int lastGeneration = 0;
 
     public TileType[,] tileTypeArray;
     IStateSequence sim;
@@ -453,14 +454,16 @@ public class GameManager : MonoBehaviour
             PlayLifes = playerStats.startLives
         };
         evolutionary = new Evolutionary(config, new TowerDefenceSimulatorFactory(towerConfig, turretAgents));
+
         var _ = evolutionary.RunEvolutionAsync((result) => 
         {
             Debug.Log($"Score: {result.Score}");
             graph.addValue(result.Score);
 
-            if(evolutionary.CurrentGeneration == numberOfGenerations)
+            if (result.Simulation.Winner == Alliances.Enemies || result.Generation == numberOfGenerations)
             {
                 lastGenerationReached = true;
+                lastGeneration = result.Generation;
                 graph.LastValueAdded();
             }
         });
