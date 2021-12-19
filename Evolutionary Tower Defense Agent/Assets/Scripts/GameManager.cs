@@ -45,6 +45,9 @@ public class GameManager : MonoBehaviour
     [Range(0f, 1f)] public float roulettRate = 0.5f;
     public bool useZinger = true;
     [Range(1, 10)] public int treeGeneratorRandomizationIterations = 2;
+    public bool CrossBreedCompositeNodes = true;
+    [Range(0f, 1f)] public float CompositeNodeBias = 0.5f;
+    [Range(0f, 1f)] public float ActionsNodeBias = 0.5f;
     //public GameObject enemy;
 
     [Header("Grid Setup")]
@@ -416,11 +419,20 @@ public int[,] gridSimpleWithoutTurretsArray = new int[,]
             EliteRate = eliteRate,
             RoulettRate = roulettRate,
             UseZinger = useZinger,
-            TreeGeneratorIterations = treeGeneratorRandomizationIterations
+            TreeGeneratorIterations = treeGeneratorRandomizationIterations,
+            CrossComposites = CrossBreedCompositeNodes,
+            ConditionalVsActionNodes = ActionsNodeBias,
+            LeafVsCompositeNodes = CompositeNodeBias
         };
 
-        evolutionary = new Evolutionary(config);
-        var _= evolutionary.RunEvolutionAsync(grid, turretAgents, (result) => 
+        TowerDefenceConfiguration towerConfig = new TowerDefenceConfiguration
+        {
+            Map = grid,
+            MaxRounds = 200,
+            PlayLifes = playerStats.startLives
+        };
+        evolutionary = new Evolutionary(config, new TowerDefenceSimulatorFactory(towerConfig, turretAgents));
+        var _ = evolutionary.RunEvolutionAsync((result) => 
         {
             Debug.Log($"Score: {result.Score}");
             graph.addValue(result.Score);
@@ -556,7 +568,7 @@ public int[,] gridSimpleWithoutTurretsArray = new int[,]
                     var enemyController = agentGODictionary[agent].GetComponent<EnemyController>();
                     enemyController.newHealthPoints = enemyAgent.Health;
                     enemyController.UpdateHealthBar();
-                    enemyController.CheckIfGoalIsreached((grid.Goal.x * tileSize, grid.Goal.y * tileSize));
+                    //enemyController.CheckIfGoalIsreached((grid.Goal.x * tileSize, grid.Goal.y * tileSize));
                     /*var enemyAgent = (SimpleEnemyAgent)agent;
                     Debug.Log("Agent: " + agent + " Health: " + enemyAgent.health);*/
                     
@@ -585,10 +597,8 @@ public int[,] gridSimpleWithoutTurretsArray = new int[,]
 
                 }
             }
-            if (!agent.IsActive)
-            {
-                agentGODictionary[agent].SetActive(false);
-            }
+            agentGODictionary[agent].SetActive(state.IsActive(agent));
+            PlayerStats.Lives = playerStats.startLives - state.ScoredPoints;
         }
     }
 

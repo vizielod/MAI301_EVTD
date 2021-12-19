@@ -8,6 +8,9 @@ namespace Simulator
         IEnumerable<IAgent> AllAgents { get; }
         IEnumerable<IAgent> AllEnemyAgents { get; }
         int RoundLimit { get; }
+        int PlayerLifes { get; }
+        IEnumerable<IAgent> SuccessfulEnemies { get; }
+
         IState GenerateState();
         IStateObject GetStateObject(IAgent agent);
         void SpawnAgents(int round);
@@ -21,5 +24,6 @@ namespace Simulator
         float GetProgression(IAgent agent);
         void VerifyPositions();
         bool IsActive(IAgent agent);
+        void Reset();
     }
 }

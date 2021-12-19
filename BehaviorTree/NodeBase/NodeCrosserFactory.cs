@@ -9,5 +9,10 @@ namespace BehaviorTree.NodeBase
         {
             return new NodeCrosser(builderA.RootNode, builderB.RootNode);
         }
+
+        public INodeCrosser CreateLeafNode(AgentBuilder builderA, AgentBuilder builderB)
+        {
+            return new LeafNodeCrosser(builderA.RootNode, builderB.RootNode);
+        }
     }
 }

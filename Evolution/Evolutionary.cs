@@ -15,6 +15,8 @@ namespace Evolution
         private float eliteRate = 0.02f;
         private float mutationRate = 0.5f;
         private float roulettRate = 0.5f;
+        private float compositeNodeRate = 0.3f;
+        private float actionNodeRate = 0.3f;
 
         public float MutationRate { 
             get { return mutationRate; }
@@ -31,10 +33,19 @@ namespace Evolution
             get { return roulettRate; }
             set { roulettRate = value.Clamp(0, 1); }
         }
-
+        public float LeafVsCompositeNodes
+        {
+            get { return compositeNodeRate; }
+            set { compositeNodeRate = value.Clamp(0, 1); }
+        }
+        public float ConditionalVsActionNodes
+        {
+            get { return actionNodeRate; }
+            set { actionNodeRate = value.Clamp(0, 1); }
+        }
         public bool UseZinger { get; set; }
         public int TreeGeneratorIterations { get; set; }
-
+        public bool CrossComposites { get; set; }
         internal int Elites => (int)Math.Floor(PopulationSize * EliteRate);
         internal int Roulett => (int)Math.Floor(PopulationSize * RoulettRate);
     }
@@ -46,35 +57,29 @@ namespace Evolution
         public bool AsyncIsRunning { get; internal set; }
 
         private readonly EvolutionConfiguration configuration;
-        private SimulatorFactory factory;
+        private readonly TowerDefenceSimulatorFactory factory;
         private Random rand = new Random();
 
         private IAgent zinger;
         private float zingerScore = 0;
 
-        public Evolutionary(EvolutionConfiguration configuration)
+        public Evolutionary(EvolutionConfiguration configuration, TowerDefenceSimulatorFactory factory)
         {
             CurrentGeneration = 0;
             NewestSimulation = null;
-            factory = new SimulatorFactory();
             this.configuration = configuration;
+            this.factory = factory;
         }
 
         void AddNodes(AgentBuilder agentBuilder)
         {
-            switch (rand.Next(3))
+            if (rand.NextDouble() < configuration.ConditionalVsActionNodes)
             {
-                case 0:
-                    agentBuilder.AddConditionNode(RandomSelect.Random<ConditionType>());
-                    agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
-                    break;
-                case 1:
-                    agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
-                    agentBuilder.AddConditionNode(RandomSelect.Random<ConditionType>());
-                    break;
-                case 2:
-                    agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
-                    break;
+                agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
+            }
+            else
+            {
+                agentBuilder.AddConditionNode(RandomSelect.Random<ConditionType>());
             }
         }
 
@@ -84,34 +89,20 @@ namespace Evolution
             {
                 var agentBuilder = new AgentBuilder(RandomSelect.Random<CompositeType>())
                     .SetInitialPosition(1, 1)
-                    .SetSpawnRound(i)
-                    .AddAlternateCompositeToRoot();
-                
-                AddNodes(agentBuilder);
+                    .SetSpawnRound(i);
 
                 // Random complexity
-                int chance;
                 int iterationsLeft = configuration.TreeGeneratorIterations;
-                while ((chance = rand.Next(6)) != 0 && iterationsLeft-- > 0)
+                for(int n = 0; n < iterationsLeft; n++)
                 {
-                    if (chance < 2)
+                    if (rand.NextDouble() < configuration.LeafVsCompositeNodes)
                     {
-                        agentBuilder.AddAlternateComposite();
-                        AddNodes(agentBuilder);
+                        if (rand.Next(1) == 1)
+                            agentBuilder.AddAlternateComposite();
+                        else
+                            agentBuilder.AddAlternateCompositeToRoot();
                     }
-                    else if (chance < 4)
-                    {
-                        agentBuilder.AddActionNode(RandomSelect.Random<ActionType>());
-                    }
-                    else if (chance < 5)
-                    {
-                        agentBuilder.AddConditionNode(RandomSelect.Random<ConditionType>());
-                    }
-                    else
-                    {
-                        agentBuilder.AddAlternateCompositeToRoot();
-                        AddNodes(agentBuilder);
-                    }
+                    AddNodes(agentBuilder);
                 }
 
                 yield return agentBuilder.BuildAgent();
@@ -130,7 +121,7 @@ namespace Evolution
         IEnumerable<IAgent> ElitistSelection(IReadOnlyDictionary<IAgent, float> scores, int size)
         {
             var result = scores.Keys.ToList();
-            var elites = result.Take(size).Cast<IAdaptiveEnemy>().Select(e=>e.Clone()).ToList();
+            var elites = result.Take(size).Cast<IAdaptiveEnemy>().Select(e=>e.Clone());
             return elites;
         }
 
@@ -151,9 +142,9 @@ namespace Evolution
             }
         }
 
-        IReadOnlyDictionary<IAgent, float> RunSimulation(IMapLayout map, IEnumerable<IAgent> enemies, IEnumerable<IAgent> turrets)
+        IReadOnlyDictionary<IAgent, float> RunSimulation(IEnumerable<IAgent> enemies)
         {
-            IStateSequence stateSequence = factory.CreateSimulator(map, enemies, turrets);
+            IStateSequence stateSequence = factory.Create(enemies);
 
             while (!stateSequence.IsGameOver)
             {
@@ -171,11 +162,11 @@ namespace Evolution
             return scores;
         }
 
-        public IEnumerable<float> RunEvolution(IMapLayout map, IEnumerable<IAgent> turrets)
+        public IEnumerable<float> RunEvolution()
         {
             IEnumerable<IAgent> enemies = CreatePopulation(configuration.PopulationSize).Cast<IAgent>();
 
-            IReadOnlyDictionary<IAgent, float> scores = RunSimulation(map, enemies, turrets);
+            IReadOnlyDictionary<IAgent, float> scores = RunSimulation(enemies);
             yield return scores.Sum(s => s.Value);
 
             // Set termination condition here
@@ -194,7 +185,10 @@ namespace Evolution
                     // Find out if there is a outstanding enemy in the population
                     var zinger = scores.First();
                     if (zinger.Value > zingerScore)
+                    {
                         this.zinger = ((IAdaptiveEnemy)zinger.Key).Clone();
+                        zingerScore = zinger.Value;
+                    }
 
                     population = population.Concat(ToList(this.zinger));
                 }
@@ -209,7 +203,7 @@ namespace Evolution
                 else if (remaining < 0) // if the population is too big, then cut it down
                     population = population.Take(configuration.PopulationSize);
 
-                scores = RunSimulation(map, population, turrets);
+                scores = RunSimulation(population);
                 yield return scores.Sum(s => s.Value);
             }
         }
@@ -228,7 +222,11 @@ namespace Evolution
                 AgentBuilder builder = enemy.ReverseEngineer();
                 if (++i % 2 == 0)
                 {
-                    factory.Create(mom, builder).Cross();
+                    if (configuration.CrossComposites)
+                        factory.Create(mom, builder).Cross();
+                    else
+                        factory.CreateLeafNode(mom, builder).Cross();
+
                     if (rand.NextDouble() < configuration.MutationRate)
                         builder.Mutate();
                     if (rand.NextDouble() < configuration.MutationRate)
@@ -252,9 +250,9 @@ namespace Evolution
             }
         }
 
-        public async Task RunEvolutionAsync(IMapLayout map, IEnumerable<IAgent> turrets, Action<GenerationInfo> callback)
+        public async Task RunEvolutionAsync(Action<GenerationInfo> callback)
         {
-            Thread thread = new Thread(new ThreadStart(new EvolutionThread(this, map, turrets, callback).Run))
+            Thread thread = new Thread(new ThreadStart(new EvolutionThread(this, callback).Run))
             {
                 IsBackground = true
             };
@@ -274,17 +272,15 @@ namespace Evolution
         private readonly IEnumerable<IAgent> turrets;
         private readonly Action<GenerationInfo> callback;
 
-        public EvolutionThread(Evolutionary evolution, IMapLayout map, IEnumerable<IAgent> turrets, Action<GenerationInfo> callback)
+        public EvolutionThread(Evolutionary evolution, Action<GenerationInfo> callback)
         {
             this.evolution = evolution;
-            this.map = map;
-            this.turrets = turrets;
             this.callback = callback;
         }
 
         public void Run()
         {
-            foreach (float score in evolution.RunEvolution(map, turrets))
+            foreach (float score in evolution.RunEvolution())
             {
                 callback.Invoke(new GenerationInfo(evolution.CurrentGeneration, score, evolution.NewestSimulation));
             }

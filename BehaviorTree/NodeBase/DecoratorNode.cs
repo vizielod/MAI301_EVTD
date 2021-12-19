@@ -48,9 +48,9 @@ namespace BehaviorTree.NodeBase
             return GetControl().Finished();
         }
 
-        public override int Count()
+        public override int Count(bool includeParent = true)
         {
-            return base.Count() + this.node.Count();
+            return (includeParent ? 1 : 0) + this.node.Count(includeParent);
         }
     }
 }

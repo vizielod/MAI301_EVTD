@@ -49,6 +49,6 @@ namespace BehaviorTree.NodeBase
 
         public abstract Node DeepCopy();
 
-        public virtual int Count() => 1;
+        public virtual int Count(bool includeParents = true) => 1;
     }
 }

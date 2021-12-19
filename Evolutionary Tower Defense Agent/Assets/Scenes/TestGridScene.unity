@@ -7845,6 +7845,9 @@ MonoBehaviour:
   roulettRate: 0.5
   useZinger: 1
   treeGeneratorRandomizationIterations: 2
+  CrossBreedCompositeNodes: 1
+  CompositeNodeBias: 0.5
+  ActionsNodeBias: 0.5
   spawnPosition: {x: 5, y: 2.75, z: 5}
   gridType: 0
   maxTurretCount: 10
@@ -18263,7 +18266,7 @@ PrefabInstance:
       objectReference: {fileID: 294142837}
     - target: {fileID: 716748622473738507, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: startLives
-      value: 10000000
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 716748622473738507, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: remainingTurretCountText
@@ -18283,7 +18286,7 @@ PrefabInstance:
       objectReference: {fileID: 302337105}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: gridType
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: eliteRate
@@ -18294,12 +18297,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1131496972}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: useZinger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: playerStats
       value: 
       objectReference: {fileID: 604267539}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: roulettRate
-      value: 0.7
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: mutationRate
@@ -18307,15 +18314,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: maxTurretCount
-      value: 1
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: treeVisualizer
       value: 
       objectReference: {fileID: 591343216}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: ActionsNodeBias
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: numberOfEnemies
-      value: 50
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: CompositeNodeBias
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: numberOfGenerations
@@ -18330,12 +18345,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: CrossBreedCompositeNodes
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: useGridWithoutTurretsSetup
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: useGridMultiLineWithoutTurretsSetup
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: treeGeneratorRandomizationIterations
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387587, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: m_RootOrder

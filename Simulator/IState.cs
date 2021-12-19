@@ -10,6 +10,7 @@ namespace Simulator
 
     public interface IState
     {
+        int ScoredPoints { get; }
         IEnumerable<IAgent> Agents { get; }
         IEnumerable<IAgent> GetAgentsAt(int x, int y);
         (int x, int y) PositionOf(IAgent agent);
@@ -24,5 +25,6 @@ namespace Simulator
         IAction SuggestedAction(IAgent agent);
         Direction GetDirection(IAgent from, IAgent to);
         IReadOnlyDictionary<Direction, int> GetWallDistances(IAgent agent);
+        bool IsActive(IAgent agent);
     }
 }

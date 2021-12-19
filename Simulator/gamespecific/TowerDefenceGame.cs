@@ -1,4 +1,5 @@
 ﻿using Simulator.state;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,30 +8,19 @@ namespace Simulator.gamespecific
     class TowerDefenceGame : IGame
     {
         private readonly IMapLayout map;
+        private readonly IEnumerable<IAgent> originalAgents;
+        private readonly IEnumerable<IAgent> originalTowers;
         private readonly Dictionary<IAgent, StateObject> agents;
         private readonly BreadthFirstSearch bfsMap;
 
         public TowerDefenceGame(IMapLayout map, IEnumerable<IAgent> agents, IEnumerable<IAgent> towers)
         {
             this.map = map;
+            originalAgents = agents.ToList();
+            originalTowers = towers.ToList();
             this.bfsMap = new BreadthFirstSearch(map);
             this.agents = new Dictionary<IAgent, StateObject>();
-            var enemyType = new TowerDefenceEnemyAgent();
-            foreach (var agent in agents)
-            {
-                this.agents.Add(agent, new StateObject(agent.InitialPosition)
-                {
-                    Type = enemyType
-                }) ;
-            }
-            var towerType = new TowerDefenceTowerAgent();
-            foreach (var tower in towers)
-            {
-                this.agents.Add(tower, new StateObject(tower.InitialPosition)
-                {
-                    Type = towerType
-                });
-            }
+            Reset();
         }
 
         public IEnumerable<IAgent> ActiveAgents => agents.Where(a => IsActive(a.Key)).Select(a => a.Key);
@@ -40,6 +30,10 @@ namespace Simulator.gamespecific
         public IEnumerable<IAgent> AllEnemyAgents => agents.Where(a => a.Value.IsEnemy).Select(a => a.Key);
 
         public int RoundLimit { get; set; }
+
+        public int PlayerLifes { get; set; }
+
+        public IEnumerable<IAgent> SuccessfulEnemies => agents.Where(a => a.Value.GoalReached && a.Value.IsEnemy).Select(a => a.Key);
 
         public int CountActiveEnemies()
         {
@@ -94,7 +88,7 @@ namespace Simulator.gamespecific
                 state.AddAgent(agent.Key, agent.Value.GridLocation, agent.Value.Type);
                 state.SetTarget(agent.Key, agent.Value.Target, agent.Value.EngagedTarget);
             }
-
+            state.ScoredPoints = CountEnemiesSuccess();
             return state;
         }
 
@@ -125,7 +119,35 @@ namespace Simulator.gamespecific
 
         public void SpawnAgents(int round)
         {
-            agents.Where(a => a.Key.SpawnRound <= round).AsParallel().ForAll(a => a.Value.Spawned = true);
+            int i = 0;
+            foreach (var enemy in AllEnemyAgents)
+            {
+                if (i++ > round)
+                    return;
+                agents[enemy].Spawned = true;
+            }
+        }
+
+        public void Reset()
+        {
+            agents.Clear();
+            var enemyType = new TowerDefenceEnemyAgent();
+            var towerType = new TowerDefenceTowerAgent();
+            foreach (var agent in originalAgents)
+            {
+                agents.Add(agent, new StateObject(agent.InitialPosition)
+                {
+                    Type = enemyType
+                });
+            }
+            foreach (var tower in originalTowers)
+            {
+                agents.Add(tower, new StateObject(tower.InitialPosition)
+                {
+                    Type = towerType,
+                    Spawned = true
+                });
+            }
         }
     }
 }

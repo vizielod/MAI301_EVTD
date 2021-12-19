@@ -28,7 +28,7 @@ namespace Simulator
             roundIndex = -1;
             scoreboard = new Dictionary<IAgent, float>();
             winCondition = new WinConditionChain(new EnemiesDefeatedWinCondition(game),
-                new WinConditionChain(new EnemiesGoalReachedWinCondition(game),
+                new WinConditionChain(new EnemiesGoalReachedWinCondition(game, game.PlayerLifes),
                 new TimeoutWinCondition(game.RoundLimit)));
         }
 
@@ -77,6 +77,15 @@ namespace Simulator
                     else
                         scoreboard[score.agent] = score.score;
                 }
+                
+                // Max scores for successful enemies!
+                foreach (var agent in game.SuccessfulEnemies)
+                {
+                    if (scoreboard.ContainsKey(agent))
+                        scoreboard[agent] += 1;
+                    else
+                        scoreboard[agent] = 1;
+                }
             }
                 
         }
@@ -115,10 +124,8 @@ namespace Simulator
 
         public void ReWind()
         {
-            while(roundIndex >= 0)
-            {
-                StepBackward();
-            }
+            roundIndex = 0;
+            game.Reset();
         }
 
         public IReadOnlyDictionary<IAgent, float> GetScores()
