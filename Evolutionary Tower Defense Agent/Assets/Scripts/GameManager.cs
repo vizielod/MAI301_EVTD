@@ -35,11 +35,9 @@ public class GameManager : MonoBehaviour
     public GameObject Turret;
     public GameObject enemyPrefab;
 
-    [Header("Variables")]
-    public int tileSize = 5;
+    [Header("Evolution Parameters")]
     public int numberOfEnemies = 5;
     public int numberOfGenerations = 50;
-    public int numberOfTurrets = 0;
     [Range(0f, 1f)] public float mutationRate = 0.5f;
     [Range(0f, 1f)] public float eliteRate = 0.02f;
     [Range(0f, 1f)] public float roulettRate = 0.5f;
@@ -51,17 +49,23 @@ public class GameManager : MonoBehaviour
     //public GameObject enemy;
 
     [Header("Grid Setup")]
+    public int tileSize = 5;
     public Vector3 spawnPosition = new Vector3(5, 2.75f, 5);
     public GridType gridType;
     public Grid grid;
     public int maxTurretCount = 10;
     public int turretCount = 0;
+    public int numberOfTurrets = 0;
+
+    [Header("Visualize Simulation Parameters")]
+    public int stepCount = 0;
+    public float stepTimer = 0f;
+    public float maxStepTime = 0.05f;
 
     private List<GameObject> enemyGameObjects;
     private GameObject[] turrets;
 
     public Dictionary<IAgent, GameObject> agentGODictionary;
-    
 
     private string enemyTag = "Enemy";
     private string turretTag = "Turret";
@@ -72,6 +76,9 @@ public class GameManager : MonoBehaviour
     private bool agentsInitialized = false;
     private bool runSimulation = false;
     private bool lastGenerationReached = false;
+
+    public TileType[,] tileTypeArray;
+    IStateSequence sim;
 
     public int[,] defaultGridArray = new int[,]
     {
@@ -187,7 +194,7 @@ public class GameManager : MonoBehaviour
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 };
 
-public int[,] gridSimpleWithoutTurretsArray = new int[,]
+    public int[,] gridSimpleWithoutTurretsArray = new int[,]
 {
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             { 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1},
@@ -205,13 +212,6 @@ public int[,] gridSimpleWithoutTurretsArray = new int[,]
             { 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 3, 1},
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 };
-
-    public TileType[,] tileTypeArray;
-    IStateSequence sim;
-
-    public int stepCount = 0;
-    public float stepTimer = 0f;
-    public float maxStepTime = 0.05f;
 
 
     void SetTileTypeArray(int[,] gridArray)
@@ -249,18 +249,18 @@ public int[,] gridSimpleWithoutTurretsArray = new int[,]
             #endif
             return;
         }*/
-        if (/*useGridWithTurretsSetup*/gridType == GridType.useGridWithTurretsSetup)
+        if (gridType == GridType.useGridWithTurretsSetup)
         {
             uiManager.HintText.SetActive(false);
             uiManager.RemainingTurrets.SetActive(false);
             uiManager.RemainingTurretCount.SetActive(false);
             SetTileTypeArray(gridWithTurretsArray);
         }
-        else if (/*useGridWithoutTurretsSetup*/gridType == GridType.useGridWithoutTurretsSetup)
+        else if (gridType == GridType.useGridWithoutTurretsSetup)
         {
             SetTileTypeArray(gridWithoutTurretsArray);
         }
-        else if (/*useGridMultiLineWithoutTurretsSetup*/gridType == GridType.useGridMultiLineWithoutTurretsSetup)
+        else if (gridType == GridType.useGridMultiLineWithoutTurretsSetup)
         {
             SetTileTypeArray(gridMultiLineWithoutTurretsArray);
         }
@@ -295,8 +295,8 @@ public int[,] gridSimpleWithoutTurretsArray = new int[,]
 
         turretAgents = new List<IAgent>();
         enemyAgents = new List<IAgent>();
-        PlayerStats.remainingTurretcount = maxTurretCount;
-        gridWithoutTurretsArray = defaultGridArray;
+        evolutionary = null;
+        //gridWithoutTurretsArray = defaultGridArray;
         agentGODictionary = new Dictionary<IAgent, GameObject>();
         sim = null;
         grid = null;
@@ -320,15 +320,36 @@ public int[,] gridSimpleWithoutTurretsArray = new int[,]
         {
             SetTileTypeArray(gridMultiLineWithoutTurretsArray);
         }
+        else if (gridType == GridType.useGridComplexWithoutTurretsSetup)
+        {
+            SetTileTypeArray(gridComplexWithoutTurretsArray);
+        }
+        else if (gridType == GridType.useSplitlaneWithoutTurretsSetup)
+        {
+            SetTileTypeArray(gridSplitlaneWithoutTurretsArray);
+        }
+        else if (gridType == GridType.useSimpleWithoutTurretsSetup)
+        {
+            SetTileTypeArray(gridSimpleWithoutTurretsArray);
+        }
+        else
+        {
+            Debug.LogError("Make sure either useGridWithTurretsSetup, useGridWithoutTurretsSetup or useGridMultiLineWithoutTurretsSetup is selected!");
+            return;
+        }
 
         grid = new Grid(tileTypeArray.GetLength(0), tileTypeArray.GetLength(1), tileSize, tileTypeArray); // int rowsOrHeight = ary.GetLength(0); int colsOrWidth = ary.GetLength(1);
         InitializeGridTiles();
 
         uiManager.Restart();
         playerStats.Restart();
+        loading.Restart();
         PlayerStats.remainingTurretcount = maxTurretCount;
 
         gameOver = false;
+
+        graph.CleanGraph();
+        
     }
     public async void StartGame()
     {
