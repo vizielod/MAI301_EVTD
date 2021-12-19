@@ -7,6 +7,12 @@ namespace BehaviorTree.NodeBase
 {
     class ConditionalNode : LeafNode
     {
+        public override NodeType Type => NodeType.Conditional;
+        public override string ToString()
+        {
+            return Strategy.GetType().Name;
+        }
+
         public ConditionalNode(IConditionStrategy strategy)
         {
             Strategy = strategy;

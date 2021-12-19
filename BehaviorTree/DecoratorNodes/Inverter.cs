@@ -4,6 +4,7 @@ namespace BehaviorTree.DecoratorNodes
 {
     class Inverter : DecoratorNode
     {
+
         public Inverter( Node node) : base( node)
         {
         }
@@ -25,6 +26,11 @@ namespace BehaviorTree.DecoratorNodes
             {
                 GetControl().FinishWithSuccess();
             }
+        }
+
+        public override string ToString()
+        {
+            return GetType().Name;
         }
     }
 }

@@ -7,6 +7,7 @@ namespace BehaviorTree.NodeBase
     abstract class ParentNode : Node
     {
         protected ParentNodeController controller;
+        public override NodeType Type => NodeType.Composite;
 
         public ParentNode()
         {
@@ -179,9 +180,9 @@ namespace BehaviorTree.NodeBase
             }
         }
 
-        public override int Count()
+        public override int Count(bool includeParents = true)
         {
-            return base.Count() + controller.subnodes.Sum(c => c.Count());
+            return (includeParents ? 1 : 0) + controller.subnodes.Sum(c => c.Count(includeParents));
         }
     }
 }

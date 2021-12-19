@@ -5,6 +5,12 @@ namespace BehaviorTree.NodeBase
 {
     class ActionNode : LeafNode
     {
+        public override NodeType Type => NodeType.Action;
+        public override string ToString()
+        {
+            return Strategy.ToString();
+        }
+
         public ActionNode(IActionStrategy strategy)
         {
             Strategy = strategy;

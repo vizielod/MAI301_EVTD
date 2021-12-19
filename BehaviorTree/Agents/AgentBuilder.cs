@@ -17,7 +17,7 @@ namespace BehaviorTree.Agents
         GoSouth,
         GoEast,
         GoWest,
-        GoNowhere,
+        //GoNowhere,
         RepeatAction,
         ContinueEast,
         ContinueWest,
@@ -66,6 +66,25 @@ namespace BehaviorTree.Agents
             spawnRound = 0;
         }
 
+        public AgentBuilder AddAlternateCompositeToRoot()
+        {
+            currentNode = RootNode;
+            return AddAlternateComposite();
+        }
+
+        public AgentBuilder AddAlternateComposite()
+        {
+            return AddCompositeNode(GetAlternative(currentNode));
+        }
+
+        private CompositeType GetAlternative(ParentNode parent)
+        {
+            if (parent is Selector)
+                return CompositeType.Sequence;
+            else
+                return CompositeType.Selector;
+        }
+
         public AgentBuilder AddNodesToRoot(CompositeType compositeType, ConditionType conditionType, ActionType actionType) 
         {
             currentNode = RootNode;
@@ -96,8 +115,8 @@ namespace BehaviorTree.Agents
                     return new MoveEast();
                 case ActionType.GoWest:
                     return new MoveWest();
-                case ActionType.GoNowhere:
-                    return new Wait();
+                //case ActionType.GoNowhere:
+                //    return new Wait();
                 case ActionType.RepeatAction:
                     return new RepeatPreviousAction();
                 case ActionType.ContinueEast:

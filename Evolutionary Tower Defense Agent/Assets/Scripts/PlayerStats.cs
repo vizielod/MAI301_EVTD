@@ -13,6 +13,7 @@ public class PlayerStats : MonoBehaviour
 
     public Text livesText;
     public Text remainingTurretCountText;
+
     // Start is called before the first frame update
     void Start()
     {

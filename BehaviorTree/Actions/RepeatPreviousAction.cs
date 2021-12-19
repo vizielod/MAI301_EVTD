@@ -16,5 +16,9 @@ namespace BehaviorTree.Actions
         {
             Result = ResultEnum.Failed;
         }
+        public override string ToString()
+        {
+            return "Repeat";
+        }
     }
 }

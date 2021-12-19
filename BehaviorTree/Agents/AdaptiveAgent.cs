@@ -30,7 +30,7 @@ namespace BehaviorTree.Agents
             this.InitialPosition = initialPosition;
             this.bb = bb;
             this.rootNode = rootNode;
-            maxHealth = Health = 10;
+            maxHealth = Health = 20;
             this.SpawnRound = spawnRound;
         }
 
@@ -94,6 +94,11 @@ namespace BehaviorTree.Agents
         {
             var (x, y) = InitialPosition;
             return new AgentBuilder((ParentNode)rootNode.DeepCopy()).SetInitialPosition(x,y).SetSpawnRound(SpawnRound);
+        }
+
+        public ITraverser GetTree()
+        {
+            return new Traverser((ParentNode)rootNode);
         }
     }
 }

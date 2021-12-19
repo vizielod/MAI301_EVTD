@@ -8,6 +8,9 @@ namespace BehaviorTree.NodeBase
      */
     abstract class Node
     {
+        public abstract NodeType Type { get; }
+
+        public abstract string ToString();
         /** 
          * When we create a new node we have to pass
          *the blackboard 
@@ -46,6 +49,6 @@ namespace BehaviorTree.NodeBase
 
         public abstract Node DeepCopy();
 
-        public virtual int Count() => 1;
+        public virtual int Count(bool includeParents = true) => 1;
     }
 }

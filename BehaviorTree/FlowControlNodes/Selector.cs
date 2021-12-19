@@ -8,6 +8,11 @@ namespace BehaviorTree.FlowControllNodes
         public Selector()
         {}
 
+        public override string ToString()
+        {
+            return GetType().Name;
+        }
+
         /**
         * Chooses the new task to update.
         * @return The new task, or null

@@ -14,7 +14,8 @@ public enum GridType {
     useGridWithoutTurretsSetup = 1, 
     useGridMultiLineWithoutTurretsSetup = 2,
     useGridComplexWithoutTurretsSetup = 3,
-    userSplitlaneWithoutTurretsSetup = 4
+    useSplitlaneWithoutTurretsSetup = 4,
+    useSimpleWithoutTurretsSetup = 5
 }
 public class GameManager : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class GameManager : MonoBehaviour
     public PlayerStats playerStats;
     public bool gameOver = false;
     public Graph graph;
+    public TreeVisualizer treeVisualizer;
     public loadingtext loading;
 
     [Header("Prefabs")]
@@ -41,6 +43,11 @@ public class GameManager : MonoBehaviour
     [Range(0f, 1f)] public float mutationRate = 0.5f;
     [Range(0f, 1f)] public float eliteRate = 0.02f;
     [Range(0f, 1f)] public float roulettRate = 0.5f;
+    public bool useZinger = true;
+    [Range(1, 10)] public int treeGeneratorRandomizationIterations = 2;
+    public bool CrossBreedCompositeNodes = true;
+    [Range(0f, 1f)] public float CompositeNodeBias = 0.5f;
+    [Range(0f, 1f)] public float ActionsNodeBias = 0.5f;
     //public GameObject enemy;
 
     [Header("Grid Setup")]
@@ -180,6 +187,25 @@ public class GameManager : MonoBehaviour
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 };
 
+public int[,] gridSimpleWithoutTurretsArray = new int[,]
+{
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            { 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 3, 1},
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+};
+
     public TileType[,] tileTypeArray;
     IStateSequence sim;
 
@@ -242,9 +268,13 @@ public class GameManager : MonoBehaviour
         {
             SetTileTypeArray(gridComplexWithoutTurretsArray);
         }
-        else if (gridType == GridType.userSplitlaneWithoutTurretsSetup)
+        else if (gridType == GridType.useSplitlaneWithoutTurretsSetup)
         {
             SetTileTypeArray(gridSplitlaneWithoutTurretsArray);
+        }
+        else if (gridType == GridType.useSimpleWithoutTurretsSetup)
+        {
+            SetTileTypeArray(gridSimpleWithoutTurretsArray);
         }
         else
         {
@@ -380,18 +410,29 @@ public class GameManager : MonoBehaviour
                 sim.StepForward();
             }
         }*/
-        
+
         EvolutionConfiguration config = new EvolutionConfiguration()
         {
             NumberOfGenerations = numberOfGenerations,
             MutationRate = mutationRate,
             PopulationSize = numberOfEnemies,
             EliteRate = eliteRate,
-            RoulettRate = roulettRate
+            RoulettRate = roulettRate,
+            UseZinger = useZinger,
+            TreeGeneratorIterations = treeGeneratorRandomizationIterations,
+            CrossComposites = CrossBreedCompositeNodes,
+            ConditionalVsActionNodes = ActionsNodeBias,
+            LeafVsCompositeNodes = CompositeNodeBias
         };
 
-        evolutionary = new Evolutionary(config);
-        var _= evolutionary.RunEvolutionAsync(grid, turretAgents, (result) => 
+        TowerDefenceConfiguration towerConfig = new TowerDefenceConfiguration
+        {
+            Map = grid,
+            MaxRounds = 200,
+            PlayLifes = playerStats.startLives
+        };
+        evolutionary = new Evolutionary(config, new TowerDefenceSimulatorFactory(towerConfig, turretAgents));
+        var _ = evolutionary.RunEvolutionAsync((result) => 
         {
             Debug.Log($"Score: {result.Score}");
             graph.addValue(result.Score);
@@ -416,12 +457,14 @@ public class GameManager : MonoBehaviour
 
             newEnemyGO.GetComponent<EnemyController>().enemyAgent = (IEnemyAgent)enemyAgents[i];
             newEnemyGO.GetComponent<EnemyController>().enabled = true;
+            newEnemyGO.GetComponent<EnemyController>().gameManager = this;
 
             agentGODictionary.Add(enemyAgents[i], newEnemyGO);
         }
     }
     private IEnumerator AutoSimulateCoroutine(IStateSequence sim, int currentGeneration)
     {
+        RemoveEnemyObjects();
         InstantiateEnemyAgents(sim);
 
         //loading.numberOfSteps = sim.NumberOfRounds;
@@ -525,7 +568,7 @@ public class GameManager : MonoBehaviour
                     var enemyController = agentGODictionary[agent].GetComponent<EnemyController>();
                     enemyController.newHealthPoints = enemyAgent.Health;
                     enemyController.UpdateHealthBar();
-                    enemyController.CheckIfGoalIsreached((grid.Goal.x * tileSize, grid.Goal.y * tileSize));
+                    //enemyController.CheckIfGoalIsreached((grid.Goal.x * tileSize, grid.Goal.y * tileSize));
                     /*var enemyAgent = (SimpleEnemyAgent)agent;
                     Debug.Log("Agent: " + agent + " Health: " + enemyAgent.health);*/
                     
@@ -554,10 +597,8 @@ public class GameManager : MonoBehaviour
 
                 }
             }
-            if (!agent.IsActive)
-            {
-                agentGODictionary[agent].SetActive(false);
-            }
+            agentGODictionary[agent].SetActive(state.IsActive(agent));
+            PlayerStats.Lives = playerStats.startLives - state.ScoredPoints;
         }
     }
 
