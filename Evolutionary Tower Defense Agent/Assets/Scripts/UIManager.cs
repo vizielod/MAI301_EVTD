@@ -43,6 +43,7 @@ public class UIManager : MonoBehaviour
         RemainingTurretCount.SetActive(false);
         CurrentGenerationText.SetActive(false);
         CurrentGenerationCount.SetActive(false);
+        LoadingAnimation.SetActive(false);
     }
 
     public void Restart()
@@ -56,8 +57,9 @@ public class UIManager : MonoBehaviour
         HintText.SetActive(true);
         RemainingTurrets.SetActive(true);
         RemainingTurretCount.SetActive(true);
-        CurrentGenerationText.SetActive(true);
-        CurrentGenerationCount.SetActive(true);
+        CurrentGenerationText.SetActive(false);
+        CurrentGenerationCount.SetActive(false);
+        LoadingAnimation.SetActive(false);
 
         hintText.text = "Place Turrets Before you start!";
     }

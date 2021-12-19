@@ -169,7 +169,7 @@ public class Graph : MonoBehaviour
 
     private void ShowGraph(List<float> valueList, bool showGraphWithScore = false)
     {
-        Clean();
+        CleanGraphVisuals();
 
         if (valueList.Count == 0)
             return;
@@ -264,11 +264,23 @@ public class Graph : MonoBehaviour
         rectTransform.anchoredPosition = dotPositionA + dir * distance * .5f;
         rectTransform.rotation = Quaternion.Euler(0, 0, UtilsClass.GetAngleFromVectorFloat(dir));
     }
-    private void Clean()
+    private void CleanGraphVisuals()
     {
         foreach (Transform child in graphContainer.transform)
         {
             Destroy(child.gameObject);
         }
+    }
+
+    private void CleanGraphData()
+    {
+        valueList.Clear();
+        genIndexList.Clear();
+    }
+
+    public void CleanGraph()
+    {
+        CleanGraphVisuals();
+        CleanGraphData();
     }
 }

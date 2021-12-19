@@ -44,6 +44,14 @@ public class loadingtext : MonoBehaviour {
         a = (int)(imageComp.fillAmount * 100);
         text.text = a + "%";
     }
+
+    public void Restart()
+    {
+        textNormal.text = "";
+        text.text = 0 + "%";
+        imageComp.fillAmount = 0.0f;
+        fillAmount = 0;
+    }
 	// Update is called once per frame
 	void Update () {
         /*if (startLoadingAnimation)
