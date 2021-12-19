@@ -76,7 +76,9 @@ public class GameManager : MonoBehaviour
     private bool agentsInitialized = false;
     private bool runSimulation = false;
     private bool lastGenerationReached = false;
+    private bool isGenerationZero = false;
     private int lastGeneration = 0;
+    private int playerWinCount = 0;
 
     public TileType[,] tileTypeArray;
     IStateSequence sim;
@@ -423,16 +425,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        //sim = new SimulatorFactory().CreateSimulator(grid, enemyAgents, turretAgents); // Parse enemies and tower agents
-
-        /*foreach (var sim in new Evolutionary(numberOfEnemies).RunEvolution(grid, turretAgents))
-        {
-            while (!sim.IsGameOver)
-            {
-                sim.StepForward();
-            }
-        }*/
-
         EvolutionConfiguration config = new EvolutionConfiguration()
         {
             NumberOfGenerations = numberOfGenerations,
@@ -455,9 +447,11 @@ public class GameManager : MonoBehaviour
         };
         evolutionary = new Evolutionary(config, new TowerDefenceSimulatorFactory(towerConfig, turretAgents));
 
+        playerWinCount = 0;
+        isGenerationZero = true;
         var _ = evolutionary.RunEvolutionAsync((result) => 
         {
-            Debug.Log($"Score: {result.Score}");
+            //Debug.Log($"Score: {result.Score}");
             graph.addValue(result.Score);
 
             if (result.Simulation.Winner == Alliances.Enemies || result.Generation == numberOfGenerations)
@@ -465,6 +459,12 @@ public class GameManager : MonoBehaviour
                 lastGenerationReached = true;
                 lastGeneration = result.Generation;
                 graph.LastValueAdded();
+            }
+
+            if(result.Simulation.Winner == Alliances.Player)
+            {
+                Debug.Log("Player win");
+                playerWinCount++;
             }
         });
 
@@ -504,7 +504,7 @@ public class GameManager : MonoBehaviour
                 StepForward();
                 loading.AnimateLoading();
                 stepTimer = 0f;
-                Debug.Log("Game is not over yet");
+                //Debug.Log("Game is not over yet");
             }
             yield return null;
         }
@@ -513,7 +513,12 @@ public class GameManager : MonoBehaviour
             RemoveEnemyObjects();
             runSimulation = false;
         }
-        Debug.Log("Game over");
+        else if(playerWinCount == numberOfGenerations + 1)
+        {
+            RemoveEnemyObjects();
+            runSimulation = false;
+            EndGame(false);
+        }
         yield return true;
     }
 
@@ -538,24 +543,32 @@ public class GameManager : MonoBehaviour
     {
         if (!gameOver)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            /*if (Input.GetKeyDown(KeyCode.Space))
             {
                 StepForward();
             }
             else if (Input.GetKeyDown(KeyCode.Q))
             {
                 StepBackward();
-            }
+            }*/
             if (PlayerStats.Lives <= 0)
             {
-                EndGame();
+                EndGame(true);
             }
             if(evolutionary != null)
             {
                 if (evolutionary.NewestSimulation != null && !runSimulation)
                 {
                     sim = evolutionary.NewestSimulation;
-                    uiManager.CurrentGenerationCount.transform.GetComponent<Text>().text = evolutionary.CurrentGeneration.ToString();
+                    if (isGenerationZero)
+                    {
+                        uiManager.CurrentGenerationCount.transform.GetComponent<Text>().text = 0 + "";
+                        isGenerationZero = false;
+                    }
+                    else
+                    {
+                        uiManager.CurrentGenerationCount.transform.GetComponent<Text>().text = evolutionary.CurrentGeneration.ToString();
+                    }
                     StartCoroutine(AutoSimulateCoroutine(sim, evolutionary.CurrentGeneration));
                 }
             }
@@ -563,11 +576,27 @@ public class GameManager : MonoBehaviour
 
     }
 
-    void EndGame()
+    void EndGame(bool enemyWon)
     {
         Debug.Log("Game Over");
+        if (enemyWon)
+        {
+            uiManager.GameOver.GetComponent<Text>().text = "YOU LOST!";
+            uiManager.GameOver.GetComponent<Text>().color = Color.red;
+            uiManager.GameOver.transform.GetChild(0).gameObject.GetComponent<Text>().text = "Generation " + lastGeneration + " defeated you!";
+            uiManager.GameOver.transform.GetChild(0).gameObject.GetComponent<Text>().color = Color.red;
+        }
+        else
+        {
+            uiManager.GameOver.GetComponent<Text>().text = "CONGRATULATIONS YOU WON!";
+            uiManager.GameOver.GetComponent<Text>().color = Color.green;
+            uiManager.GameOver.transform.GetChild(0).gameObject.GetComponent<Text>().text = "None of the generations could beat you!";
+            uiManager.GameOver.transform.GetChild(0).gameObject.GetComponent<Text>().color = Color.green;
+        }
         uiManager.GameOverState();
         gameOver = true;
+
+
     }
 
     public void StepForward(/*int offset_x, int offset_z*/)
@@ -606,7 +635,7 @@ public class GameManager : MonoBehaviour
                     Maybe<IAgent> maybeTarget = state.GetTargetOf(turretAgent);
                     maybeTarget.Apply(target =>
                     {
-                        Debug.Log(target);
+                        //Debug.Log(target);
                         if (state.EngagedTargetOf(agent))
                         {
                             agentGODictionary[agent].GetComponent<TurretController>().LookTowardsTarget(target);

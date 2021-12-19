@@ -112,14 +112,21 @@ public class Graph : MonoBehaviour
         scoreTextGO.transform.SetParent(verticalLineGO.transform, false);
 
         Text textComponent = scoreTextGO.GetComponent<Text>();
-        if(index == 0)
+        if (showEveryXthGeneration > 1)
         {
-            textComponent.text = "Gen. " + index.ToString();
+            if (index == 0)
+            {
+                textComponent.text = "Gen. " + index.ToString();
+            }
+            else
+            {
+                textComponent.text = "Gen. " + ((index * showEveryXthGeneration) - (showEveryXthGeneration - 1)).ToString()
+                    + "-" + (index * showEveryXthGeneration).ToString();
+            }
         }
         else
         {
-            textComponent.text = "Gen. " + ((index * showEveryXthGeneration)- (showEveryXthGeneration-1)).ToString() 
-                + "-" + (index * showEveryXthGeneration).ToString();
+            textComponent.text = "Gen. " + index.ToString();
         }
 
         Font ArialFont = (Font)Resources.GetBuiltinResource(typeof(Font), "Arial.ttf");
@@ -138,26 +145,39 @@ public class Graph : MonoBehaviour
 
     public void ShowFinalGraph()
     {
-        showEveryXthGeneration = (int)(valueList.Count / maxDatapointsShown);
+        
+        showEveryXthGeneration = (int)(valueList.Count / maxDatapointsShown) > 0 ? 
+            (int)(valueList.Count / maxDatapointsShown) : 
+            0;
         List<float> tempList = new List<float>();
-        tempList.Add(valueList[0]);
 
-        float sum = 0;
-        for (int i = 1; i < valueList.Count-1; i++)
+        if (showEveryXthGeneration > 0)
         {
-            if (i % showEveryXthGeneration != 0)
+            tempList.Add(valueList[0]);
+            float sum = 0;
+            for (int i = 1; i < valueList.Count - 1; i++)
             {
-                sum += valueList[i];
+                if (i % showEveryXthGeneration != 0)
+                {
+                    sum += valueList[i];
+                }
+                if (i % showEveryXthGeneration == 0)
+                {
+                    sum += valueList[i];
+                    int avg = (int)(sum / showEveryXthGeneration);
+                    tempList.Add(/*valueList[i]*/avg);
+                    sum = 0;
+                }
             }
-            if(i % showEveryXthGeneration == 0)
+            tempList.Add(valueList[valueList.Count - 1]);
+        }
+        else
+        {
+            for (int i = 0; i < valueList.Count; i++)
             {
-                sum += valueList[i];
-                int avg = (int)(sum / showEveryXthGeneration);
-                tempList.Add(/*valueList[i]*/avg);
-                sum = 0;
+                tempList.Add(valueList.Count);
             }
         }
-        tempList.Add(valueList[valueList.Count - 1]);
 
         for (int i = 0; i < tempList.Count; i++)
         {
