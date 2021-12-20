@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
     public bool CrossBreedCompositeNodes = true;
     [Range(0f, 1f)] public float CompositeNodeBias = 0.5f;
     [Range(0f, 1f)] public float ActionsNodeBias = 0.5f;
+    [Range(0f, 1f)] public float DepthBias = 0.3f;
     //public GameObject enemy;
 
     [Header("Grid Setup")]
@@ -436,7 +437,8 @@ public class GameManager : MonoBehaviour
             TreeGeneratorIterations = treeGeneratorRandomizationIterations,
             CrossComposites = CrossBreedCompositeNodes,
             ConditionalVsActionNodes = ActionsNodeBias,
-            LeafVsCompositeNodes = CompositeNodeBias
+            LeafVsCompositeNodes = CompositeNodeBias,
+            BreathVsDepth = DepthBias
         };
 
         TowerDefenceConfiguration towerConfig = new TowerDefenceConfiguration
@@ -473,7 +475,6 @@ public class GameManager : MonoBehaviour
     private void InstantiateEnemyAgents(IStateSequence sim)
     {
         enemyAgents = sim.AllEnemyAgents.ToList();
-
         for (int i = 0; i < enemyAgents.Count; i++)
         {
             GameObject newEnemyGO = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity) as GameObject;
@@ -483,7 +484,10 @@ public class GameManager : MonoBehaviour
             newEnemyGO.GetComponent<EnemyController>().enabled = true;
             newEnemyGO.GetComponent<EnemyController>().gameManager = this;
 
-            agentGODictionary.Add(enemyAgents[i], newEnemyGO);
+            if (!agentGODictionary.ContainsKey(enemyAgents[i]))
+                agentGODictionary.Add(enemyAgents[i], newEnemyGO);
+            else
+                agentGODictionary[enemyAgents[i]] = newEnemyGO;
         }
     }
     private IEnumerator AutoSimulateCoroutine(IStateSequence sim, int currentGeneration)
