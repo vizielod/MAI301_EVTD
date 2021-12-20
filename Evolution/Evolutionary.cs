@@ -17,6 +17,7 @@ namespace Evolution
         private float roulettRate = 0.5f;
         private float compositeNodeRate = 0.3f;
         private float actionNodeRate = 0.3f;
+        private float breathVsDepth = 0.3f;
 
         public float MutationRate { 
             get { return mutationRate; }
@@ -43,6 +44,12 @@ namespace Evolution
             get { return actionNodeRate; }
             set { actionNodeRate = value.Clamp(0, 1); }
         }
+        public float BreathVsDepth
+        {
+            get { return breathVsDepth; }
+            set { breathVsDepth = value.Clamp(0, 1); }
+        }
+
         public bool UseZinger { get; set; }
         public int TreeGeneratorIterations { get; set; }
         public bool CrossComposites { get; set; }
@@ -97,7 +104,7 @@ namespace Evolution
                 {
                     if (rand.NextDouble() < configuration.LeafVsCompositeNodes)
                     {
-                        if (rand.Next(1) == 1)
+                        if (rand.NextDouble() < configuration.BreathVsDepth)
                             agentBuilder.AddAlternateComposite();
                         else
                             agentBuilder.AddAlternateCompositeToRoot();
