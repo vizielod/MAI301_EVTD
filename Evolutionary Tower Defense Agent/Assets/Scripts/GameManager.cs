@@ -516,7 +516,7 @@ public class GameManager : MonoBehaviour
         else if(playerWinCount == numberOfGenerations + 1)
         {
             RemoveEnemyObjects();
-            runSimulation = false;
+            //runSimulation = false;
             EndGame(false);
         }
         yield return true;
@@ -579,6 +579,7 @@ public class GameManager : MonoBehaviour
     void EndGame(bool enemyWon)
     {
         Debug.Log("Game Over");
+        runSimulation = false;
         if (enemyWon)
         {
             uiManager.GameOver.GetComponent<Text>().text = "YOU LOST!";
