@@ -62,6 +62,7 @@ namespace Evolution
         public IStateSequence NewestSimulation { get; private set; }
         public int CurrentGeneration { get; private set; }
         public bool AsyncIsRunning { get; internal set; }
+        public TimeSpan? TimeDuration { get; internal set; }
 
         private readonly EvolutionConfiguration configuration;
         private readonly TowerDefenceSimulatorFactory factory;
@@ -264,18 +265,23 @@ namespace Evolution
             }
         }
 
-        public async Task RunEvolutionAsync(Action<GenerationInfo> callback)
+        public async Task RunEvolutionAsync(Action<GenerationInfo> iterationComplete, Action<TimeSpan> evolutionComplete = null)
         {
-            Thread thread = new Thread(new ThreadStart(new EvolutionThread(this, callback).Run))
+            Thread thread = new Thread(new ThreadStart(new EvolutionThread(this, iterationComplete).Run))
             {
                 IsBackground = true
             };
             thread.Start();
             
             AsyncIsRunning = true;
+            DateTime startTime = DateTime.Now;
             while (thread.IsAlive)
                 await Task.Yield();
+            TimeDuration = DateTime.Now - startTime;
             AsyncIsRunning = false;
+            
+            if (evolutionComplete != null)
+                evolutionComplete.Invoke(TimeDuration.Value);
         }
     }
 

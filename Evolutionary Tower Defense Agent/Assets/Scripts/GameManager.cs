@@ -455,21 +455,23 @@ public class GameManager : MonoBehaviour
         {
             //Debug.Log($"Score: {result.Score}");
             graph.addValue(result.Score);
+        },
+        (duration) =>
+        {
+            lastGenerationReached = true;
+            lastGeneration = evolutionary.CurrentGeneration;
+            Debug.Log($"Last generation: {lastGeneration}");
+            graph.LastValueAdded();
 
-            if (result.Simulation.Winner == Alliances.Enemies || result.Generation == numberOfGenerations)
-            {
-                lastGenerationReached = true;
-                lastGeneration = result.Generation;
-                graph.LastValueAdded();
-            }
-
-            if(result.Simulation.Winner == Alliances.Player)
+            IStateSequence simulation = evolutionary.NewestSimulation;
+            if (simulation.Winner == Alliances.Player)
             {
                 Debug.Log("Player win");
                 playerWinCount++;
             }
-        });
 
+            Debug.Log($"Evolution time duration: {duration}");
+        });
     }
 
     private void InstantiateEnemyAgents(IStateSequence sim)
@@ -577,7 +579,6 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-
     }
 
     void EndGame(bool enemyWon)
