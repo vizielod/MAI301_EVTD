@@ -7930,7 +7930,7 @@ MonoBehaviour:
   tileSize: 0
   spawnPosition: {x: 5, y: 2.75, z: 5}
   gridType: 0
-  maxTurretCount: 10
+  maxTurretCount: 5
   turretCount: 0
   numberOfTurrets: 0
   stepCount: 0
@@ -18353,6 +18353,26 @@ PrefabInstance:
       propertyPath: remainingTurretCountText
       value: 
       objectReference: {fileID: 1154209565}
+    - target: {fileID: 2139296940420508712, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139296940420508712, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139296940420508712, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139296940420508712, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139296940420508712, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: enemy
       value: 
@@ -18399,7 +18419,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: maxTurretCount
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2139296940433387586, guid: 77287d179cfc7bd4790c78a09336d0ac, type: 3}
       propertyPath: treeVisualizer

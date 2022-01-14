@@ -185,7 +185,9 @@ namespace Evolution
             {
                 // Terminating if the enemies won
                 if (NewestSimulation.Winner == Alliances.Enemies)
+                {
                     break;
+                }
 
                 CurrentGeneration = i + 1;
 

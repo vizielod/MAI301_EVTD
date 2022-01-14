@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Simulator.gamespecific
 {
-    class BreadthFirstSearch
+    public class BreadthFirstSearch
     {
         private readonly Dictionary<(int x, int y), (int x, int y)> lookup;
         private readonly Dictionary<(int x, int y), int> goalDistance;

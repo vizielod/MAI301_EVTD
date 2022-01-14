@@ -8,6 +8,7 @@ using BehaviorTree.Agents;
 using Evolution;
 using System.Threading.Tasks;
 using UnityEngine.UI;
+using Simulator.gamespecific;
 
 public enum GridType { 
     useGridWithTurretsSetup = 0, 
@@ -685,26 +686,29 @@ public class GameManager : MonoBehaviour
         if (grid == null)
             return;
 
+        var bfs = new BreadthFirstSearch(grid);
+
         for (int i = 0; i < grid.Width; i++)
         {
             for (int j = 0; j < grid.Height; j++)
             {
                 //Debug.Log(grid.TypeAt(i, j));
-                InstantiateGridTile(grid.TypeAt(i, j), i, j);
+                InstantiateGridTile(grid.TypeAt(i, j), i, j, bfs);
             }
         }
     }
 
-    public void InstantiateGridTile(TileType tileType, int i, int j)
+    public void InstantiateGridTile(TileType tileType, int i, int j, BreadthFirstSearch bfs = null)
     {
         GameObject tile;
         Transform parent;
-
+        float score = 0;
         switch (tileType)
         {
             case TileType.Ground:
                 tile = Ground;
                 parent = transform.Find("Ground");
+                score = bfs.Distance((i, j));
                 break;
             case TileType.Spawn:
                 tile = Spawn;
@@ -728,9 +732,9 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        Transform newTile = (Instantiate(tile, new Vector3(i * grid.tileSize, 0, j * grid.tileSize), Quaternion.identity) as GameObject).transform;
-
-        newTile.SetParent(parent);
+        GameObject newTile = Instantiate(tile, new Vector3(i * grid.tileSize, 0, j * grid.tileSize), Quaternion.identity) as GameObject;
+        newTile.GetComponent<ScoreVisualizer>()?.SetScore(1-score);
+        newTile.transform.SetParent(parent);
     }
 
     public GameObject InstantiateTurret(int i, int j)
